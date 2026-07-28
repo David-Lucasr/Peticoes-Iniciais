@@ -1,0 +1,447 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --ink: #0b0f1a;
+    --surface: #131826;
+    --surface-2: #1a2133;
+    --surface-3: #212a40;
+    --border: #262e45;
+    --border-soft: #1e2537;
+
+    --text: #edeff5;
+    --text-muted: #8891a8;
+    --text-faint: #5c6580;
+
+    --accent: #c6a15b;
+    --accent-hover: #d9b876;
+    --accent-ink: #241d0d;
+    --accent-soft: rgba(198, 161, 91, 0.14);
+
+    --success: #4cae8c;
+    --success-soft: rgba(76, 174, 140, 0.14);
+    --danger: #e2665b;
+    --danger-soft: rgba(226, 102, 91, 0.14);
+    --info: #0ea5e9;
+    --info-soft: rgba(14, 165, 233, 0.14);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+
+    --shadow-card: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+    --transition: all 0.2s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+body {
+    background:
+        radial-gradient(1100px 600px at 12% -10%, rgba(198, 161, 91, 0.08), transparent 60%),
+        radial-gradient(900px 500px at 100% 0%, rgba(76, 174, 140, 0.05), transparent 55%),
+        var(--ink);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 20px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* =========================================
+   TIPOGRAFIA
+   ========================================= */
+h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 2.5rem;
+    letter-spacing: 0.01em;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h1::after {
+    content: "SISTEMA INTERNO";
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-top: 6px;
+}
+
+/* Transformando os h3 nas divisões de seção desenhadas */
+h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0 20px 0;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    width: 100%;
+}
+
+h3::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
+h3::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+p {
+    color: var(--text-muted);
+}
+
+/* =========================================
+   CONTAINERS E GRIDS
+   ========================================= */
+.section-container {
+    width: 100%;
+    background-color: var(--surface);
+    padding: 32px 36px;
+    margin-bottom: 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fita superior do Container */
+.section-container::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, rgba(198,161,91,0.15) 55%, transparent 80%);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+/* =========================================
+   CAMPOS DE ENTRADA (Inputs, Selects)
+   ========================================= */
+label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+input[type="text"], select, textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.87rem;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+textarea {
+    resize: vertical;
+    text-transform: none;
+    line-height: 1.5;
+}
+
+input::placeholder, textarea::placeholder {
+    text-transform: none;
+    color: var(--text-faint);
+}
+
+input:hover, select:hover, textarea:hover {
+    border-color: var(--text-faint);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    background-color: var(--surface-3);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* =========================================
+   BOTÕES
+   ========================================= */
+button {
+    background-color: var(--surface-3);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 9px 15px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+button:hover {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(180deg, var(--accent-hover), var(--accent));
+    color: var(--accent-ink);
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 12px 24px -10px rgba(198, 161, 91, 0.5);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+    background: linear-gradient(180deg, var(--accent-hover), var(--accent));
+    border: none;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* =========================================
+   TELAS E MENUS
+   ========================================= */
+.step-screen { display: none; }
+.step-screen.active {
+    display: block;
+    animation: fade-in 0.3s ease;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.menu-card {
+    background-color: var(--surface-2);
+    padding: 20px 24px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.menu-card h3 {
+    justify-content: center;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+    color: var(--text);
+}
+.menu-card h3::before, .menu-card h3::after { display: none; } /* Remove as linhas dos títulos de card */
+
+.menu-card:hover {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   TOGGLE SWITCH (Representante)
+   ========================================= */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+}
+
+.toggle-container span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--surface-3);
+    border: 1px solid var(--border);
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 2px;
+    background-color: var(--text-muted);
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-soft);
+    border-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(19px);
+    background-color: var(--accent);
+}
+
+/* =========================================
+   CAIXAS DE IMAGEM E GALERIA
+   ========================================= */
+.image-box {
+    border: 1px dashed var(--border);
+    padding: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    background-color: var(--surface-2);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    text-align: center;
+}
+
+.image-box:hover {
+    background-color: var(--surface-3);
+    border-color: var(--accent);
+}
+
+.image-box strong {
+    color: var(--text);
+}
+
+.hint-text {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    display: block;
+    margin-top: 5px;
+}
+
+/* Overrides para as caixas médicas/casa se integrarem ao tema escuro 
+   (Substitui as cores claras inline originais do HTML) */
+#caixa_anexos_medicos { background-color: var(--success-soft) !important; border-color: var(--success) !important; }
+#caixa_anexos_medicos strong { color: var(--success) !important; }
+
+#caixa_fotos_casa { background-color: var(--info-soft) !important; border-color: var(--info) !important; }
+#caixa_fotos_casa strong { color: var(--info) !important; }
+
+.gallery-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.gallery-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    width: 220px;
+    background-color: var(--surface-3);
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-card img {
+    max-width: 100%;
+    height: 140px;
+    object-fit: contain;
+    border: 1px solid var(--border-soft);
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: var(--surface);
+}
+
+.btn-remove {
+    background-color: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    margin-top: 8px;
+}
+
+.btn-remove:hover {
+    background-color: var(--danger);
+    color: white;
+}
+
+.status-success {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* =========================================
+   ESTADOS DE VALIDAÇÃO (CPF)
+   ========================================= */
+input.campo-valido {
+    border-color: var(--success);
+    background-color: var(--success-soft);
+}
+
+input.campo-invalido {
+    border-color: var(--danger);
+    background-color: var(--danger-soft);
+}

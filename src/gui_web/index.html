@@ -1,0 +1,303 @@
+<!-- src/gui_web/index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Petições</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= TELA 1 e 2 ================= -->
+    <div id="telaSistema" class="step-screen active">
+        <h1>Banco de Petições</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Selecione o sistema desejado:</p>
+        
+        <div class="menu-card" onclick="irParaProcessos('bpc')">
+            <h3>BPC (Benefício de Prestação Continuada)</h3>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Gerenciamento de petições de BPC LOAS (Deficiência e Renda)</p>
+        </div>
+
+        <div class="menu-card" onclick="irParaProcessos('rural')" style="opacity: 0.6;">
+            <h3 style="color: var(--text-muted);">Rurais</h3>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Módulo em desenvolvimento</p>
+        </div>
+    </div>
+
+    <div id="telaMotivoBpc" class="step-screen">
+        <button onclick="voltarPara('telaSistema')" style="margin-bottom: 20px;">← Voltar</button>
+        <h1>BPC - Motivo do Indeferimento</h1>
+        
+        <div class="menu-card" onclick="iniciarFormulario('deficiencia')">
+            <h3>Deficiência</h3>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Indeferimento por não enquadramento no critério de deficiência</p>
+        </div>
+
+        <div class="menu-card" onclick="iniciarFormulario('bolsa_familia')">
+            <h3>Bolsa Família</h3>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Indeferimento com cômputo indevido do Bolsa Família na renda</p>
+        </div>
+    </div>
+
+    <!-- ================= TELA 3: O FORMULÁRIO MODULAR ================= -->
+    <div id="telaFormulario" class="step-screen">
+        <button onclick="voltarPara('telaMotivoBpc')" style="margin-bottom: 20px;">← Voltar ao Menu</button>
+        <h1 id="tituloFormulario">Formulário BPC</h1>
+
+        <input type="hidden" id="causaBpc" value="deficiencia">
+
+        <!-- ================= MÓDULO UNIVERSAL 1 ================= -->
+        <div class="section-container modulo-universal">
+            <h3>Dados do Processo</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Subseção Judiciária:</label>
+                    <input type="text" id="subsecao" placeholder="Ex: SÃO PAULO/SP">
+                </div>
+                <div class="form-group">
+                    <label>DER (Data do Requerimento):</label>
+                    <input type="text" id="der" placeholder="Ex: 24/03/2026" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label>Número do Benefício (NB):</label>
+                    <input type="text" id="nb">
+                </div>
+                <div class="form-group">
+                    <label>Valor da Causa:</label>
+                    <input type="text" id="valorCausa" placeholder="R$ 0,00">
+                </div>
+                <div class="form-group full-width">
+                    <label>Número da OAB:</label>
+                    <input type="text" id="oabAdvogado" placeholder="Ex: 32.185">
+                </div>
+                
+                <!-- =============== ENDEREÇO DA AGÊNCIA DO INSS =============== -->
+                <div class="form-group full-width" style="margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 15px;">
+                    <label style="color: var(--accent);">ENDEREÇO DA AGÊNCIA DO INSS DO CLIENTE</label>
+                </div>
+                
+                <div class="form-group">
+                    <label>CEP do INSS:</label>
+                    <input type="text" id="cepInss" placeholder="Ex: 00000-000" maxlength="9">
+                </div>
+                <div class="form-group">
+                    <label>Rua/Logradouro do INSS:</label>
+                    <input type="text" id="ruaInss" placeholder="Ex: R. Cel. Xavier de Toledo">
+                </div>
+                
+                <div class="form-group">
+                    <label>Número (Agência):</label>
+                    <input type="text" id="numeroInss" placeholder="Ex: 280">
+                </div>
+                <div class="form-group">
+                    <label>Bairro do INSS:</label>
+                    <input type="text" id="bairroInss" placeholder="Ex: Consolação">
+                </div>
+                
+                <div class="form-group">
+                    <label>Cidade do INSS:</label>
+                    <input type="text" id="cidadeInss" placeholder="Ex: São Paulo">
+                </div>
+                <div class="form-group">
+                    <label>UF do INSS (Sigla):</label>
+                    <input type="text" id="ufInss" placeholder="Ex: SP" maxlength="2">
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MÓDULO UNIVERSAL 2 ================= -->
+        <div class="section-container modulo-universal">
+            <h3>Dados Pessoais e Residenciais</h3>
+            <div class="form-grid">
+                <!-- =============== DADOS DO CLIENTE =============== -->
+                <div class="form-group full-width">
+                    <label>Nome do Cliente:</label>
+                    <input type="text" id="nomeCliente">
+                </div>
+                
+                <div class="form-group">
+                    <label>CPF do Cliente:</label>
+                    <input type="text" id="cpfCliente">
+                </div>
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
+                        <label style="margin-bottom: 0;">RG do Cliente:</label>
+                        <label style="margin-bottom: 0; font-size: 0.65rem; color: var(--accent); display: flex; align-items: center; gap: 5px; cursor: pointer; text-transform: uppercase; font-weight: 700;">
+                            <input type="checkbox" id="rgNovoCliente" onchange="sincronizarRgCpf('Cliente')" style="width: 14px; height: 14px; margin: 0; accent-color: var(--accent);">
+                            Usar CPF (Novo RG)
+                        </label>
+                    </div>
+                    <input type="text" id="rgCliente">
+                </div>
+
+                <div class="form-group">
+                    <label>Nacionalidade do Cliente:</label>
+                    <input type="text" id="nacionalidadeCliente" placeholder="Ex: Brasileiro(a)">
+                </div>
+                <div class="form-group">
+                    <label>Estado Civil do Cliente:</label>
+                    <input type="text" id="estadoCivilCliente" placeholder="Ex: Solteiro(a)">
+                </div>
+
+                <!-- =============== REPRESENTANTE LEGAL =============== -->
+                <div class="full-width toggle-container" style="margin-top: 15px;">
+                    <span>O cliente possui Representante Legal?</span>
+                    <label class="switch">
+                        <input type="checkbox" id="temRepresentante" onchange="alternarRepresentante()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div id="grupoRepresentante" class="form-grid full-width" style="display: none; border-left: 3px solid var(--accent); padding-left: 15px;">
+                    <div class="form-group full-width">
+                        <label>Nome do Representante:</label>
+                        <input type="text" id="nomeRepresentante">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>CPF do Representante:</label>
+                        <input type="text" id="cpfRepresentante">
+                    </div>
+                    <div class="form-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
+                            <label style="margin-bottom: 0;">RG do Representante:</label>
+                            <label style="margin-bottom: 0; font-size: 0.65rem; color: var(--accent); display: flex; align-items: center; gap: 5px; cursor: pointer; text-transform: uppercase; font-weight: 700;">
+                                <input type="checkbox" id="rgNovoRep" onchange="sincronizarRgCpf('Representante')" style="width: 14px; height: 14px; margin: 0; accent-color: var(--accent);">
+                                Usar CPF (Novo RG)
+                            </label>
+                        </div>
+                        <input type="text" id="rgRepresentante">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nacionalidade do Rep.:</label>
+                        <input type="text" id="nacionalidadeRepresentante" placeholder="Ex: Brasileiro(a)">
+                    </div>
+                    <div class="form-group">
+                        <label>Estado Civil do Rep.:</label>
+                        <input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a)">
+                    </div>
+                </div>
+
+                <!-- =============== ENDEREÇO DO CLIENTE =============== -->
+                <div class="form-group full-width" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 15px;">
+                    <label style="color: var(--accent);">ENDEREÇO RESIDENCIAL</label>
+                </div>
+
+                <div class="form-group">
+                    <label>CEP:</label>
+                    <input type="text" id="cep" placeholder="Ex: 00000-000" maxlength="9">
+                </div>
+                <div class="form-group">
+                    <label>Rua/Logradouro:</label>
+                    <input type="text" id="rua" placeholder="Ex: Rua Principal">
+                </div>
+                
+                <div class="form-group">
+                    <label>Número (e Complemento):</label>
+                    <input type="text" id="numero" placeholder="Ex: 12, Casa A">
+                </div>
+                <div class="form-group">
+                    <label>Bairro:</label>
+                    <input type="text" id="bairro" placeholder="Ex: Centro">
+                </div>
+                
+                <div class="form-group">
+                    <label>Cidade:</label>
+                    <input type="text" id="cidade" placeholder="Ex: Guaraciaba do Norte">
+                </div>
+                <div class="form-group">
+                    <label>UF (Sigla):</label>
+                    <input type="text" id="uf" placeholder="Ex: CE" maxlength="2">
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MÓDULO BPC (Só aparece para o BPC) ================= -->
+        <div class="section-container modulo-especifico modulo-bpc">
+            <h3>Dados Médicos e Legais</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Diagnóstico e CID:</label>
+                    <input type="text" id="diagnosticoCid" placeholder="Ex: TEA - CID 10 F 84.0">
+                </div>
+                <div class="form-group">
+                    <label>Sigla da Doença/Transtorno:</label>
+                    <input type="text" id="siglaDoenca" placeholder="Ex: TEA">
+                </div>
+                <div class="form-group full-width">
+                    <label>Fatores da Avaliação Pericial:</label>
+                    <input type="text" id="fatoresAvaliacao" placeholder="Ex: fatores ambientais GRAVE e atividades e participações MODERADA">
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Introdução da Lei:</label>
+                    <textarea id="introLeiDeficiencia" rows="2" placeholder="Ex: Ressalte-se que a legislação equipara a pessoa com diagnóstico de TEA à pessoa com deficiência..."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label>Citação Exata da Lei (Artigos e Incisos):</label>
+                    <textarea id="citacaoLeiDeficiencia" rows="4" placeholder="Ex: Art. 1º Esta Lei institui a Política Nacional de Proteção... § 2º A pessoa com transtorno do espectro autista é considerada..."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label>Detalhes do Laudo Médico:</label>
+                    <textarea id="detalhesLaudo" rows="4" placeholder="Ex: O laudo detalha que se trata de uma patologia neurodesenvolvimental de caráter irreversível..."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label>Descrição do Grupo Familiar e Moradia:</label>
+                    <textarea id="descricaoGrupoFamiliar" rows="3" placeholder="Ex: O núcleo familiar é composto por 04 pessoas, a sua moradia é modesta..."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label>Local e Data (Rodapé):</label>
+                    <input type="text" id="localData" placeholder="Ex: Guaraciaba do Norte/CE, 11 de junho de 2026.">
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MÓDULO BPC - IMAGENS (Só aparece para o BPC) ================= -->
+        <div class="section-container modulo-especifico modulo-bpc">
+            <h3>Imagens Específicas e Anexos</h3>
+
+            <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box">
+                <strong>Imagem da Renda</strong>
+                <span class="hint-text">Clique e cole (Ctrl+V) o print da renda</span>
+                <div id="preview_img_renda"></div>
+            </div>
+
+            <div onclick="selecionarCaixa('img_pericial')" id="caixa_img_pericial" class="image-box">
+                <strong>Imagem da Avaliação Pericial</strong>
+                <span class="hint-text">Clique e cole (Ctrl+V) o print dos fatores ambientais</span>
+                <div id="preview_img_pericial"></div>
+            </div>
+
+            <div onclick="selecionarCaixa('img_laudo')" id="caixa_img_laudo" class="image-box">
+                <strong>Imagem do Laudo Principal</strong>
+                <span class="hint-text">Clique e cole (Ctrl+V) a imagem do laudo médico</span>
+                <div id="preview_img_laudo"></div>
+            </div>
+
+            <div onclick="selecionarCaixa('anexos_medicos')" id="caixa_anexos_medicos" class="image-box" style="border-color: #22c55e;">
+                <strong style="color: #15803d;">+ Documentos Médicos Extras</strong>
+                <span class="hint-text">Clique aqui e cole (Ctrl+V) laudos extras, receitas, encaminhamentos.</span>
+                <div id="galeria_anexos_medicos" class="gallery-container"></div>
+            </div>
+
+            <div onclick="selecionarCaixa('fotos_casa')" id="caixa_fotos_casa" class="image-box" style="border-color: #0ea5e9;">
+                <strong style="color: #0369a1;">+ Fotos da Residência</strong>
+                <span class="hint-text">Clique aqui e cole (Ctrl+V) as fotos da casa do cliente.</span>
+                <div id="galeria_fotos_casa" class="gallery-container"></div>
+            </div>
+        </div>
+
+        <!-- ================= FINALIZAÇÃO ================= -->
+        <div class="section-container modulo-universal" style="display: flex; align-items: center; gap: 15px;">
+            <button onclick="selecionarPdf()">Anexar Arquivo PDF</button>
+            <span id="label_pdf" style="font-size: 13px; color: var(--text-muted);">Nenhum PDF selecionado</span>
+        </div>
+
+        <button class="btn-primary" onclick="enviarDados()">Gerar Arquivos Prontos</button>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
