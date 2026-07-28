@@ -657,7 +657,6 @@ async function buscarCEPApi(cepFormatado, sufixo = '') {
 
         if (dados.erro) {
             inputCep.classList.add('campo-invalido');
-            alert("CEP não encontrado! Por favor, verifique a digitação.");
             document.getElementById('rua' + sufixo).value = "";
             document.getElementById('bairro' + sufixo).value = "";
             document.getElementById('cidade' + sufixo).value = "";
