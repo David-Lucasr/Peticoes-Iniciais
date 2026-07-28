@@ -51,11 +51,11 @@ class Api:
             # 2. Processa o PDF (se o usuário escolheu um)
             if 'caminho_pdf' in dados and dados['caminho_pdf']:
                 processar_pdf(dados['caminho_pdf'], pasta_destino, dados['nome_cliente'])
-                mensagem += "\n\nO PDF com os anexos também foi gerado!"
+                mensagem += "\n\nO PA também foi anexado!"
                 
             return mensagem
         except FileNotFoundError:
-            return f"Erro: O modelo de documento '{nome_template}' não foi encontrado na pasta assets/templates/"
+            return f"Erro: O modelo de documento '{nome_template}' não foi encontrado"
         except Exception as e:
             return f"Erro ao gerar arquivos: {str(e)}"
     
