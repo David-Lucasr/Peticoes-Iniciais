@@ -17,7 +17,6 @@ function irParaProcessos(sistema) {
         document.querySelectorAll('.modulo-bpc').forEach(el => el.style.display = 'block');
         mudarTela('telaMotivoBpc');
     } else if (sistema === 'rural') {
-        // Exemplo para o futuro: document.querySelectorAll('.modulo-rural').forEach(el => el.style.display = 'block');
         alert("Sistema Rural em breve!");
     }
 }
@@ -31,12 +30,36 @@ function iniciarFormulario(causa) {
         selectCausa.value = causa;
     }
 
-    // Altera o título da tela de acordo com a escolha
     const titulo = document.getElementById('tituloFormulario');
+    
+    // Captura os blocos que vamos esconder/mostrar dinamicamente
+    const blocoFatores = document.getElementById('blocoFatores');
+    const caixaImgPericial = document.getElementById('caixa_img_pericial');
+    const blocoDataLaudo = document.getElementById('blocoDataLaudo');
+
     if (causa === 'deficiencia') {
         titulo.innerText = "Formulário BPC - Deficiência";
-    } else if (causa === 'bolsa-familia') {
-        titulo.innerText = "Formulário BPC - Bolsa Família";
+        
+        // Deficiência USA a Perícia, mas NÃO USA a Data do Laudo
+        if (blocoFatores) blocoFatores.style.display = '';
+        if (caixaImgPericial) caixaImgPericial.style.display = '';
+        if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
+
+    } else if (causa === 'bolsa_familia') {
+        titulo.innerText = "Formulário BPC - Cômputo do Bolsa Família";
+        
+        // Bolsa Família USA a Data do Laudo, mas NÃO USA a Perícia
+        if (blocoFatores) blocoFatores.style.display = 'none';
+        if (caixaImgPericial) caixaImgPericial.style.display = 'none';
+        if (blocoDataLaudo) blocoDataLaudo.style.display = '';
+
+    } else {
+        titulo.innerText = "Formulário BPC - Renda Superior";
+        
+        // Na de Renda normal, também não se usa a perícia médica detalhada
+        if (blocoFatores) blocoFatores.style.display = 'none';
+        if (caixaImgPericial) caixaImgPericial.style.display = 'none';
+        if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
     }
 
     mudarTela('telaFormulario');
@@ -301,12 +324,20 @@ async function enviarDados() {
     const cepInss = document.getElementById('cepInss').value;
     const enderecoInssMontado = `${ruaInss}, nº ${numeroInss}, ${bairroInss}, ${cidadeInss}/${ufInss} - CEP: ${cepInss}`;
 
+    // LÓGICA DO VALOR DA CAUSA (Número + Extenso)
+    const valorDigitado = document.getElementById('valorCausa') ? document.getElementById('valorCausa').value : "";
+    const valorExtenso = document.getElementById('textoValorExtenso') ? document.getElementById('textoValorExtenso').innerText : "";
+    let valorCausaFinal = valorDigitado;
+    if (valorDigitado && valorExtenso) {
+        valorCausaFinal = `${valorDigitado} (${valorExtenso})`;
+    }
+
     const dados = {
         causa: document.getElementById('causaBpc') ? document.getElementById('causaBpc').value : "",
         subsecao_judiciaria: document.getElementById('subsecao') ? document.getElementById('subsecao').value : "",
         der: document.getElementById('der') ? document.getElementById('der').value : "",
         nb: document.getElementById('nb') ? document.getElementById('nb').value : "",
-        valor_causa: document.getElementById('valorCausa') ? document.getElementById('valorCausa').value : "",
+        valor_causa: valorCausaFinal, // Enviando o valor completo (Número + Extenso)
         
         // Dados Pessoais Cliente
         nome_cliente: document.getElementById('nomeCliente') ? document.getElementById('nomeCliente').value : "",
@@ -334,9 +365,10 @@ async function enviarDados() {
         
         // Dados Médicos/Específicos do BPC
         diagnostico_cid: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
+        sigla_doenca: document.getElementById('siglaDoenca') ? document.getElementById('siglaDoenca').value : "",
+        data_laudo: document.getElementById('dataLaudo') ? document.getElementById('dataLaudo').value : "",
         fatores_avaliacao: document.getElementById('fatoresAvaliacao') ? document.getElementById('fatoresAvaliacao').value : "",
         oab_advogado: document.getElementById('oabAdvogado') ? document.getElementById('oabAdvogado').value : "",
-        sigla_doenca: document.getElementById('siglaDoenca') ? document.getElementById('siglaDoenca').value : "",
         intro_lei_deficiencia: document.getElementById('introLeiDeficiencia') ? document.getElementById('introLeiDeficiencia').value : "",
         citacao_lei_deficiencia: document.getElementById('citacaoLeiDeficiencia') ? document.getElementById('citacaoLeiDeficiencia').value : "",
         detalhes_laudo: document.getElementById('detalhesLaudo') ? document.getElementById('detalhesLaudo').value : "",
@@ -373,11 +405,20 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         document.getElementById('temRepresentante').checked = true;
         alternarRepresentante();
 
-        if (document.getElementById('causaBpc')) document.getElementById('causaBpc').value = 'deficiencia';
+        // Autocompleta a causa se estiver vazia
+        if (document.getElementById('causaBpc') && document.getElementById('causaBpc').value === "") {
+            document.getElementById('causaBpc').value = 'deficiencia';
+        }
+        
         if (document.getElementById('subsecao')) document.getElementById('subsecao').value = 'SÃO PAULO/SP';
         if (document.getElementById('der')) document.getElementById('der').value = '24/03/2026';
         if (document.getElementById('nb')) document.getElementById('nb').value = '729.397.891-0';
-        if (document.getElementById('valorCausa')) document.getElementById('valorCausa').value = 'R$ 14.589,00';
+        
+        // Simula a digitação para gerar o texto por extenso
+        if (document.getElementById('valorCausa')) {
+            document.getElementById('valorCausa').value = 'R$ 14.589,00';
+            document.getElementById('valorCausa').dispatchEvent(new Event('input'));
+        }
         
         // Cliente
         if (document.getElementById('cpfCliente')) document.getElementById('cpfCliente').value = '606.162.208-20';
@@ -413,12 +454,13 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         }
         
         if (document.getElementById('diagnosticoCid')) document.getElementById('diagnosticoCid').value = 'Transtorno do Espectro do Autismo Nível 3 (severo) (TEA)- CID 10 F 84.0';
+        if (document.getElementById('siglaDoenca')) document.getElementById('siglaDoenca').value = 'TEA';
+        if (document.getElementById('dataLaudo')) document.getElementById('dataLaudo').value = '15/05/2026';
         if (document.getElementById('fatoresAvaliacao')) document.getElementById('fatoresAvaliacao').value = 'fatores ambientais GRAVE e atividades e participações MODERADA';
         if (document.getElementById('oabAdvogado')) document.getElementById('oabAdvogado').value = '32.185';
-        if (document.getElementById('siglaDoenca')) document.getElementById('siglaDoenca').value = 'TEA';
         if (document.getElementById('introLeiDeficiencia')) document.getElementById('introLeiDeficiencia').value = 'Ressalte-se que a legislação equipara a pessoa com diagnóstico de TEA à pessoa com deficiência...';
         if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = 'Art. 1º Esta Lei institui a Política Nacional de Proteção...';
-        if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'O laudo detalha que se trata de uma patologia neurodesenvolvimental...';
+        if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'Este transtorno do neurodesenvolvimento é uma condição permanente que se manifesta...';
         if (document.getElementById('descricaoGrupoFamiliar')) document.getElementById('descricaoGrupoFamiliar').value = 'Quanto o núcleo familiar é composto por 04 pessoas, a sua moradia é modesta...';
         if (document.getElementById('localData')) document.getElementById('localData').value = 'Guaraciaba do Norte/CE, 11 de junho de 2026.';
         
@@ -431,6 +473,67 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
 });
 
 // =========================================================
+// FUNÇÃO INTELIGENTE: NÚMERO PARA EXTENSO (MOEDA BRASILEIRA)
+// =========================================================
+function valorParaExtenso(valorFormatado) {
+    if (!valorFormatado || valorFormatado === "R$ 0,00") return "";
+    let num = valorFormatado.replace("R$ ", "").replace(/\./g, "").replace(",", ".");
+    let valorFloat = parseFloat(num);
+    if (isNaN(valorFloat) || valorFloat === 0) return "";
+
+    const unidades = ["", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"];
+    const especiais = ["dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"];
+    const dezenas = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
+    const centenas = ["", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"];
+
+    function descreverBloco(n) {
+        if (n === 100) return "cem";
+        let c = Math.floor(n / 100);
+        let d = Math.floor((n % 100) / 10);
+        let u = n % 10;
+        let res = [];
+
+        if (c > 0) res.push(centenas[c]);
+        if (d === 1) res.push(especiais[u]);
+        else {
+            if (d > 1) res.push(dezenas[d]);
+            if (u > 0) res.push(unidades[u]);
+        }
+        return res.join(" e ");
+    }
+
+    let reais = Math.floor(valorFloat);
+    let centavos = Math.round((valorFloat - reais) * 100);
+    
+    let extensoReais = "";
+    if (reais > 0) {
+        let milhoes = Math.floor(reais / 1000000);
+        let milhares = Math.floor((reais % 1000000) / 1000);
+        let resto = reais % 1000;
+        let partes = [];
+
+        if (milhoes > 0) partes.push(descreverBloco(milhoes) + (milhoes === 1 ? " milhão" : " milhões"));
+        if (milhares > 0) partes.push((milhares === 1 ? "um mil" : descreverBloco(milhares) + " mil"));
+        if (resto > 0) partes.push(descreverBloco(resto));
+        
+        extensoReais = partes.join(" e ");
+        
+        if (reais === 1) extensoReais += " real";
+        else if (reais % 1000000 === 0) extensoReais += " de reais";
+        else extensoReais += " reais";
+    }
+
+    let extensoCentavos = "";
+    if (centavos > 0) {
+        extensoCentavos = descreverBloco(centavos) + (centavos === 1 ? " centavo" : " centavos");
+    }
+
+    if (extensoReais && extensoCentavos) return extensoReais + " e " + extensoCentavos;
+    if (extensoReais) return extensoReais;
+    return extensoCentavos;
+}
+
+// =========================================================
 // VALIDAÇÃO E MÁSCARAS DIVERSAS (MOEDA, DATA, CPF)
 // =========================================================
 
@@ -439,16 +542,24 @@ function mascararMoeda(evento) {
     let valor = evento.target.value.replace(/\D/g, ""); 
     if (valor === "") {
         evento.target.value = "";
+        if(document.getElementById('textoValorExtenso')) document.getElementById('textoValorExtenso').innerText = "";
         return;
     }
     valor = (parseInt(valor, 10) / 100).toFixed(2) + "";
     valor = valor.replace(".", ",");
     valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-    evento.target.value = "R$ " + valor;
+    
+    let valorFinal = "R$ " + valor;
+    evento.target.value = valorFinal;
+
+    // Atualiza a frase por extenso em tempo real na tela!
+    if (document.getElementById('textoValorExtenso')) {
+        document.getElementById('textoValorExtenso').innerText = valorParaExtenso(valorFinal);
+    }
 }
 if (document.getElementById('valorCausa')) document.getElementById('valorCausa').addEventListener('input', mascararMoeda);
 
-// Máscara de Data (DER)
+// Máscara de Data (DER e Data do Laudo)
 function mascararData(evento) {
     let v = evento.target.value.replace(/\D/g, "");
     v = v.replace(/^(\d{2})(\d)/, "$1/$2");
@@ -456,16 +567,16 @@ function mascararData(evento) {
     evento.target.value = v;
 }
 if (document.getElementById('der')) document.getElementById('der').addEventListener('input', mascararData);
+if (document.getElementById('dataLaudo')) document.getElementById('dataLaudo').addEventListener('input', mascararData);
 
-// Máscara e Validador de CPF (ATUALIZADO COM SINCRONIZAÇÃO DE RG)
+// Máscara e Validador de CPF
 function mascararCPF(evento) {
-    let v = evento.target.value.replace(/\D/g, ""); // Remove tudo o que não é dígito
+    let v = evento.target.value.replace(/\D/g, "");
     v = v.replace(/(\d{3})(\d)/, "$1.$2");
     v = v.replace(/(\d{3})(\d)/, "$1.$2");
     v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     evento.target.value = v;
 
-    // Dispara a sincronização de RG enquanto digita o CPF, se a caixinha estiver marcada
     if (evento.target.id === 'cpfCliente') sincronizarRgCpf('Cliente');
     if (evento.target.id === 'cpfRepresentante') sincronizarRgCpf('Representante');
 }
@@ -524,9 +635,7 @@ function mascararCEP(evento) {
     v = v.replace(/^(\d{5})(\d)/, "$1-$2"); 
     evento.target.value = v;
 
-    // Se o CEP estiver completo (9 caracteres incluindo o traço), dispara a busca automaticamente
     if (evento.target.value.length === 9) {
-        // Verifica se é o CEP do INSS ou do Cliente para passar o sufixo correto
         const sufixo = evento.target.id === 'cepInss' ? 'Inss' : '';
         buscarCEPApi(evento.target.value, sufixo);
     } else {
@@ -536,7 +645,7 @@ function mascararCEP(evento) {
 
 async function buscarCEPApi(cepFormatado, sufixo = '') {
     const inputCep = document.getElementById('cep' + sufixo);
-    const cepLimpo = cepFormatado.replace("-", ""); // Tira o traço para a API
+    const cepLimpo = cepFormatado.replace("-", ""); 
 
     inputCep.classList.add('campo-buscando');
 
@@ -548,6 +657,7 @@ async function buscarCEPApi(cepFormatado, sufixo = '') {
 
         if (dados.erro) {
             inputCep.classList.add('campo-invalido');
+            alert("CEP não encontrado! Por favor, verifique a digitação.");
             document.getElementById('rua' + sufixo).value = "";
             document.getElementById('bairro' + sufixo).value = "";
             document.getElementById('cidade' + sufixo).value = "";
@@ -558,13 +668,11 @@ async function buscarCEPApi(cepFormatado, sufixo = '') {
         inputCep.classList.remove('campo-invalido');
         inputCep.classList.add('campo-valido');
 
-        // Preenche os campos do formulário com os dados da API
         document.getElementById('rua' + sufixo).value = dados.logradouro || "";
         document.getElementById('bairro' + sufixo).value = dados.bairro || "";
         document.getElementById('cidade' + sufixo).value = dados.localidade || "";
         document.getElementById('uf' + sufixo).value = dados.uf || "";
 
-        // Joga o cursor do mouse direto para o campo "Número"
         document.getElementById('numero' + sufixo).focus();
 
     } catch (erro) {

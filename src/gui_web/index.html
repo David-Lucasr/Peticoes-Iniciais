@@ -35,7 +35,7 @@
         </div>
 
         <div class="menu-card" onclick="iniciarFormulario('bolsa_familia')">
-            <h3>Bolsa Família</h3>
+            <h3>Renda - Bolsa Família</h3>
             <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Indeferimento com cômputo indevido do Bolsa Família na renda</p>
         </div>
     </div>
@@ -66,6 +66,7 @@
                 <div class="form-group">
                     <label>Valor da Causa:</label>
                     <input type="text" id="valorCausa" placeholder="R$ 0,00">
+                    <span id="textoValorExtenso" style="font-size: 0.75rem; color: var(--accent); display: block; margin-top: 5px; font-weight: 500;"></span>
                 </div>
                 <div class="form-group full-width">
                     <label>Número da OAB:</label>
@@ -226,22 +227,31 @@
                     <label>Sigla da Doença/Transtorno:</label>
                     <input type="text" id="siglaDoenca" placeholder="Ex: TEA">
                 </div>
-                <div class="form-group full-width">
+
+                <!-- ADICIONADO id="blocoDataLaudo" -->
+                <div class="form-group" id="blocoDataLaudo">
+                    <label>Data do Laudo Médico:</label>
+                    <input type="text" id="dataLaudo" placeholder="Ex: 15/05/2026" maxlength="10">
+                </div>
+
+                <!-- ADICIONADO id="blocoFatores" -->
+                <div class="form-group full-width" id="blocoFatores">
                     <label>Fatores da Avaliação Pericial:</label>
-                    <input type="text" id="fatoresAvaliacao" placeholder="Ex: fatores ambientais GRAVE e atividades e participações MODERADA">
+                    <input type="text" id="fatoresAvaliacao" placeholder="Ex: fatores ambientais GRAVE...">
                 </div>
 
                 <div class="form-group full-width">
                     <label>Introdução da Lei:</label>
-                    <textarea id="introLeiDeficiencia" rows="2" placeholder="Ex: Ressalte-se que a legislação equipara a pessoa com diagnóstico de TEA à pessoa com deficiência..."></textarea>
+                    <textarea id="introLeiDeficiencia" rows="2" placeholder="Ex: Ressalte-se que a legislação..."></textarea>
                 </div>
+
                 <div class="form-group full-width">
                     <label>Citação Exata da Lei (Artigos e Incisos):</label>
                     <textarea id="citacaoLeiDeficiencia" rows="4" placeholder="Ex: Art. 1º Esta Lei institui a Política Nacional de Proteção... § 2º A pessoa com transtorno do espectro autista é considerada..."></textarea>
                 </div>
                 <div class="form-group full-width">
                     <label>Detalhes do Laudo Médico:</label>
-                    <textarea id="detalhesLaudo" rows="4" placeholder="Ex: O laudo detalha que se trata de uma patologia neurodesenvolvimental de caráter irreversível..."></textarea>
+                    <textarea id="detalhesLaudo" rows="4" placeholder="Ex: Este transtorno do neurodesenvolvimento é uma condição permanente que se manifesta..."></textarea>
                 </div>
                 <div class="form-group full-width">
                     <label>Descrição do Grupo Familiar e Moradia:</label>
@@ -260,7 +270,7 @@
 
             <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box">
                 <strong>Imagem da Renda</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V) o print da renda</span>
+                <span class="hint-text">Clique e cole (Ctrl+V) o print da renda ou Extrato do Bolsa Família</span>
                 <div id="preview_img_renda"></div>
             </div>
 
