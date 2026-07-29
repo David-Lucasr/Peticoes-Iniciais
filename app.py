@@ -68,6 +68,6 @@ if __name__ == '__main__':
         url=html_path,
         js_api=minha_api,
         width=800,
-        height=600
+        height=600,
     )
     webview.start()

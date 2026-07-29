@@ -36,30 +36,60 @@ function iniciarFormulario(causa) {
     const blocoFatores = document.getElementById('blocoFatores');
     const caixaImgPericial = document.getElementById('caixa_img_pericial');
     const blocoDataLaudo = document.getElementById('blocoDataLaudo');
+    const blocoParentesco = document.getElementById('blocoParentesco'); 
+    
+    // Captura o checkbox do Representante Legal
+    const chkRepresentante = document.getElementById('temRepresentante');
 
     if (causa === 'deficiencia') {
         titulo.innerText = "Formulário BPC - Deficiência";
-        
-        // Deficiência USA a Perícia, mas NÃO USA a Data do Laudo
         if (blocoFatores) blocoFatores.style.display = '';
         if (caixaImgPericial) caixaImgPericial.style.display = '';
         if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
+        if (blocoParentesco) blocoParentesco.style.display = 'none';
+
+        // Garante que o representante venha desmarcado por padrão
+        if (chkRepresentante) {
+            chkRepresentante.checked = false;
+            alternarRepresentante();
+        }
+
+    } else if (causa === 'deficiencia_curatela') {
+        titulo.innerText = "Formulário BPC - Deficiência c/ Curatela";
+        if (blocoFatores) blocoFatores.style.display = '';
+        if (caixaImgPericial) caixaImgPericial.style.display = '';
+        if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
+        if (blocoParentesco) blocoParentesco.style.display = ''; 
+
+        // MÁGICA AQUI: Ativa a caixinha do Representante e abre a gaveta automaticamente!
+        if (chkRepresentante) {
+            chkRepresentante.checked = true;
+            alternarRepresentante();
+        }
 
     } else if (causa === 'bolsa_familia') {
         titulo.innerText = "Formulário BPC - Cômputo do Bolsa Família";
-        
-        // Bolsa Família USA a Data do Laudo, mas NÃO USA a Perícia
         if (blocoFatores) blocoFatores.style.display = 'none';
         if (caixaImgPericial) caixaImgPericial.style.display = 'none';
         if (blocoDataLaudo) blocoDataLaudo.style.display = '';
+        if (blocoParentesco) blocoParentesco.style.display = 'none';
+
+        if (chkRepresentante) {
+            chkRepresentante.checked = false;
+            alternarRepresentante();
+        }
 
     } else {
         titulo.innerText = "Formulário BPC - Renda Superior";
-        
-        // Na de Renda normal, também não se usa a perícia médica detalhada
         if (blocoFatores) blocoFatores.style.display = 'none';
         if (caixaImgPericial) caixaImgPericial.style.display = 'none';
         if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
+        if (blocoParentesco) blocoParentesco.style.display = 'none';
+
+        if (chkRepresentante) {
+            chkRepresentante.checked = false;
+            alternarRepresentante();
+        }
     }
 
     mudarTela('telaFormulario');
@@ -98,7 +128,7 @@ function alternarRepresentante() {
         document.getElementById('rgRepresentante').value = '';
         document.getElementById('nacionalidadeRepresentante').value = '';
         document.getElementById('estadoCivilRepresentante').value = '';
-        
+        if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = '';
         // Remove configuração do RG vinculado
         const cbRgRep = document.getElementById('rgNovoRep');
         if (cbRgRep) cbRgRep.checked = false;
@@ -351,7 +381,8 @@ async function enviarDados() {
         // Dados Pessoais Representante
         nome_representante: possuiRep && document.getElementById('nomeRepresentante') ? document.getElementById('nomeRepresentante').value : "",
         cpf_representante: possuiRep && document.getElementById('cpfRepresentante') ? document.getElementById('cpfRepresentante').value : "",
-        rg_representante: possuiRep ? rgRepresentanteFinal : "", 
+        rg_representante: possuiRep ? rgRepresentanteFinal : "",
+        parentesco_representante: possuiRep && document.getElementById('parentescoRepresentante') ? document.getElementById('parentescoRepresentante').value : "",
         nacionalidade_representante: possuiRep && document.getElementById('nacionalidadeRepresentante') ? document.getElementById('nacionalidadeRepresentante').value : "",
         estado_civil_representante: possuiRep && document.getElementById('estadoCivilRepresentante') ? document.getElementById('estadoCivilRepresentante').value : "",
         
@@ -373,7 +404,6 @@ async function enviarDados() {
         citacao_lei_deficiencia: document.getElementById('citacaoLeiDeficiencia') ? document.getElementById('citacaoLeiDeficiencia').value : "",
         detalhes_laudo: document.getElementById('detalhesLaudo') ? document.getElementById('detalhesLaudo').value : "",
         descricao_grupo_familiar: document.getElementById('descricaoGrupoFamiliar') ? document.getElementById('descricaoGrupoFamiliar').value : "",
-        local_data: document.getElementById('localData') ? document.getElementById('localData').value : "",
         
         imagens_categorizadas: imagensCategorizadas,
         anexos_medicos_dinamicos: anexosParaPython,
@@ -432,6 +462,7 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('cpfRepresentante')) document.getElementById('cpfRepresentante').value = '445.670.968-51';
         if (document.getElementById('rgNovoRep')) document.getElementById('rgNovoRep').checked = true;
         sincronizarRgCpf('Representante');
+        if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = 'Cônjuge';
         if (document.getElementById('nacionalidadeRepresentante')) document.getElementById('nacionalidadeRepresentante').value = 'Brasileiro(a)';
         if (document.getElementById('estadoCivilRepresentante')) document.getElementById('estadoCivilRepresentante').value = 'Casado(a)';
         
@@ -462,7 +493,6 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = 'Art. 1º Esta Lei institui a Política Nacional de Proteção...';
         if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'Este transtorno do neurodesenvolvimento é uma condição permanente que se manifesta...';
         if (document.getElementById('descricaoGrupoFamiliar')) document.getElementById('descricaoGrupoFamiliar').value = 'Quanto o núcleo familiar é composto por 04 pessoas, a sua moradia é modesta...';
-        if (document.getElementById('localData')) document.getElementById('localData').value = 'Guaraciaba do Norte/CE, 11 de junho de 2026.';
         
         // Simula o blur para pintar os CPFs de verde ao usar o autocompletar
         if (document.getElementById('cpfCliente')) document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
@@ -657,6 +687,7 @@ async function buscarCEPApi(cepFormatado, sufixo = '') {
 
         if (dados.erro) {
             inputCep.classList.add('campo-invalido');
+            alert("CEP não encontrado! Por favor, verifique a digitação.");
             document.getElementById('rua' + sufixo).value = "";
             document.getElementById('bairro' + sufixo).value = "";
             document.getElementById('cidade' + sufixo).value = "";

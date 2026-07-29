@@ -34,6 +34,11 @@
             <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Indeferimento por não enquadramento no critério de deficiência</p>
         </div>
 
+        <div class="menu-card" onclick="iniciarFormulario('deficiencia_curatela')">
+            <h3>Deficiência + Curatela</h3>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Cliente incapaz necessitando de curador no processo</p>
+        </div>
+
         <div class="menu-card" onclick="iniciarFormulario('bolsa_familia')">
             <h3>Renda - Bolsa Família</h3>
             <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Indeferimento com cômputo indevido do Bolsa Família na renda</p>
@@ -179,6 +184,11 @@
                         <label>Estado Civil do Rep.:</label>
                         <input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a)">
                     </div>
+                    <!-- Fica logo abaixo do Estado Civil do Representante -->
+                    <div class="form-group" id="blocoParentesco" style="display: none;">
+                        <label>Grau de Parentesco (Vínculo):</label>
+                        <input type="text" id="parentescoRepresentante" placeholder="Ex: Cônjuge, Mãe, Filho(a)...">
+                    </div>
                 </div>
 
                 <!-- =============== ENDEREÇO DO CLIENTE =============== -->
@@ -256,10 +266,6 @@
                 <div class="form-group full-width">
                     <label>Descrição do Grupo Familiar e Moradia:</label>
                     <textarea id="descricaoGrupoFamiliar" rows="3" placeholder="Ex: O núcleo familiar é composto por 04 pessoas, a sua moradia é modesta..."></textarea>
-                </div>
-                <div class="form-group full-width">
-                    <label>Local e Data (Rodapé):</label>
-                    <input type="text" id="localData" placeholder="Ex: Guaraciaba do Norte/CE, 11 de junho de 2026.">
                 </div>
             </div>
         </div>
