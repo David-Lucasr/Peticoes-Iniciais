@@ -51,7 +51,7 @@ class Api:
             # 2. Processa o PDF (se o usuário escolheu um)
             if 'caminho_pdf' in dados and dados['caminho_pdf']:
                 processar_pdf(dados['caminho_pdf'], pasta_destino, dados['nome_cliente'])
-                mensagem += "\n\nO PA também foi anexado!"
+                mensagem += "\n\nO PA foi anexado!"
                 
             return mensagem
         except FileNotFoundError:
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         'Banco de Petições',
         url=html_path,
         js_api=minha_api,
-        width=800,
+        width=950,
         height=600,
     )
     webview.start()
