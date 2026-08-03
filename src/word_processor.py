@@ -3,6 +3,23 @@ from docx.shared import Mm
 import os
 import base64
 
+def converter_para_maiusculo_recursivo(dado, chave_atual=None):
+    chaves_excecao = {
+        'intro_lei_deficiencia', 
+        'citacao_lei_deficiencia', 
+        'detalhes_laudo'
+    }
+    
+    if isinstance(dado, str):
+        if chave_atual in chaves_excecao:
+            return dado
+        return dado.upper()
+    elif isinstance(dado, dict):
+        return {k: converter_para_maiusculo_recursivo(v, chave_atual=k) for k, v in dado.items()}
+    elif isinstance(dado, list):
+        return [converter_para_maiusculo_recursivo(item, chave_atual=chave_atual) for item in dado]
+    return dado
+
 def gerar_documento(caminho_template, caminho_saida, dados_formulario):
     doc = DocxTemplate(caminho_template)
     arquivos_temp = []
@@ -18,7 +35,7 @@ def gerar_documento(caminho_template, caminho_saida, dados_formulario):
                 arquivos_temp.append(caminho_temp)
                 dados_formulario[chave] = InlineImage(doc, caminho_temp, width=Mm(150))
 
-    # 2. NOVO: Processando a Lista Dinâmica de Documentos Médicos
+    # 2. Processando a Lista Dinâmica de Documentos Médicos
     lista_anexos_medicos = []
     if 'anexos_medicos_dinamicos' in dados_formulario:
         for i, item in enumerate(dados_formulario['anexos_medicos_dinamicos']):
@@ -35,7 +52,7 @@ def gerar_documento(caminho_template, caminho_saida, dados_formulario):
                 })
     dados_formulario['lista_anexos_medicos'] = lista_anexos_medicos
 
-    # 3. NOVO: Processando a Lista de Fotos da Casa
+    # 3. Processando a Lista de Fotos da Casa
     lista_fotos_casa = []
     if 'fotos_casa' in dados_formulario:
         for i, img_base64 in enumerate(dados_formulario['fotos_casa']):
@@ -48,6 +65,9 @@ def gerar_documento(caminho_template, caminho_saida, dados_formulario):
                 lista_fotos_casa.append(InlineImage(doc, caminho_temp, width=Mm(150)))
                 
     dados_formulario['lista_fotos_casa'] = lista_fotos_casa
+
+    # GARANTIA TOTAL: Converte absolutamente todos os campos de texto do JSON para MAIÚSCULO
+    dados_formulario = converter_para_maiusculo_recursivo(dados_formulario)
 
     try:
         doc.render(dados_formulario)

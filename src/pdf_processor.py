@@ -13,8 +13,6 @@ def processar_pdf(pdf_entrada, pasta_destino, nome_cliente):
     # Índices no Python começam em 0 (Páginas 1, 2 e 3 = 0, 1, 2)
     paginas_alvo = [0, 1, 2] 
     
-    print("Iniciando a leitura nativa do PDF...")
-    
     # Percorre todas as páginas do PDF
     for num_pagina in range(len(doc_original)):
         pagina = doc_original.load_page(num_pagina)

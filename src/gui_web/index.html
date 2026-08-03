@@ -96,7 +96,6 @@
                     <label>Rua/Logradouro do INSS:</label>
                     <input type="text" id="ruaInss" placeholder="Ex: R. Cel. Xavier de Toledo">
                 </div>
-                
                 <div class="form-group">
                     <label>Número (Agência):</label>
                     <input type="text" id="numeroInss" placeholder="Ex: 280">
@@ -105,7 +104,6 @@
                     <label>Bairro do INSS:</label>
                     <input type="text" id="bairroInss" placeholder="Ex: Consolação">
                 </div>
-                
                 <div class="form-group">
                     <label>Cidade do INSS:</label>
                     <input type="text" id="cidadeInss" placeholder="Ex: São Paulo">
@@ -126,7 +124,6 @@
                     <label>Nome do Cliente:</label>
                     <input type="text" id="nomeCliente">
                 </div>
-                
                 <div class="form-group">
                     <label>CPF do Cliente:</label>
                     <input type="text" id="cpfCliente">
@@ -165,7 +162,6 @@
                         <label>Nome do Representante:</label>
                         <input type="text" id="nomeRepresentante">
                     </div>
-                    
                     <div class="form-group">
                         <label>CPF do Representante:</label>
                         <input type="text" id="cpfRepresentante">
@@ -189,9 +185,8 @@
                         <label>Estado Civil do Rep.:</label>
                         <input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a)">
                     </div>
-                    <!-- Fica logo abaixo do Estado Civil do Representante -->
                     <div class="form-group" id="blocoParentesco" style="display: none;">
-                        <label>Parentesco (Vínculo):</label>
+                        <label>Vínculo:</label>
                         <input type="text" id="parentescoRepresentante" placeholder="Ex: Cônjuge, Mãe, Filho(a)...">
                     </div>
                 </div>
@@ -209,16 +204,14 @@
                     <label>Rua/Logradouro:</label>
                     <input type="text" id="rua" placeholder="Ex: Rua Principal">
                 </div>
-                
                 <div class="form-group">
-                    <label>Número (e Complemento):</label>
-                    <input type="text" id="numero" placeholder="Ex: 12, Casa A">
+                    <label>Número:</label>
+                    <input type="text" id="numero" placeholder="Ex: 12">
                 </div>
                 <div class="form-group">
                     <label>Bairro:</label>
                     <input type="text" id="bairro" placeholder="Ex: Centro">
                 </div>
-                
                 <div class="form-group">
                     <label>Cidade:</label>
                     <input type="text" id="cidade" placeholder="Ex: Guaraciaba do Norte">
@@ -266,7 +259,6 @@
                     <input type="text" id="siglaDoenca" placeholder="Ex: TEA, Epilepsia...">
                 </div>
 
-                <!-- ADICIONADO id="blocoDataLaudo" -->
                 <div class="form-group" id="blocoDataLaudo">
                     <label>Data do Laudo Médico:</label>
                     <input type="text" id="dataLaudo" placeholder="Ex: 15/05/2026" maxlength="10">
@@ -291,8 +283,8 @@
                     <textarea id="detalhesLaudo" rows="4" placeholder="Ex: Este transtorno do neurodesenvolvimento é uma condição permanente que se manifesta..."></textarea>
                 </div>
                 <div class="form-group full-width">
-                    <label>Descrição do Grupo Familiar e Moradia:</label>
-                    <textarea id="descricaoGrupoFamiliar" rows="3" placeholder="Ex: O núcleo familiar é composto por 04 pessoas, a sua moradia é modesta..."></textarea>
+                    <label>Quantidade de Pessoas no Grupo Familiar:</label>
+                    <input type="text" id="descricaoGrupoFamiliar" placeholder="Ex: 04" maxlength="2">
                 </div>
             </div>
         </div>
@@ -320,7 +312,7 @@
             </div>
 
             <div onclick="selecionarCaixa('anexos_medicos')" id="caixa_anexos_medicos" class="image-box" style="border-color: #22c55e;">
-                <strong style="color: #15803d;">+ Documentos Médicos Extras</strong>
+                <strong style="color: #178840;">+ Documentos Médicos Extras</strong>
                 <span class="hint-text">Clique aqui e cole (Ctrl+V) laudos extras, receitas, encaminhamentos.</span>
                 <div id="galeria_anexos_medicos" class="gallery-container"></div>
             </div>
@@ -342,13 +334,13 @@
 
                 <div onclick="selecionarCaixa('img_impedimento')" id="caixa_img_impedimento" class="image-box" style="border-color: #ea580c;">
                     <strong style="color: #ea580c;">+ Imagens do Impedimento de Longo Prazo</strong>
-                    <span class="hint-text">Clique e cole (Ctrl+V) os prints do SABI (Pode colar várias)</span>
+                    <span class="hint-text">Clique e cole (Ctrl+V) os prints do SABI</span>
                     <div id="galeria_img_impedimento" class="gallery-container"></div>
                 </div>
 
                 <div onclick="selecionarCaixa('img_avaliacao_social')" id="caixa_img_avaliacao_social" class="image-box" style="border-color: #e11d48;">
                     <strong style="color: #e11d48;">+ Imagens da Avaliação Social</strong>
-                    <span class="hint-text">Clique e cole (Ctrl+V) os prints da avaliação (Pode colar várias)</span>
+                    <span class="hint-text">Clique e cole (Ctrl+V) os prints da avaliação</span>
                     <div id="galeria_img_avaliacao_social" class="gallery-container"></div>
                 </div>
 
@@ -358,7 +350,7 @@
 
         <!-- ================= FINALIZAÇÃO ================= -->
         <div class="section-container modulo-universal" style="display: flex; align-items: center; gap: 15px;">
-            <button onclick="selecionarPdf()">Anexar Arquivo PDF</button>
+            <button onclick="selecionarPdf()">Anexar PA (PDF)</button>
             <span id="label_pdf" style="font-size: 13px; color: var(--text-muted);">Nenhum PDF selecionado</span>
         </div>
 

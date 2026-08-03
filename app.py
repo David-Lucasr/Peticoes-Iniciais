@@ -1,7 +1,7 @@
 import os
 import sys
 import webview
-from src.word_processor import gerar_documento
+from src.word_processor import gerar_documento, converter_para_maiusculo_recursivo
 from src.pdf_processor import processar_pdf
 
 def obter_caminho_raiz(caminho_relativo):
@@ -16,7 +16,7 @@ class Api:
             return resultado[0]
         return None
 
-    # Nova função para abrir a janela escolhendo apenas PDF
+    # Função para abrir a janela escolhendo apenas PDF
     def escolher_pdf(self):
         arquivos = webview.windows[0].create_file_dialog(
             webview.FileDialog.OPEN, 
@@ -30,6 +30,10 @@ class Api:
     def gerar_formulario(self, dados):
         print(f"Dados recebidos do JS: {dados}")
 
+        # 1. CONVERTE TUDO PARA MAIÚSCULO LOGO DE CARA (exceto as leis)
+        # Isso garante que o nome do cliente já venha em CAIXA ALTA para o arquivo
+        dados = converter_para_maiusculo_recursivo(dados)
+
         sufixo_rep = "_rep" if dados.get('tem_representante', False) else ""
         
         # Monta o nome dinâmico (ex: bpc_deficiencia_rep.docx ou bpc_deficiencia.docx)
@@ -40,15 +44,13 @@ class Api:
         
         pasta_destino = dados['pasta_destino']
         
-        nome_arquivo_word = f"Inicial - {dados['nome_cliente']}.docx"
+        nome_arquivo_word = f"INICIAL - {dados['nome_cliente']}.docx"
         caminho_saida_word = os.path.join(pasta_destino, nome_arquivo_word)
 
         try:
-            # 1. Gera o Word
             gerar_documento(caminho_template, caminho_saida_word, dados)
             mensagem = f"Sucesso! Arquivos salvos em:\n{pasta_destino}"
-            
-            # 2. Processa o PDF (se o usuário escolheu um)
+
             if 'caminho_pdf' in dados and dados['caminho_pdf']:
                 processar_pdf(dados['caminho_pdf'], pasta_destino, dados['nome_cliente'])
                 mensagem += "\n\nO PA foi anexado!"

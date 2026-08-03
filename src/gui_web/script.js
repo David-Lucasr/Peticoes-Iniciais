@@ -377,7 +377,6 @@ async function enviarDados() {
         return;
     }
 
-    // Validação Segura de CPF no ato do clique
     const cpfCliente = document.getElementById('cpfCliente').value;
     const possuiRep = document.getElementById('temRepresentante').checked;
     const cpfRep = document.getElementById('cpfRepresentante').value;
@@ -403,7 +402,6 @@ async function enviarDados() {
         return; 
     }
 
-    // LÓGICA DO RG: Preenche com espaços vazios caso não tenha sido digitado
     let rgClienteFinal = document.getElementById('rgCliente') ? document.getElementById('rgCliente').value.trim() : "";
     if (rgClienteFinal === "") rgClienteFinal = "______________";
 
@@ -419,18 +417,14 @@ async function enviarDados() {
     const impedimentosParaPython = impedimentoImagens.map(img => img.base64);
     const avaliacaoParaPython = avaliacaoSocialImagens.map(img => img.base64);
     
-    // Captura os dados do endereço desmembrado
     const rua = document.getElementById('rua').value;
     const numero = document.getElementById('numero').value;
     const bairro = document.getElementById('bairro').value;
     const cidade = document.getElementById('cidade').value;
     const uf = document.getElementById('uf').value;
     const cep = document.getElementById('cep').value;
-    
-    // Monta o endereço completo
     const enderecoMontado = `${rua}, nº ${numero}, ${bairro}, ${cidade}/${uf} - CEP: ${cep}`;
 
-    // Endereço INSS
     const ruaInss = document.getElementById('ruaInss').value;
     const numeroInss = document.getElementById('numeroInss').value;
     const bairroInss = document.getElementById('bairroInss').value;
@@ -439,7 +433,6 @@ async function enviarDados() {
     const cepInss = document.getElementById('cepInss').value;
     const enderecoInssMontado = `${ruaInss}, nº ${numeroInss}, ${bairroInss}, ${cidadeInss}/${ufInss} - CEP: ${cepInss}`;
 
-    // LÓGICA DO VALOR DA CAUSA (Número + Extenso)
     const valorDigitado = document.getElementById('valorCausa') ? document.getElementById('valorCausa').value : "";
     const valorExtenso = document.getElementById('textoValorExtenso') ? document.getElementById('textoValorExtenso').innerText : "";
     let valorCausaFinal = valorDigitado;
@@ -447,14 +440,14 @@ async function enviarDados() {
         valorCausaFinal = `${valorDigitado} (${valorExtenso})`;
     }
 
-    const dados = {
+    // Montando o Objeto estruturado (Payload JSON)
+    const payloadBruto = {
         causa: document.getElementById('causaBpc') ? document.getElementById('causaBpc').value : "",
         subsecao_judiciaria: document.getElementById('subsecao') ? document.getElementById('subsecao').value : "",
         der: document.getElementById('der') ? document.getElementById('der').value : "",
         nb: document.getElementById('nb') ? document.getElementById('nb').value : "",
         valor_causa: valorCausaFinal,
         
-        // Dados Pessoais Cliente
         nome_cliente: document.getElementById('nomeCliente') ? document.getElementById('nomeCliente').value : "",
         cpf_cliente: document.getElementById('cpfCliente') ? document.getElementById('cpfCliente').value : "",
         rg_cliente: rgClienteFinal,
@@ -463,7 +456,6 @@ async function enviarDados() {
         
         tem_representante: possuiRep,
         
-        // Dados Pessoais Representante
         nome_representante: possuiRep && document.getElementById('nomeRepresentante') ? document.getElementById('nomeRepresentante').value : "",
         cpf_representante: possuiRep && document.getElementById('cpfRepresentante') ? document.getElementById('cpfRepresentante').value : "",
         rg_representante: possuiRep ? rgRepresentanteFinal : "",
@@ -471,7 +463,6 @@ async function enviarDados() {
         nacionalidade_representante: possuiRep && document.getElementById('nacionalidadeRepresentante') ? document.getElementById('nacionalidadeRepresentante').value : "",
         estado_civil_representante: possuiRep && document.getElementById('estadoCivilRepresentante') ? document.getElementById('estadoCivilRepresentante').value : "",
         
-        // Dados do endereço
         endereco_completo: enderecoMontado,
         endereco_inss: enderecoInssMontado, 
         
@@ -479,13 +470,11 @@ async function enviarDados() {
         rua_inss: ruaInss, numero_inss: numeroInss, bairro_inss: bairroInss, 
         cidade_inss: cidadeInss, uf_inss: ufInss, cep_inss: cepInss,
         
-        // Dados Reavaliação / Cessação
         idade_cliente: document.getElementById('idadeCliente') ? document.getElementById('idadeCliente').value : "",
         motivo_indeferimento: document.getElementById('motivoIndeferimento') ? document.getElementById('motivoIndeferimento').value : "",
         data_inicio_beneficio: document.getElementById('dataInicioBeneficio') ? document.getElementById('dataInicioBeneficio').value : "",
         data_cessacao: document.getElementById('dataCessacao') ? document.getElementById('dataCessacao').value : "",
 
-        // Dados Médicos/Específicos do BPC
         diagnostico_cid: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
         sigla_doenca: document.getElementById('siglaDoenca') ? document.getElementById('siglaDoenca').value : "",
         data_laudo: document.getElementById('dataLaudo') ? document.getElementById('dataLaudo').value : "",
@@ -505,10 +494,14 @@ async function enviarDados() {
         caminho_pdf: caminhoPdfAtual
     };
 
+    // Garante conversão estrita para JSON string caso precise inspecionar ou enviar
+    const dadosJsonString = JSON.stringify(payloadBruto);
+
     document.body.style.cursor = 'wait';
 
     try {
-        const resposta = await pywebview.api.gerar_formulario(dados);
+        // Passamos o objeto direto (o pywebview já faz o parse automático para dicionário Python)
+        const resposta = await pywebview.api.gerar_formulario(JSON.parse(dadosJsonString));
         alert(resposta);
     } catch (erro) {
         alert("Ocorreu um erro: " + erro);
@@ -590,7 +583,7 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('introLeiDeficiencia')) document.getElementById('introLeiDeficiencia').value = 'Ressalte-se que a legislação equipara a pessoa com diagnóstico de TEA à pessoa com deficiência...';
         if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = 'Art. 1º Esta Lei institui a Política Nacional de Proteção...';
         if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'Este transtorno do neurodesenvolvimento é uma condição permanente que se manifesta...';
-        if (document.getElementById('descricaoGrupoFamiliar')) document.getElementById('descricaoGrupoFamiliar').value = 'Quanto o núcleo familiar é composto por 04 pessoas, a sua moradia é modesta...';
+        if (document.getElementById('descricaoGrupoFamiliar')) document.getElementById('descricaoGrupoFamiliar').value = '04';
         
         if (document.getElementById('cpfCliente')) document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
         if (document.getElementById('cpfRepresentante')) document.getElementById('cpfRepresentante').dispatchEvent(new Event('blur'));
