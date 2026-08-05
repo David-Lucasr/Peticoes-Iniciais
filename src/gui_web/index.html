@@ -9,42 +9,68 @@
 </head>
 <body>
 
-    <div id="telaFormulario" class="step-screen active">
-        <h1 id="tituloFormulario">Iniciais BPC</h1>
-
-        <!-- ================= PAINEL DE TESES ================= -->
+    <!-- ================= PAINEL DE TESES ================= -->
         <div class="section-container modulo-universal">
             <h3>Teses e Pedidos da Petição</h3>
             <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Marque os tópicos que devem constar no documento gerado:</p>
             
-            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
-                    <input type="checkbox" id="chkPrioridade" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                    Prioridade de Tramitação
+            <!-- NOVO GRID DE TESES -->
+            <div class="teses-grid">
+                
+                <label class="tese-card">
+                    <input type="checkbox" id="chkPrioridade" onchange="atualizarTeses()">
+                    <div class="tese-content">
+                        <span class="custom-checkbox"></span>
+                        <span class="tese-text">Prioridade de Tramitação</span>
+                    </div>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
-                    <input type="checkbox" id="chkCoisaJulgada" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                    Ausência de Coisa Julgada
+
+                <label class="tese-card">
+                    <input type="checkbox" id="chkCoisaJulgada" onchange="atualizarTeses()">
+                    <div class="tese-content">
+                        <span class="custom-checkbox"></span>
+                        <span class="tese-text">Ausência de Coisa Julgada</span>
+                    </div>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
-                    <input type="checkbox" id="chkPericiaJudicial" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                    Necessidade de Perícia Judicial
+
+                <label class="tese-card">
+                    <input type="checkbox" id="chkPericiaJudicial" onchange="atualizarTeses()">
+                    <div class="tese-content">
+                        <span class="custom-checkbox"></span>
+                        <span class="tese-text">Necessidade de Perícia Judicial</span>
+                    </div>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
-                    <input type="checkbox" id="chkJulgamentoAntecipado" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                    Julgamento Antecipado (Sem Perícia)
+
+                <label class="tese-card">
+                    <input type="checkbox" id="chkJulgamentoAntecipado" onchange="atualizarTeses()">
+                    <div class="tese-content">
+                        <span class="custom-checkbox"></span>
+                        <span class="tese-text">Julgamento Antecipado (Sem Perícia)</span>
+                    </div>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
-                    <input type="checkbox" id="chkProvaEmprestada" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                    Prova Emprestada
+
+                <label class="tese-card">
+                    <input type="checkbox" id="chkProvaEmprestada" onchange="atualizarTeses()">
+                    <div class="tese-content">
+                        <span class="custom-checkbox"></span>
+                        <span class="tese-text">Prova Emprestada</span>
+                    </div>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
-                    <input type="checkbox" id="chkFixacaoDib" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                    Fixação da DIB na DER
+
+                <label class="tese-card">
+                    <input type="checkbox" id="chkFixacaoDib" onchange="atualizarTeses()">
+                    <div class="tese-content">
+                        <span class="custom-checkbox"></span>
+                        <span class="tese-text">Fixação da DIB na DER</span>
+                    </div>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
-                    <input type="checkbox" id="chkReafirmacaoDer" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                    Reafirmação da DER
+
+                <label class="tese-card">
+                    <input type="checkbox" id="chkReafirmacaoDer" onchange="atualizarTeses()">
+                    <div class="tese-content">
+                        <span class="custom-checkbox"></span>
+                        <span class="tese-text">Reafirmação da DER</span>
+                    </div>
                 </label>
             </div>
         </div>
@@ -63,20 +89,20 @@
                 </div>
                 <div class="form-group">
                     <label>Número do Benefício (NB):</label>
-                    <input type="text" id="nb">
+                    <input type="text" id="nb" placeholder="Ex: 123.456.789-0">
                 </div>
                 <div class="form-group">
                     <label>Valor da Causa:</label>
-                    <input type="text" id="valorCausa" placeholder="R$ 0,00">
+                    <input type="text" id="valorCausa" placeholder="Ex: 15.450,00">
                     <span id="textoValorExtenso" style="font-size: 0.75rem; color: var(--accent); display: block; margin-top: 5px; font-weight: 500;"></span>
                 </div>
                 <div class="form-group">
                     <label>Número da OAB:</label>
-                    <input type="text" id="oabAdvogado" placeholder="Ex: 32.185">
+                    <input type="text" id="oabAdvogado" placeholder="Ex: 32185">
                 </div>
                 <div class="form-group">
                     <label>UF da OAB:</label>
-                    <input type="text" id="ufOab" placeholder="Ex: CE" maxlength="2">
+                    <input type="text" id="ufOab" placeholder="Ex: CE, SP, RJ" maxlength="2">
                 </div>
                 
                 <!-- =============== ENDEREÇO DA AGÊNCIA DO INSS =============== -->
@@ -97,7 +123,7 @@
                 </div>
                 <div class="form-group">
                     <label>Bairro do INSS:</label>
-                    <input type="text" id="bairroInss" placeholder="Ex: Consolação">
+                    <input type="text" id="bairroInss" placeholder="Ex: Consolação, Centro">
                 </div>
                 <div class="form-group">
                     <label>Cidade do INSS:</label>
@@ -117,11 +143,11 @@
                 <!-- =============== DADOS DO CLIENTE =============== -->
                 <div class="form-group full-width">
                     <label>Nome do Requerente:</label>
-                    <input type="text" id="nomeCliente">
+                    <input type="text" id="nomeCliente" placeholder="Nome completo do(a) autor(a) da ação">
                 </div>
                 <div class="form-group">
                     <label>CPF do Requerente:</label>
-                    <input type="text" id="cpfCliente">
+                    <input type="text" id="cpfCliente" placeholder="Ex: 123.456.789-00">
                 </div>
                 <div class="form-group">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
@@ -131,7 +157,7 @@
                             RG Novo (Usar CPF)
                         </label>
                     </div>
-                    <input type="text" id="rgCliente">
+                    <input type="text" id="rgCliente" placeholder="Ex: 2008123456">
                 </div>
                 <div class="form-group">
                     <label>Nacionalidade:</label>
@@ -139,12 +165,12 @@
                 </div>
                 <div class="form-group">
                     <label>Estado Civil:</label>
-                    <input type="text" id="estadoCivilCliente" placeholder="Ex: Solteiro(a)">
+                    <input type="text" id="estadoCivilCliente" placeholder="Ex: Solteiro(a), Casado(a), Divorciado(a)">
                 </div>
 
                 <!-- =============== REPRESENTANTE LEGAL =============== -->
                 <div class="full-width toggle-container" style="margin-top: 15px;">
-                    <span>O requerente possui Representante Legal?</span>
+                    <span>O Requerente possui Representante?</span>
                     <label class="switch">
                         <input type="checkbox" id="temRepresentante" onchange="alternarRepresentante()">
                         <span class="slider"></span>
@@ -154,11 +180,11 @@
                 <div id="grupoRepresentante" class="form-grid full-width" style="display: none; border-left: 3px solid var(--accent); padding-left: 15px;">
                     <div class="form-group full-width">
                         <label>Nome do Representante:</label>
-                        <input type="text" id="nomeRepresentante">
+                        <input type="text" id="nomeRepresentante" placeholder="Nome completo do(a) representante/curador(a)">
                     </div>
                     <div class="form-group">
                         <label>CPF do Representante:</label>
-                        <input type="text" id="cpfRepresentante">
+                        <input type="text" id="cpfRepresentante" placeholder="Ex: 123.456.789-00">
                     </div>
                     <div class="form-group">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
@@ -168,7 +194,7 @@
                                 RG Novo (Usar CPF)
                             </label>
                         </div>
-                        <input type="text" id="rgRepresentante">
+                        <input type="text" id="rgRepresentante" placeholder="Ex: 2008123456">
                     </div>
                     <div class="form-group">
                         <label>Nacionalidade do Rep.:</label>
@@ -176,11 +202,11 @@
                     </div>
                     <div class="form-group">
                         <label>Estado Civil do Rep.:</label>
-                        <input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a)">
+                        <input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a), Solteiro(a)">
                     </div>
                     <div class="form-group">
                         <label>Parentesco (Vínculo):</label>
-                        <input type="text" id="parentescoRepresentante" placeholder="Ex: Genitora, Curador...">
+                        <input type="text" id="parentescoRepresentante" placeholder="Relação com o autor. Ex: Genitora, Pai, Curador Definitivo">
                     </div>
                 </div>
 
@@ -194,11 +220,11 @@
                 </div>
                 <div class="form-group">
                     <label>Rua/Logradouro:</label>
-                    <input type="text" id="rua" placeholder="Ex: Rua Principal">
+                    <input type="text" id="rua" placeholder="Nome da rua, avenida, sítio, etc.">
                 </div>
                 <div class="form-group">
                     <label>Número:</label>
-                    <input type="text" id="numero" placeholder="Ex: 12, Casa A">
+                    <input type="text" id="numero" placeholder="Ex: 12">
                 </div>
                 <div class="form-group">
                     <label>Bairro:</label>
@@ -206,11 +232,11 @@
                 </div>
                 <div class="form-group">
                     <label>Cidade:</label>
-                    <input type="text" id="cidade" placeholder="Ex: Guaraciaba do Norte">
+                    <input type="text" id="cidade" placeholder="Ex: São Paulo">
                 </div>
                 <div class="form-group">
                     <label>UF:</label>
-                    <input type="text" id="uf" placeholder="Ex: CE" maxlength="2">
+                    <input type="text" id="uf" placeholder="Ex: CE, PE, RN" maxlength="2">
                 </div>
             </div>
         </div>
@@ -221,19 +247,19 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label>Diagnóstico e CID:</label>
-                    <input type="text" id="diagnosticoCid" placeholder="Ex: TEA - CID 10 F 84.0">
+                    <input type="text" id="diagnosticoCid" placeholder="Ex: Transtorno do Espectro Autista - CID 10 F84.0">
                 </div>
                 <div class="form-group">
                     <label>Sigla da Doença/Transtorno:</label>
-                    <input type="text" id="siglaDoenca" placeholder="Ex: TEA, Epilepsia...">
+                    <input type="text" id="siglaDoenca" placeholder="Ex: TEA, TDAH, Epilepsia">
                 </div>
                 <div class="form-group full-width">
                     <label>Fatores da Avaliação Pericial:</label>
-                    <input type="text" id="fatoresAvaliacao" placeholder="Ex: fatores ambientais GRAVE...">
+                    <input type="text" id="fatoresAvaliacao" placeholder="O que o INSS alegou? Ex: Impedimento de longo prazo e fatores ambientais GRAVES">
                 </div>
                 <div class="form-group full-width">
                     <label>Detalhes do Laudo Médico:</label>
-                    <textarea id="detalhesLaudo" rows="4" placeholder="Ex: Este transtorno se manifesta..."></textarea>
+                    <textarea id="detalhesLaudo" rows="4" placeholder="Descreva os sintomas conforme atestado médico. Ex: O paciente apresenta severa dificuldade de interação social, ausência de fala e crises de agressividade..."></textarea>
                 </div>
             </div>
 
@@ -265,7 +291,7 @@
             <div class="form-grid" style="margin-bottom: 20px;">
                 <div class="form-group">
                     <label>Quantidade de pessoas na casa (Grupo Familiar):</label>
-                    <input type="text" id="descricaoGrupoFamiliar" placeholder="Ex: 3">
+                    <input type="text" id="descricaoGrupoFamiliar" placeholder="Contando com o autor, quantas moram juntas? Ex: 4">
                 </div>
             </div>
             
@@ -293,11 +319,11 @@
                 <div class="form-grid">
                     <div class="form-group full-width">
                         <label>Introdução à Lei (Ex: A Lei nº 12.764/12, institui...):</label>
-                        <input type="text" id="introLeiDeficiencia" placeholder="A legislação X define que...">
+                        <input type="text" id="introLeiDeficiencia" placeholder="Ex: A Lei nº 12.764/12 (Lei Berenice Piana) define em seu art. 1º, § 2º que:">
                     </div>
                     <div class="form-group full-width">
                         <label>Citação da Lei (O texto da lei em si):</label>
-                        <textarea id="citacaoLeiDeficiencia" rows="4" placeholder="Art. 1º..."></textarea>
+                        <textarea id="citacaoLeiDeficiencia" rows="4" placeholder="Cole aqui o texto exato da lei. Ex: § 2º A pessoa com transtorno do espectro autista é considerada pessoa com deficiência para todos os efeitos legais."></textarea>
                     </div>
                 </div>
             </div>
@@ -308,19 +334,19 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Ano da Ação Anterior:</label>
-                        <input type="text" id="anoAcaoAnterior" placeholder="Ex: 2021" maxlength="4">
+                        <input type="text" id="anoAcaoAnterior" placeholder="Ex: 2022 ou 2023" maxlength="4">
                     </div>
                     <div class="form-group">
                         <label>Nome do Benefício Anterior:</label>
-                        <input type="text" id="nomeBeneficioAnterior" placeholder="Ex: BPC/LOAS">
+                        <input type="text" id="nomeBeneficioAnterior" placeholder="Benefício pleiteado antes. Ex: BPC/LOAS">
                     </div>
                     <div class="form-group">
                         <label>Nº do Processo Anterior:</label>
-                        <input type="text" id="numeroProcessoAnterior" placeholder="Ex: 0000000-00.0000.4.05.0000">
+                        <input type="text" id="numeroProcessoAnterior" placeholder="Ex: 0001234-56.2023.4.05.8100">
                     </div>
                     <div class="form-group">
                         <label>Tempo Transcorrido (Anos):</label>
-                        <input type="text" id="tempoTranscorridoAnos" placeholder="Ex: 3">
+                        <input type="text" id="tempoTranscorridoAnos" placeholder="Anos passados desde a 1ª ação. Ex: 3">
                     </div>
                     <div class="form-group full-width">
                         <label>Houve agravamento do quadro:</label>
@@ -332,7 +358,7 @@
                     </div>
                     <div class="form-group full-width">
                         <label>Relação de Documentos Novos:</label>
-                        <textarea id="documentosNovosRelacao" rows="3" placeholder="Ex: atestados e relatórios médicos recentes, CadÚnico atualizado..."></textarea>
+                        <textarea id="documentosNovosRelacao" rows="3" placeholder="Liste os documentos que provam a piora. Ex: laudo psiquiátrico atualizado, receituários novos e extrato do CadÚnico demonstrando a perda de renda..."></textarea>
                     </div>
                 </div>
 
@@ -359,20 +385,15 @@
                     </div>
                     <div class="form-group">
                         <label>Unidade de Saúde (Local):</label>
-                        <input type="text" id="unidadeSaude" placeholder="Ex: CAPS, UBS, Casa Acolher...">
+                        <input type="text" id="unidadeSaude" placeholder="Onde ocorre o tratamento? Ex: CAPS Infantil, Policlínica...">
                     </div>
                     <div class="form-group">
                         <label>Natureza do Impedimento:</label>
-                        <select id="naturezaImpedimento">
-                            <option value="mental">Mental</option>
-                            <option value="intelectual">Intelectual</option>
-                            <option value="física">Física</option>
-                            <option value="sensorial">Sensorial</option>
-                        </select>
+                        <input type="text" id="naturezaImpedimento" placeholder="Ex: física, mental, intelectual ou sensorial">
                     </div>
                     <div class="form-group">
                         <label>Especialidade do Perito:</label>
-                        <input type="text" id="especialidadePerito" placeholder="Ex: Neurologia, Psiquiatria...">
+                        <input type="text" id="especialidadePerito" placeholder="Ideal para o caso. Ex: Psiquiatria ou Neurologia">
                     </div>
                 </div>
             </div>
@@ -399,11 +420,11 @@
                 <div id="camposHipReconhecida" class="form-grid full-width" style="display: none; border-top: 1px dashed var(--border); padding-top: 15px;">
                     <div class="form-group full-width">
                         <label>Motivo do Indeferimento no INSS:</label>
-                        <input type="text" id="motivoIndeferimento" placeholder="Ex: renda per capita superior ao limite legal">
+                        <input type="text" id="motivoIndeferimento" placeholder="Por que o INSS negou? Ex: Renda per capita superior a 1/4 do salário mínimo">
                     </div>
                     <div class="form-group full-width">
                         <label>Comprovantes da Miserabilidade:</label>
-                        <textarea id="comprovantesMiserabilidade" rows="2" placeholder="Ex: extrato do CadÚnico, CNIS dos membros, comprovantes de despesas..."></textarea>
+                        <textarea id="comprovantesMiserabilidade" rows="2" placeholder="Provas da pobreza. Ex: Extrato atualizado do CadÚnico e notas de farmácia..."></textarea>
                     </div>
                 </div>
 
@@ -419,7 +440,68 @@
                     </div>
                     <div class="form-group full-width">
                         <label>Comprovantes da Deficiência Notória:</label>
-                        <textarea id="comprovantesDeficiencia" rows="2" placeholder="Ex: laudos, relatórios, exames, atestados, cartão de acompanhamento..."></textarea>
+                        <textarea id="comprovantesDeficiencia" rows="2" placeholder="Provas visíveis/óbvias. Ex: Laudos da APAE, exames genéticos e acompanhamento contínuo..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOCO PROVA EMPRESTADA -->
+            <div id="blocoProvaEmprestada" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
+                <h3>Dados da Prova Emprestada (Interdição/Curatela)</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nº do Processo de Interdição:</label>
+                        <input type="text" id="numeroProcessoInterdicao" placeholder="Justiça Estadual. Ex: 0123456-78.2024.8.06.0087">
+                    </div>
+                    <div class="form-group">
+                        <label>Vara:</label>
+                        <input type="text" id="varaInterdicao" placeholder="Onde tramitou. Ex: Vara Única, 1ª Vara de Família">
+                    </div>
+                    <div class="form-group">
+                        <label>Comarca/UF:</label>
+                        <input type="text" id="comarcaInterdicao" placeholder="Cidade e Estado. Ex: Tianguá/CE">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Curatela:</label>
+                        <select id="tipoCuratela">
+                            <option value="definitiva">Definitiva</option>
+                            <option value="provisória">Provisória</option>
+                            <option value="em andamento">Em andamento</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Complemento do Laudo (Opcional):</label>
+                        <input type="text" id="complementoLaudoInterdicao" placeholder="Ex: e corroborado por relatório multidisciplinar do CAPS Infantil">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Sintomas e Manifestações Clínicas:</label>
+                        <textarea id="sintomasManifestacoes" rows="3" placeholder="O que diz o laudo judicial? Ex: Déficit cognitivo grave, ausência de fala e total dependência para higiene básica..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOCO FIXAÇÃO DA DIB -->
+            <div id="blocoFixacaoDib" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
+                <h3>Dados da Fixação da DIB na DER</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Data do Documento (Laudo anterior à DER):</label>
+                        <input type="text" id="dataDocumentoComprovacao" placeholder="Data do laudo antigo. Ex: 10 de fevereiro de 2026">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Fundamentação Legal (Padrão BPC):</label>
+                        <input type="text" id="fundamentacaoLegalDib" value="art. 20 da Lei nº 8.742/93 c/c art. 174 do Decreto nº 3.048/99">
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOCO REAFIRMAÇÃO DA DER -->
+            <div id="blocoReafirmacaoDer" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
+                <h3>Dados da Reafirmação da DER</h3>
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Data em que o requisito foi preenchido (Data do Fato/Laudo novo):</label>
+                        <input type="text" id="dataReafirmacaoDer" placeholder="Data em que alcançou o direito. Ex: 15 de agosto de 2026">
                     </div>
                 </div>
             </div>

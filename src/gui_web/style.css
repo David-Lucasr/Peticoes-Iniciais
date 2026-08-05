@@ -446,3 +446,84 @@ input.campo-invalido {
     border-color: var(--danger);
     background-color: var(--danger-soft);
 }
+
+/* ========================================= */
+/* GRID E CARDS DE TESES (MENU MODERNO)      */
+/* ========================================= */
+
+.teses-grid {
+    display: grid;
+    /* Cria colunas automáticas com no mínimo 280px de largura */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.tese-card {
+    cursor: pointer;
+    display: block;
+    margin: 0;
+    user-select: none; /* Evita que o texto seja selecionado ao clicar rápido */
+}
+
+/* Esconde o checkbox feio e quadradão do navegador */
+.tese-card input[type="checkbox"] {
+    display: none; 
+}
+
+/* O "Corpo" do botão */
+.tese-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* Efeito ao passar o mouse por cima */
+.tese-card:hover .tese-content {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Criando o nosso próprio Checkbox customizado */
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--text-muted);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* ========================================= */
+/* ESTADO: QUANDO A TESE FOR MARCADA         */
+/* ========================================= */
+
+.tese-card input[type="checkbox"]:checked + .tese-content {
+    border-color: var(--accent);
+    /* Fica com a borda acesa com a cor de destaque do seu tema */
+}
+
+.tese-card input[type="checkbox"]:checked + .tese-content .custom-checkbox {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Desenha o "V" (certinho) dentro do checkbox quando marcado */
+.tese-card input[type="checkbox"]:checked + .tese-content .custom-checkbox::after {
+    content: "✓";
+    color: #111; /* Cor escura para dar contraste com o fundo colorido */
+    font-size: 14px;
+    font-weight: 900;
+}

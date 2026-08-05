@@ -8,8 +8,8 @@ function atualizarTeses() {
     const isProvaEmprestada = document.getElementById('chkProvaEmprestada') ? document.getElementById('chkProvaEmprestada').checked : false;
     const isFixacaoDib = document.getElementById('chkFixacaoDib') ? document.getElementById('chkFixacaoDib').checked : false;
     const isReafirmacaoDer = document.getElementById('chkReafirmacaoDer') ? document.getElementById('chkReafirmacaoDer').checked : false;
-
     const isPrioridade = document.getElementById('chkPrioridade') ? document.getElementById('chkPrioridade').checked : false;
+
     const blocoPrioridade = document.getElementById('blocoPrioridade');
     if (blocoPrioridade) blocoPrioridade.style.display = isPrioridade ? 'block' : 'none';
 
@@ -21,6 +21,15 @@ function atualizarTeses() {
     
     const blocoJulgamento = document.getElementById('blocoJulgamentoAntecipado');
     if (blocoJulgamento) blocoJulgamento.style.display = isJulgamentoAntecipado ? 'block' : 'none';
+
+    const blocoProvaEmprestada = document.getElementById('blocoProvaEmprestada');
+    if (blocoProvaEmprestada) blocoProvaEmprestada.style.display = isProvaEmprestada ? 'block' : 'none';
+
+    const blocoFixacaoDib = document.getElementById('blocoFixacaoDib');
+    if (blocoFixacaoDib) blocoFixacaoDib.style.display = isFixacaoDib ? 'block' : 'none';
+
+    const blocoReafirmacaoDer = document.getElementById('blocoReafirmacaoDer');
+    if (blocoReafirmacaoDer) blocoReafirmacaoDer.style.display = isReafirmacaoDer ? 'block' : 'none';
 
     console.log("Teses ativas:", { 
         isCoisaJulgada, isPericiaJudicial, isJulgamentoAntecipado, 
@@ -303,6 +312,7 @@ async function enviarDados() {
         rg_cliente: rgClienteFinal,
         nacionalidade_cliente: document.getElementById('nacionalidadeCliente').value,
         estado_civil_cliente: document.getElementById('estadoCivilCliente').value,
+        descricao_grupo_familiar: document.getElementById('descricaoGrupoFamiliar') ? document.getElementById('descricaoGrupoFamiliar').value : "",
         
         // --- DADOS DO REPRESENTANTE ---
         tem_representante: possuiRep,
@@ -327,7 +337,6 @@ async function enviarDados() {
         detalhes_laudo: document.getElementById('detalhesLaudo') ? document.getElementById('detalhesLaudo').value : "",
         intro_lei_deficiencia: document.getElementById('introLeiDeficiencia') ? document.getElementById('introLeiDeficiencia').value : "",
         citacao_lei_deficiencia: document.getElementById('citacaoLeiDeficiencia') ? document.getElementById('citacaoLeiDeficiencia').value : "",
-        descricao_grupo_familiar: document.getElementById('descricaoGrupoFamiliar') ? document.getElementById('descricaoGrupoFamiliar').value : "",
         
         // --- ARRAYS DE IMAGENS ---
         lista_img_renda: imgRenda.map(img => img.base64),
@@ -356,6 +365,17 @@ async function enviarDados() {
         carater_condicao: document.getElementById('caraterCondicao') ? document.getElementById('caraterCondicao').value : "",
         comprovantes_deficiencia: document.getElementById('comprovantesDeficiencia') ? document.getElementById('comprovantesDeficiencia').value : "",
 
+        numero_processo_interdicao: document.getElementById('numeroProcessoInterdicao') ? document.getElementById('numeroProcessoInterdicao').value : "",
+        vara_interdicao: document.getElementById('varaInterdicao') ? document.getElementById('varaInterdicao').value : "",
+        comarca_interdicao: document.getElementById('comarcaInterdicao') ? document.getElementById('comarcaInterdicao').value : "",
+        tipo_curatela: document.getElementById('tipoCuratela') ? document.getElementById('tipoCuratela').value : "",
+        complemento_laudo_interdicao: document.getElementById('complementoLaudoInterdicao') ? document.getElementById('complementoLaudoInterdicao').value : "",
+        sintomas_manifestacoes: document.getElementById('sintomasManifestacoes') ? document.getElementById('sintomasManifestacoes').value : "",
+
+        data_documento_comprovacao: document.getElementById('dataDocumentoComprovacao') ? document.getElementById('dataDocumentoComprovacao').value : "",
+        fundamentacao_legal_dib: document.getElementById('fundamentacaoLegalDib') ? document.getElementById('fundamentacaoLegalDib').value : "",
+        data_reafirmacao_der: document.getElementById('dataReafirmacaoDer') ? document.getElementById('dataReafirmacaoDer').value : "",
+
         pasta_destino: pastaSelecionada,
         caminho_pdf: caminhoPdfAtual
     };
@@ -375,7 +395,7 @@ async function enviarDados() {
 }
 
 // =========================================================
-// ATALHO DE DESENVOLVEDOR: Preenchimento Automático
+// 6. ATALHO DE DESENVOLVEDOR: Preenchimento Automático
 // =========================================================
 document.getElementById('nomeCliente').addEventListener('input', function(evento) {
     const valorDigitado = evento.target.value.trim().toLowerCase();
@@ -386,6 +406,7 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('chkCoisaJulgada')) document.getElementById('chkCoisaJulgada').checked = true;
         if (document.getElementById('chkProvaEmprestada')) document.getElementById('chkProvaEmprestada').checked = true;
         if (document.getElementById('chkPrioridade')) document.getElementById('chkPrioridade').checked = true;
+        if (document.getElementById('chkFixacaoDib')) document.getElementById('chkFixacaoDib').checked = true;
         atualizarTeses();
         
         // --- NOVOS CAMPOS: PRIORIDADE DE TRAMITAÇÃO ---
@@ -456,7 +477,23 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         }
         if (document.getElementById('caraterCondicao')) document.getElementById('caraterCondicao').value = 'irreversível';
         if (document.getElementById('comprovantesDeficiencia')) document.getElementById('comprovantesDeficiencia').value = 'laudos da APAE e laudo psiquiátrico atualizado';
-        
+
+        // --- NOVOS CAMPOS: PROVA EMPRESTADA ---
+        if (document.getElementById('numeroProcessoInterdicao')) document.getElementById('numeroProcessoInterdicao').value = '0123456-78.2024.8.06.0087';
+        if (document.getElementById('varaInterdicao')) document.getElementById('varaInterdicao').value = 'Vara Única';
+        if (document.getElementById('comarcaInterdicao')) document.getElementById('comarcaInterdicao').value = 'Guaraciaba do Norte/CE';
+        if (document.getElementById('tipoCuratela')) document.getElementById('tipoCuratela').value = 'definitiva';
+        if (document.getElementById('complementoLaudoInterdicao')) document.getElementById('complementoLaudoInterdicao').value = 'e corroborado por relatório multidisciplinar do CAPS Infantil';
+        if (document.getElementById('sintomasManifestacoes')) document.getElementById('sintomasManifestacoes').value = 'crises convulsivas recorrentes, ausência de fala e total dependência para atividades básicas de higiene e alimentação';
+
+        // --- NOVOS CAMPOS: FIXAÇÃO DA DIB ---
+        if (document.getElementById('dataDocumentoComprovacao')) document.getElementById('dataDocumentoComprovacao').value = '10 de fevereiro de 2026';
+        if (document.getElementById('fundamentacaoLegalDib')) document.getElementById('fundamentacaoLegalDib').value = 'art. 20 da Lei nº 8.742/93 c/c art. 174 do Decreto nº 3.048/99';
+
+        if (document.getElementById('chkReafirmacaoDer')) document.getElementById('chkReafirmacaoDer').checked = true;
+
+        // --- NOVOS CAMPOS: REAFIRMAÇÃO DA DER ---
+        if (document.getElementById('dataReafirmacaoDer')) document.getElementById('dataReafirmacaoDer').value = '15 de agosto de 2026';
         
         // Dispara os eventos de formatação e Validação de CPF
         document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
