@@ -280,7 +280,7 @@ button:hover {
     font-size: 1.2rem;
     color: var(--text);
 }
-.menu-card h3::before, .menu-card h3::after { display: none; } /* Remove as linhas dos títulos de card */
+.menu-card h3::before, .menu-card h3::after { display: none; }
 
 .menu-card:hover {
     border-color: var(--accent);

@@ -1,148 +1,49 @@
-let sistemaAtual = "";
-let causaAtual = "";
+// =========================================================
+// 1. GERENCIADOR DE TESES (Acompanha as checkboxes)
+// =========================================================
+function atualizarTeses() {
+    const isCoisaJulgada = document.getElementById('chkCoisaJulgada') ? document.getElementById('chkCoisaJulgada').checked : false;
+    const isPericiaJudicial = document.getElementById('chkPericiaJudicial') ? document.getElementById('chkPericiaJudicial').checked : false;
+    const isJulgamentoAntecipado = document.getElementById('chkJulgamentoAntecipado') ? document.getElementById('chkJulgamentoAntecipado').checked : false;
+    const isProvaEmprestada = document.getElementById('chkProvaEmprestada') ? document.getElementById('chkProvaEmprestada').checked : false;
+    const isFixacaoDib = document.getElementById('chkFixacaoDib') ? document.getElementById('chkFixacaoDib').checked : false;
+    const isReafirmacaoDer = document.getElementById('chkReafirmacaoDer') ? document.getElementById('chkReafirmacaoDer').checked : false;
 
-// =========================================================
-// 1. GERENCIADOR DE MÓDULOS E TELAS
-// =========================================================
-function irParaProcessos(sistema) {
-    sistemaAtual = sistema;
+    const isPrioridade = document.getElementById('chkPrioridade') ? document.getElementById('chkPrioridade').checked : false;
+    const blocoPrioridade = document.getElementById('blocoPrioridade');
+    if (blocoPrioridade) blocoPrioridade.style.display = isPrioridade ? 'block' : 'none';
+
+    const blocoCoisaJulgada = document.getElementById('blocoCoisaJulgada');
+    if (blocoCoisaJulgada) blocoCoisaJulgada.style.display = isCoisaJulgada ? 'block' : 'none';
+
+    const blocoPericiaJudicial = document.getElementById('blocoPericiaJudicial');
+    if (blocoPericiaJudicial) blocoPericiaJudicial.style.display = isPericiaJudicial ? 'block' : 'none';
     
-    // Esconde todos os blocos marcados como "específicos" (limpa a tela)
-    document.querySelectorAll('.modulo-especifico').forEach(el => {
-        el.style.display = 'none';
+    const blocoJulgamento = document.getElementById('blocoJulgamentoAntecipado');
+    if (blocoJulgamento) blocoJulgamento.style.display = isJulgamentoAntecipado ? 'block' : 'none';
+
+    console.log("Teses ativas:", { 
+        isCoisaJulgada, isPericiaJudicial, isJulgamentoAntecipado, 
+        isProvaEmprestada, isFixacaoDib, isReafirmacaoDer, isPrioridade
     });
-    
-    // Mostra apenas os blocos que pertencem ao sistema clicado
-    if (sistema === 'bpc') {
-        document.querySelectorAll('.modulo-bpc').forEach(el => el.style.display = 'block');
-        mudarTela('telaMotivoBpc');
-    } else if (sistema === 'rural') {
-        alert("Sistema Rural em breve!");
-    }
 }
 
-function iniciarFormulario(causa) {
-    causaAtual = causa;
+function alternarHipoteseJulgamento() {
+    const isReconhecida = document.getElementById('radHipReconhecida') && document.getElementById('radHipReconhecida').checked;
+    const isNotoria = document.getElementById('radHipNotoria') && document.getElementById('radHipNotoria').checked;
     
-    // Atualiza o valor invisível do select/input de causa que o Python lê
-    const selectCausa = document.getElementById('causaBpc');
-    if (selectCausa) {
-        selectCausa.value = causa;
-    }
-
-    const titulo = document.getElementById('tituloFormulario');
+    const camposReconhecida = document.getElementById('camposHipReconhecida');
+    const camposNotoria = document.getElementById('camposHipNotoria');
     
-    // Captura os blocos de texto dinâmicos
-    const blocoFatores = document.getElementById('blocoFatores');
-    const blocoDataLaudo = document.getElementById('blocoDataLaudo');
-    const blocoParentesco = document.getElementById('blocoParentesco'); 
-    const blocoReavaliacao = document.getElementById('blocoReavaliacao');
-    
-    // Captura os blocos de imagens dinâmicos
-    const caixaImgRenda = document.getElementById('caixa_img_renda');
-    const caixaImgPericial = document.getElementById('caixa_img_pericial');
-    const caixaFotosCasa = document.getElementById('caixa_fotos_casa');
-    const blocoImagensReavaliacao = document.getElementById('blocoImagensReavaliacao');
-    
-    // Captura o checkbox do Representante Legal
-    const chkRepresentante = document.getElementById('temRepresentante');
-
-    // 1. REGRA PADRÃO (Reseta a tela antes de aplicar o modelo)
-    if (blocoReavaliacao) blocoReavaliacao.style.display = 'none';
-    if (blocoImagensReavaliacao) blocoImagensReavaliacao.style.display = 'none';
-    if (caixaImgRenda) caixaImgRenda.style.display = '';
-    if (caixaImgPericial) caixaImgPericial.style.display = '';
-    if (caixaFotosCasa) caixaFotosCasa.style.display = '';
-
-    // 2. REGRAS ESPECÍFICAS DE CADA MODELO
-    if (causa === 'deficiencia') {
-        titulo.innerText = "Formulário BPC - Deficiência";
-        if (blocoFatores) blocoFatores.style.display = '';
-        if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
-        if (blocoParentesco) blocoParentesco.style.display = 'none';
-
-        if (chkRepresentante) {
-            chkRepresentante.checked = false;
-            alternarRepresentante();
-        }
-
-    } else if (causa === 'deficiencia_curatela') {
-        titulo.innerText = "Formulário BPC - Deficiência c/ Curatela";
-        if (blocoFatores) blocoFatores.style.display = '';
-        if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
-        if (blocoParentesco) blocoParentesco.style.display = ''; 
-
-        if (chkRepresentante) {
-            chkRepresentante.checked = true;
-            alternarRepresentante();
-        }
-
-    } else if (causa === 'reavaliacao') {
-        titulo.innerText = "Formulário BPC - Restabelecimento/Reavaliação";
-        if (blocoFatores) blocoFatores.style.display = 'none'; // Não usa fatores
-        if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
-        if (blocoParentesco) blocoParentesco.style.display = 'none';
-        
-        // Exibe as áreas exclusivas de Reavaliação
-        if (blocoReavaliacao) blocoReavaliacao.style.display = '';
-        if (blocoImagensReavaliacao) blocoImagensReavaliacao.style.display = 'flex';
-        
-        // Esconde as imagens que não usamos neste modelo
-        if (caixaImgRenda) caixaImgRenda.style.display = 'none';
-        if (caixaImgPericial) caixaImgPericial.style.display = 'none';
-        if (caixaFotosCasa) caixaFotosCasa.style.display = 'none';
-
-        if (chkRepresentante) {
-            chkRepresentante.checked = false;
-            alternarRepresentante();
-        }
-
-    } else if (causa === 'bolsa_familia') {
-        titulo.innerText = "Formulário BPC - Cômputo do Bolsa Família";
-        if (blocoFatores) blocoFatores.style.display = 'none';
-        if (caixaImgPericial) caixaImgPericial.style.display = 'none'; // Não usa no Bolsa Família
-        if (blocoDataLaudo) blocoDataLaudo.style.display = '';
-        if (blocoParentesco) blocoParentesco.style.display = 'none';
-
-        if (chkRepresentante) {
-            chkRepresentante.checked = false;
-            alternarRepresentante();
-        }
-
-    } else {
-        titulo.innerText = "Formulário BPC - Renda Superior";
-        if (blocoFatores) blocoFatores.style.display = 'none';
-        if (caixaImgPericial) caixaImgPericial.style.display = 'none'; // Não usa em Renda Superior
-        if (blocoDataLaudo) blocoDataLaudo.style.display = 'none';
-        if (blocoParentesco) blocoParentesco.style.display = 'none';
-
-        if (chkRepresentante) {
-            chkRepresentante.checked = false;
-            alternarRepresentante();
-        }
-    }
-
-    mudarTela('telaFormulario');
+    if (camposReconhecida) camposReconhecida.style.display = isReconhecida ? 'grid' : 'none';
+    if (camposNotoria) camposNotoria.style.display = isNotoria ? 'grid' : 'none';
 }
 
-function voltarPara(idTelaDestino) {
-    mudarTela(idTelaDestino);
-}
-
-function mudarTela(idTelaAtiva) {
-    // Esconde todas as telas
-    const telas = document.querySelectorAll('.step-screen');
-    telas.forEach(tela => tela.classList.remove('active'));
-
-    // Mostra apenas a tela solicitada
-    document.getElementById(idTelaAtiva).classList.add('active');
-    
-    // Rola a página para o topo suavemente
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+// Roda uma vez ao carregar para garantir que o layout comece certo
+window.onload = atualizarTeses;
 
 // =========================================================
-// LÓGICA DO CHECKBOX DO REPRESENTANTE E SINCRONIZAÇÃO DE RG
+// 2. LÓGICA DO CHECKBOX DO REPRESENTANTE E SINCRONIZAÇÃO DE RG
 // =========================================================
 function alternarRepresentante() {
     const checkbox = document.getElementById('temRepresentante');
@@ -152,19 +53,17 @@ function alternarRepresentante() {
         grupo.style.display = 'grid'; 
     } else {
         grupo.style.display = 'none';
-        // Limpa os campos visualmente se o usuário desmarcar
         document.getElementById('nomeRepresentante').value = '';
         document.getElementById('cpfRepresentante').value = '';
         document.getElementById('rgRepresentante').value = '';
         document.getElementById('nacionalidadeRepresentante').value = '';
         document.getElementById('estadoCivilRepresentante').value = '';
         if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = '';
-        // Remove configuração do RG vinculado
+        
         const cbRgRep = document.getElementById('rgNovoRep');
         if (cbRgRep) cbRgRep.checked = false;
         sincronizarRgCpf('Representante');
 
-        // Remove avisos de erro de CPF
         document.getElementById('cpfRepresentante').classList.remove('campo-invalido', 'campo-valido');
     }
 }
@@ -176,11 +75,11 @@ function sincronizarRgCpf(tipo) {
 
     if (checkbox && checkbox.checked) {
         inputRg.value = inputCpf.value;
-        inputRg.readOnly = true; // Bloqueia edição manual se for igual ao CPF
-        inputRg.style.backgroundColor = 'var(--surface-3)'; // Deixa mais escuro
+        inputRg.readOnly = true;
+        inputRg.style.backgroundColor = 'var(--surface-3)';
         inputRg.style.opacity = '0.7';
     } else {
-        if (inputRg.readOnly) inputRg.value = ""; // Limpa se acabou de desmarcar
+        if (inputRg.readOnly) inputRg.value = "";
         inputRg.readOnly = false;
         inputRg.style.backgroundColor = 'var(--surface-2)';
         inputRg.style.opacity = '1';
@@ -188,148 +87,37 @@ function sincronizarRgCpf(tipo) {
 }
 
 // =========================================================
-// GESTÃO DE IMAGENS E ARQUIVOS
+// 3. GESTÃO DE IMAGENS (Todas as caixas aceitam múltiplas imagens)
 // =========================================================
-let imagensCategorizadas = {
-    "img_renda": "",
-    "img_pericial": "",
-    "img_laudo": "",
-    "img_extrato_cessacao": ""
-};
-
+let imgRenda = [];
+let imgPericial = [];
+let imgLaudo = [];
 let anexosMedicos = []; 
 let fotosCasa = [];     
-let impedimentoImagens = [];
-let avaliacaoSocialImagens = [];
+let imgCoisaJulgada = [];
 let contadorId = 0;     
-
 let caixaAtivaParaColar = null;
-let caminhoPdfAtual = "";
-
-async function selecionarPdf() {
-    const caminho = await pywebview.api.escolher_pdf();
-    if (caminho) {
-        caminhoPdfAtual = caminho;
-        document.getElementById('label_pdf').innerText = "PDF Selecionado: " + caminho;
-    }
-}
 
 function selecionarCaixa(chave){
     caixaAtivaParaColar = chave;
-
-    // Reseta todas as bordas
-    const caixas = [
-        'img_renda', 'img_pericial', 'img_laudo', 'anexos_medicos', 'fotos_casa', 
-        'img_extrato_cessacao', 'img_impedimento', 'img_avaliacao_social'
-    ];
     
-    caixas.forEach(c => {
+    // Reseta as bordas
+    ['img_renda', 'img_pericial', 'img_laudo', 'anexos_medicos', 'fotos_casa', 'img_coisa_julgada'].forEach(c => {
         const divCaixa = document.getElementById('caixa_' + c);
         if (divCaixa) divCaixa.style.border = "1px dashed var(--border)";
     });
 
-    // Colore a borda ativa
+    // Destaca a caixa ativa
     const divAtiva = document.getElementById('caixa_' + chave);
     if(divAtiva) {
         if(chave === 'anexos_medicos') divAtiva.style.border = "3px solid var(--success)";
         else if(chave === 'fotos_casa') divAtiva.style.border = "3px solid var(--info)";
-        else if(chave === 'img_extrato_cessacao') divAtiva.style.border = "3px solid #f59e0b";
-        else if(chave === 'img_impedimento') divAtiva.style.border = "3px solid #ea580c";
-        else if(chave === 'img_avaliacao_social') divAtiva.style.border = "3px solid #e11d48";
         else divAtiva.style.border = "3px solid var(--accent)";
     }
 }
 
-// =========================================================
-// RENDERIZAÇÃO DAS GALERIAS DINÂMICAS
-// =========================================================
-function renderizarGaleriaMedicos() {
-    const container = document.getElementById('galeria_anexos_medicos');
-    if(!container) return;
-    container.innerHTML = "";
-
-    anexosMedicos.forEach(doc => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card';
-        card.innerHTML = `
-            <img src="${doc.base64}">
-            <input type="text" placeholder="Ex: Receita Médica" value="${doc.titulo}" 
-                   onchange="atualizarTituloMedico(${doc.id}, this.value)" 
-                   onclick="event.stopPropagation();">
-            <button class="btn-remove" onclick="removerItem(${doc.id}, 'medicos'); event.stopPropagation();">Remover</button>
-        `;
-        container.appendChild(card);
-    });
-}
-
-function renderizarGaleriaCasa() {
-    const container = document.getElementById('galeria_fotos_casa');
-    if(!container) return;
-    container.innerHTML = ""; 
-
-    fotosCasa.forEach(foto => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card';
-        card.innerHTML = `
-            <img src="${foto.base64}">
-            <button class="btn-remove" onclick="removerItem(${foto.id}, 'casa'); event.stopPropagation();">Remover</button>
-        `;
-        container.appendChild(card);
-    });
-}
-
-function renderizarGaleriaImpedimento() {
-    const container = document.getElementById('galeria_img_impedimento');
-    if(!container) return;
-    container.innerHTML = ""; 
-
-    impedimentoImagens.forEach(img => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card';
-        card.innerHTML = `
-            <img src="${img.base64}">
-            <button class="btn-remove" onclick="removerItem(${img.id}, 'impedimento'); event.stopPropagation();">Remover</button>
-        `;
-        container.appendChild(card);
-    });
-}
-
-function renderizarGaleriaAvaliacao() {
-    const container = document.getElementById('galeria_img_avaliacao_social');
-    if(!container) return;
-    container.innerHTML = ""; 
-
-    avaliacaoSocialImagens.forEach(img => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card';
-        card.innerHTML = `
-            <img src="${img.base64}">
-            <button class="btn-remove" onclick="removerItem(${img.id}, 'avaliacao'); event.stopPropagation();">Remover</button>
-        `;
-        container.appendChild(card);
-    });
-}
-
-function atualizarTituloMedico(id, novoTitulo) {
-    const index = anexosMedicos.findIndex(doc => doc.id === id);
-    if (index !== -1) anexosMedicos[index].titulo = novoTitulo;
-}
-
-function removerItem(id, tipo) {
-    if (tipo === 'medicos') { anexosMedicos = anexosMedicos.filter(i => i.id !== id); renderizarGaleriaMedicos(); }
-    else if (tipo === 'casa') { fotosCasa = fotosCasa.filter(i => i.id !== id); renderizarGaleriaCasa(); }
-    else if (tipo === 'impedimento') { impedimentoImagens = impedimentoImagens.filter(i => i.id !== id); renderizarGaleriaImpedimento(); }
-    else if (tipo === 'avaliacao') { avaliacaoSocialImagens = avaliacaoSocialImagens.filter(i => i.id !== id); renderizarGaleriaAvaliacao(); }
-}
-
-// =========================================================
-// LISTENER DE COLA (Ctrl + V)
-// =========================================================
 document.addEventListener('paste', function(evento) {
-    if (!caixaAtivaParaColar) {
-        alert("Por favor, clique em uma das caixas para colar a imagem.");
-        return;
-    }
+    if (!caixaAtivaParaColar) return;
 
     const itens = (evento.clipboardData || evento.originalEvent.clipboardData).items;
     for (let i = 0; i < itens.length; i++) {
@@ -340,35 +128,95 @@ document.addEventListener('paste', function(evento) {
             leitor.onload = function(eventoLeitura) {
                 const base64 = eventoLeitura.target.result;
 
-                if (caixaAtivaParaColar === 'anexos_medicos') {
-                    anexosMedicos.push({ id: contadorId++, base64: base64, titulo: "Anexo Médico" });
-                    renderizarGaleriaMedicos();
-                } 
-                else if (caixaAtivaParaColar === 'fotos_casa') {
+                if (caixaAtivaParaColar === 'img_renda') {
+                    imgRenda.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_renda', imgRenda, 'img_renda');
+                } else if (caixaAtivaParaColar === 'img_pericial') {
+                    imgPericial.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_pericial', imgPericial, 'img_pericial');
+                } else if (caixaAtivaParaColar === 'img_laudo') {
+                    imgLaudo.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo', imgLaudo, 'img_laudo');
+                } else if (caixaAtivaParaColar === 'anexos_medicos') {
+                    anexosMedicos.push({ id: contadorId++, base64: base64, titulo: "Documento Médico" });
+                    renderizarGaleria('galeria_anexos_medicos', anexosMedicos, 'medicos');
+                } else if (caixaAtivaParaColar === 'fotos_casa') {
                     fotosCasa.push({ id: contadorId++, base64: base64 });
-                    renderizarGaleriaCasa();
-                }
-                else if (caixaAtivaParaColar === 'img_impedimento') {
-                    impedimentoImagens.push({ id: contadorId++, base64: base64 });
-                    renderizarGaleriaImpedimento();
-                }
-                else if (caixaAtivaParaColar === 'img_avaliacao_social') {
-                    avaliacaoSocialImagens.push({ id: contadorId++, base64: base64 });
-                    renderizarGaleriaAvaliacao();
-                }
-                else {
-                    imagensCategorizadas[caixaAtivaParaColar] = base64;
-                    const divPreview = document.getElementById('preview_' + caixaAtivaParaColar);
-                    if(divPreview) divPreview.innerHTML = `<img src="${base64}" style="max-height: 120px; border: 1px solid var(--border-soft); border-radius: 4px; margin-top: 10px;" />`;
-                }
+                    renderizarGaleria('galeria_fotos_casa', fotosCasa, 'casa');
+                } else if (caixaAtivaParaColar === 'img_coisa_julgada') {
+                    imgCoisaJulgada.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_coisa_julgada', imgCoisaJulgada, 'img_coisa_julgada');
+                } 
             };
             leitor.readAsDataURL(arquivoBlob);
         }
     }
 });
 
+function renderizarGaleria(idContainer, arrayDados, tipo) {
+    const container = document.getElementById(idContainer);
+    if(!container) return;
+    container.innerHTML = "";
+
+    arrayDados.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        
+        let htmlInput = tipo === 'medicos' 
+            ? `<input type="text" placeholder="Ex: Receita" value="${item.titulo}" onchange="atualizarTitulo(${item.id}, this.value)" onclick="event.stopPropagation();">` 
+            : '';
+
+        card.innerHTML = `
+            <img src="${item.base64}">
+            ${htmlInput}
+            <button class="btn-remove" onclick="removerItem(${item.id}, '${tipo}'); event.stopPropagation();">Remover</button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function atualizarTitulo(id, novoTitulo) {
+    const index = anexosMedicos.findIndex(doc => doc.id === id);
+    if (index !== -1) anexosMedicos[index].titulo = novoTitulo;
+}
+
+function removerItem(id, tipo) {
+    if (tipo === 'img_renda') {
+        imgRenda = imgRenda.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_renda', imgRenda, tipo);
+    } else if (tipo === 'img_pericial') {
+        imgPericial = imgPericial.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_pericial', imgPericial, tipo);
+    } else if (tipo === 'img_laudo') {
+        imgLaudo = imgLaudo.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo', imgLaudo, tipo);
+    } else if (tipo === 'medicos') {
+        anexosMedicos = anexosMedicos.filter(i => i.id !== id);
+        renderizarGaleria('galeria_anexos_medicos', anexosMedicos, tipo);
+    } else if (tipo === 'casa') {
+        fotosCasa = fotosCasa.filter(i => i.id !== id);
+        renderizarGaleria('galeria_fotos_casa', fotosCasa, tipo);
+    } else if (tipo === 'img_coisa_julgada') {
+        imgCoisaJulgada = imgCoisaJulgada.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_coisa_julgada', imgCoisaJulgada, tipo);
+    }
+}
+
 // =========================================================
-// ENVIO PARA O PYTHON
+// 4. SELEÇÃO DE ARQUIVOS (PDF)
+// =========================================================
+let caminhoPdfAtual = "";
+
+async function selecionarPdf() {
+    const caminho = await pywebview.api.escolher_pdf();
+    if (caminho) {
+        caminhoPdfAtual = caminho;
+        document.getElementById('label_pdf').innerText = "PDF Selecionado: " + caminho;
+    }
+}
+
+// =========================================================
+// 5. ENVIO PARA O PYTHON
 // =========================================================
 async function enviarDados() {
     const pastaSelecionada = await pywebview.api.escolher_pasta();
@@ -398,25 +246,16 @@ async function enviarDados() {
     }
 
     if (erroCpf) {
-        alert("Atenção: Os CPFs destacados em vermelho são inválidos. Corrija-os antes de gerar o processo.");
+        alert("Atenção: Os CPFs destacados em vermelho são inválidos. Corrija-os antes de gerar a petição.");
         return; 
     }
 
-    let rgClienteFinal = document.getElementById('rgCliente') ? document.getElementById('rgCliente').value.trim() : "";
+    let rgClienteFinal = document.getElementById('rgCliente').value.trim();
     if (rgClienteFinal === "") rgClienteFinal = "______________";
 
     let rgRepresentanteFinal = possuiRep && document.getElementById('rgRepresentante') ? document.getElementById('rgRepresentante').value.trim() : "";
     if (possuiRep && rgRepresentanteFinal === "") rgRepresentanteFinal = "______________";
 
-    const anexosParaPython = anexosMedicos.map(doc => ({
-        titulo: doc.titulo,
-        imagem_base64: doc.base64
-    }));
-
-    const fotosCasaParaPython = fotosCasa.map(foto => foto.base64);
-    const impedimentosParaPython = impedimentoImagens.map(img => img.base64);
-    const avaliacaoParaPython = avaliacaoSocialImagens.map(img => img.base64);
-    
     const rua = document.getElementById('rua').value;
     const numero = document.getElementById('numero').value;
     const bairro = document.getElementById('bairro').value;
@@ -433,74 +272,99 @@ async function enviarDados() {
     const cepInss = document.getElementById('cepInss').value;
     const enderecoInssMontado = `${ruaInss}, nº ${numeroInss}, ${bairroInss}, ${cidadeInss}/${ufInss} - CEP: ${cepInss}`;
 
-    const valorDigitado = document.getElementById('valorCausa') ? document.getElementById('valorCausa').value : "";
-    const valorExtenso = document.getElementById('textoValorExtenso') ? document.getElementById('textoValorExtenso').innerText : "";
+    const valorDigitado = document.getElementById('valorCausa').value;
+    const valorExtenso = document.getElementById('textoValorExtenso').innerText;
     let valorCausaFinal = valorDigitado;
     if (valorDigitado && valorExtenso) {
         valorCausaFinal = `${valorDigitado} (${valorExtenso})`;
     }
 
-    // Montando o Objeto estruturado (Payload JSON)
     const payloadBruto = {
-        causa: document.getElementById('causaBpc') ? document.getElementById('causaBpc').value : "",
-        subsecao_judiciaria: document.getElementById('subsecao') ? document.getElementById('subsecao').value : "",
-        der: document.getElementById('der') ? document.getElementById('der').value : "",
-        nb: document.getElementById('nb') ? document.getElementById('nb').value : "",
+        // --- TESES CONDICIONAIS ---
+        tese_coisa_julgada: document.getElementById('chkCoisaJulgada') ? document.getElementById('chkCoisaJulgada').checked : false,
+        tese_pericia_judicial: document.getElementById('chkPericiaJudicial') ? document.getElementById('chkPericiaJudicial').checked : false,
+        tese_julgamento_antecipado: document.getElementById('chkJulgamentoAntecipado') ? document.getElementById('chkJulgamentoAntecipado').checked : false,
+        tese_prova_emprestada: document.getElementById('chkProvaEmprestada') ? document.getElementById('chkProvaEmprestada').checked : false,
+        tese_fixacao_dib: document.getElementById('chkFixacaoDib') ? document.getElementById('chkFixacaoDib').checked : false,
+        tese_reafirmacao_der: document.getElementById('chkReafirmacaoDer') ? document.getElementById('chkReafirmacaoDer').checked : false,
+        tese_prioridade: document.getElementById('chkPrioridade') ? document.getElementById('chkPrioridade').checked : false,
+
+        // --- DADOS DO PROCESSO ---
+        subsecao_judiciaria: document.getElementById('subsecao').value,
+        der: document.getElementById('der').value,
+        nb: document.getElementById('nb').value,
         valor_causa: valorCausaFinal,
+        oab_advogado: document.getElementById('oabAdvogado') ? document.getElementById('oabAdvogado').value : "",
+        uf_oab: document.getElementById('ufOab') ? document.getElementById('ufOab').value : "",
         
-        nome_cliente: document.getElementById('nomeCliente') ? document.getElementById('nomeCliente').value : "",
-        cpf_cliente: document.getElementById('cpfCliente') ? document.getElementById('cpfCliente').value : "",
+        // --- DADOS DO CLIENTE ---
+        nome_cliente: document.getElementById('nomeCliente').value,
+        cpf_cliente: cpfCliente,
         rg_cliente: rgClienteFinal,
-        nacionalidade_cliente: document.getElementById('nacionalidadeCliente') ? document.getElementById('nacionalidadeCliente').value : "",
-        estado_civil_cliente: document.getElementById('estadoCivilCliente') ? document.getElementById('estadoCivilCliente').value : "",
+        nacionalidade_cliente: document.getElementById('nacionalidadeCliente').value,
+        estado_civil_cliente: document.getElementById('estadoCivilCliente').value,
         
+        // --- DADOS DO REPRESENTANTE ---
         tem_representante: possuiRep,
-        
         nome_representante: possuiRep && document.getElementById('nomeRepresentante') ? document.getElementById('nomeRepresentante').value : "",
-        cpf_representante: possuiRep && document.getElementById('cpfRepresentante') ? document.getElementById('cpfRepresentante').value : "",
-        rg_representante: possuiRep ? rgRepresentanteFinal : "",
+        cpf_representante: possuiRep ? cpfRep : "",
+        rg_representante: rgRepresentanteFinal,
         parentesco_representante: possuiRep && document.getElementById('parentescoRepresentante') ? document.getElementById('parentescoRepresentante').value : "",
         nacionalidade_representante: possuiRep && document.getElementById('nacionalidadeRepresentante') ? document.getElementById('nacionalidadeRepresentante').value : "",
         estado_civil_representante: possuiRep && document.getElementById('estadoCivilRepresentante') ? document.getElementById('estadoCivilRepresentante').value : "",
         
+        // --- ENDEREÇOS ---
         endereco_completo: enderecoMontado,
         endereco_inss: enderecoInssMontado, 
-        
         rua: rua, numero: numero, bairro: bairro, cidade: cidade, uf: uf, cep: cep,
         rua_inss: ruaInss, numero_inss: numeroInss, bairro_inss: bairroInss, 
         cidade_inss: cidadeInss, uf_inss: ufInss, cep_inss: cepInss,
         
-        idade_cliente: document.getElementById('idadeCliente') ? document.getElementById('idadeCliente').value : "",
-        motivo_indeferimento: document.getElementById('motivoIndeferimento') ? document.getElementById('motivoIndeferimento').value : "",
-        data_inicio_beneficio: document.getElementById('dataInicioBeneficio') ? document.getElementById('dataInicioBeneficio').value : "",
-        data_cessacao: document.getElementById('dataCessacao') ? document.getElementById('dataCessacao').value : "",
-
+        // --- DADOS DINÂMICOS DA DEFICIÊNCIA (se existirem na tela) ---
         diagnostico_cid: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
         sigla_doenca: document.getElementById('siglaDoenca') ? document.getElementById('siglaDoenca').value : "",
-        data_laudo: document.getElementById('dataLaudo') ? document.getElementById('dataLaudo').value : "",
         fatores_avaliacao: document.getElementById('fatoresAvaliacao') ? document.getElementById('fatoresAvaliacao').value : "",
-        oab_advogado: document.getElementById('oabAdvogado') ? document.getElementById('oabAdvogado').value : "",
+        detalhes_laudo: document.getElementById('detalhesLaudo') ? document.getElementById('detalhesLaudo').value : "",
         intro_lei_deficiencia: document.getElementById('introLeiDeficiencia') ? document.getElementById('introLeiDeficiencia').value : "",
         citacao_lei_deficiencia: document.getElementById('citacaoLeiDeficiencia') ? document.getElementById('citacaoLeiDeficiencia').value : "",
-        detalhes_laudo: document.getElementById('detalhesLaudo') ? document.getElementById('detalhesLaudo').value : "",
         descricao_grupo_familiar: document.getElementById('descricaoGrupoFamiliar') ? document.getElementById('descricaoGrupoFamiliar').value : "",
         
-        imagens_categorizadas: imagensCategorizadas,
-        anexos_medicos_dinamicos: anexosParaPython,
-        fotos_casa: fotosCasaParaPython,
-        lista_img_impedimento: impedimentosParaPython,
-        lista_img_avaliacao_social: avaliacaoParaPython,
+        // --- ARRAYS DE IMAGENS ---
+        lista_img_renda: imgRenda.map(img => img.base64),
+        lista_img_pericial: imgPericial.map(img => img.base64),
+        lista_img_laudo: imgLaudo.map(img => img.base64),
+        anexos_medicos_dinamicos: anexosMedicos.map(doc => ({ titulo: doc.titulo, imagem_base64: doc.base64 })),
+        fotos_casa: fotosCasa.map(foto => foto.base64),
+
+        ano_acao_anterior: document.getElementById('anoAcaoAnterior') ? document.getElementById('anoAcaoAnterior').value : "",
+        nome_beneficio_anterior: document.getElementById('nomeBeneficioAnterior') ? document.getElementById('nomeBeneficioAnterior').value : "",
+        numero_processo_anterior: document.getElementById('numeroProcessoAnterior') ? document.getElementById('numeroProcessoAnterior').value : "",
+        tipo_agravamento: document.getElementById('tipoAgravamento') ? document.getElementById('tipoAgravamento').value : "",
+        documentos_novos_relacao: document.getElementById('documentosNovosRelacao') ? document.getElementById('documentosNovosRelacao').value : "",
+        tempo_transcorrido_anos: document.getElementById('tempoTranscorridoAnos') ? document.getElementById('tempoTranscorridoAnos').value : "",
+        lista_img_coisa_julgada: imgCoisaJulgada.map(img => img.base64),
+
+        tipo_acompanhamento: document.getElementById('tipoAcompanhamento') ? document.getElementById('tipoAcompanhamento').value : "",
+        unidade_saude: document.getElementById('unidadeSaude') ? document.getElementById('unidadeSaude').value : "",
+        natureza_impedimento: document.getElementById('naturezaImpedimento') ? document.getElementById('naturezaImpedimento').value : "",
+        especialidade_perito: document.getElementById('especialidadePerito') ? document.getElementById('especialidadePerito').value : "",
+        
+        hip_ja_reconhecida: document.getElementById('radHipReconhecida') ? document.getElementById('radHipReconhecida').checked : false,
+        hip_ja_notoria: document.getElementById('radHipNotoria') ? document.getElementById('radHipNotoria').checked : false,
+        motivo_indeferimento: document.getElementById('motivoIndeferimento') ? document.getElementById('motivoIndeferimento').value : "",
+        comprovantes_miserabilidade: document.getElementById('comprovantesMiserabilidade') ? document.getElementById('comprovantesMiserabilidade').value : "",
+        carater_condicao: document.getElementById('caraterCondicao') ? document.getElementById('caraterCondicao').value : "",
+        comprovantes_deficiencia: document.getElementById('comprovantesDeficiencia') ? document.getElementById('comprovantesDeficiencia').value : "",
+
         pasta_destino: pastaSelecionada,
         caminho_pdf: caminhoPdfAtual
     };
 
-    // Garante conversão estrita para JSON string caso precise inspecionar ou enviar
     const dadosJsonString = JSON.stringify(payloadBruto);
 
     document.body.style.cursor = 'wait';
 
     try {
-        // Passamos o objeto direto (o pywebview já faz o parse automático para dicionário Python)
         const resposta = await pywebview.api.gerar_formulario(JSON.parse(dadosJsonString));
         alert(resposta);
     } catch (erro) {
@@ -517,83 +381,93 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
     const valorDigitado = evento.target.value.trim().toLowerCase();
     if (valorDigitado === 'teste da silva') {
         
+        // Marca algumas das novas teses base para o teste
+        if (document.getElementById('chkJulgamentoAntecipado')) document.getElementById('chkJulgamentoAntecipado').checked = true;
+        if (document.getElementById('chkCoisaJulgada')) document.getElementById('chkCoisaJulgada').checked = true;
+        if (document.getElementById('chkProvaEmprestada')) document.getElementById('chkProvaEmprestada').checked = true;
+        if (document.getElementById('chkPrioridade')) document.getElementById('chkPrioridade').checked = true;
+        atualizarTeses();
+        
+        // --- NOVOS CAMPOS: PRIORIDADE DE TRAMITAÇÃO ---
+        if (document.getElementById('introLeiDeficiencia')) document.getElementById('introLeiDeficiencia').value = 'A Lei nº 12.764/12 (Lei Berenice Piana) define em seu art. 1º, § 2º que';
+        if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = '§ 2º A pessoa com transtorno do espectro autista é considerada pessoa com deficiência, para todos os efeitos legais.';
+        
+        // --- NOVOS CAMPOS: COISA JULGADA ---
+        if (document.getElementById('anoAcaoAnterior')) document.getElementById('anoAcaoAnterior').value = '2023';
+        if (document.getElementById('nomeBeneficioAnterior')) document.getElementById('nomeBeneficioAnterior').value = 'BPC/LOAS';
+        if (document.getElementById('numeroProcessoAnterior')) document.getElementById('numeroProcessoAnterior').value = '0001234-56.2023.4.05.8100';
+        if (document.getElementById('tempoTranscorridoAnos')) document.getElementById('tempoTranscorridoAnos').value = '3';
+        if (document.getElementById('tipoAgravamento')) document.getElementById('tipoAgravamento').value = 'de saúde e socioeconômico';
+        if (document.getElementById('documentosNovosRelacao')) document.getElementById('documentosNovosRelacao').value = 'laudo médico pericial recente, receitas atualizadas e novo extrato do CadÚnico demonstrando a piora financeira';
+        
+        // --- RESTANTE DOS DADOS ---
         document.getElementById('temRepresentante').checked = true;
         alternarRepresentante();
 
-        // Autocompleta a causa se estiver vazia (seta como reavaliação para testar as novidades)
-        if (document.getElementById('causaBpc') && document.getElementById('causaBpc').value === "") {
-            document.getElementById('causaBpc').value = 'reavaliacao';
-            iniciarFormulario('reavaliacao');
-        }
+        if (document.getElementById('descricaoGrupoFamiliar')) document.getElementById('descricaoGrupoFamiliar').value = '4';
+
+        document.getElementById('subsecao').value = 'SÃO PAULO/SP';
+        document.getElementById('der').value = '24/03/2026';
+        document.getElementById('nb').value = '729.397.891-0';
+        document.getElementById('oabAdvogado').value = '32.185';
+        if (document.getElementById('ufOab')) document.getElementById('ufOab').value = 'SP';
         
-        if (document.getElementById('subsecao')) document.getElementById('subsecao').value = 'SÃO PAULO/SP';
-        if (document.getElementById('der')) document.getElementById('der').value = '24/03/2026';
-        if (document.getElementById('nb')) document.getElementById('nb').value = '729.397.891-0';
+        document.getElementById('valorCausa').value = 'R$ 14.589,00';
+        document.getElementById('valorCausa').dispatchEvent(new Event('input'));
         
-        if (document.getElementById('valorCausa')) {
-            document.getElementById('valorCausa').value = 'R$ 14.589,00';
-            document.getElementById('valorCausa').dispatchEvent(new Event('input'));
-        }
-        
-        // Cliente
-        if (document.getElementById('cpfCliente')) document.getElementById('cpfCliente').value = '606.162.208-20';
-        if (document.getElementById('rgNovoCliente')) document.getElementById('rgNovoCliente').checked = true;
+        document.getElementById('cpfCliente').value = '606.162.208-20';
+        document.getElementById('rgNovoCliente').checked = true;
         sincronizarRgCpf('Cliente');
-        if (document.getElementById('nacionalidadeCliente')) document.getElementById('nacionalidadeCliente').value = 'Brasileiro(a)';
-        if (document.getElementById('estadoCivilCliente')) document.getElementById('estadoCivilCliente').value = 'Solteiro(a)';
+        document.getElementById('nacionalidadeCliente').value = 'Brasileiro(a)';
+        document.getElementById('estadoCivilCliente').value = 'Solteiro(a)';
         
-        // Representante
-        if (document.getElementById('nomeRepresentante')) document.getElementById('nomeRepresentante').value = 'Larissa Barbosa Mariano';
-        if (document.getElementById('cpfRepresentante')) document.getElementById('cpfRepresentante').value = '445.670.968-51';
-        if (document.getElementById('rgNovoRep')) document.getElementById('rgNovoRep').checked = true;
+        document.getElementById('nomeRepresentante').value = 'Larissa Barbosa Mariano';
+        document.getElementById('cpfRepresentante').value = '445.670.968-51';
+        document.getElementById('rgNovoRep').checked = true;
         sincronizarRgCpf('Representante');
         if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = 'Cônjuge';
-        if (document.getElementById('nacionalidadeRepresentante')) document.getElementById('nacionalidadeRepresentante').value = 'Brasileiro(a)';
-        if (document.getElementById('estadoCivilRepresentante')) document.getElementById('estadoCivilRepresentante').value = 'Casado(a)';
+        document.getElementById('nacionalidadeRepresentante').value = 'Brasileiro(a)';
+        document.getElementById('estadoCivilRepresentante').value = 'Casado(a)';
         
-        // Endereços
-        if (document.getElementById('cep')) document.getElementById('cep').value = '01047-020';
-        if (document.getElementById('rua')) document.getElementById('rua').value = 'Rua Rio Espera';
-        if (document.getElementById('numero')) document.getElementById('numero').value = '12, Casa 10';
-        if (document.getElementById('bairro')) document.getElementById('bairro').value = 'Capão do Embira';
-        if (document.getElementById('cidade')) document.getElementById('cidade').value = 'São Paulo';
-        if (document.getElementById('uf')) document.getElementById('uf').value = 'SP';
+        document.getElementById('cep').value = '01047-020';
+        document.getElementById('rua').value = 'Rua Rio Espera';
+        document.getElementById('numero').value = '12, Casa 10';
+        document.getElementById('bairro').value = 'Capão do Embira';
+        document.getElementById('cidade').value = 'São Paulo';
+        document.getElementById('uf').value = 'SP';
         
-        if (document.getElementById('cepInss')) {
-            document.getElementById('cepInss').value = '01047-020';
-            document.getElementById('ruaInss').value = 'R. Cel. Xavier de Toledo';
-            document.getElementById('numeroInss').value = '280';
-            document.getElementById('bairroInss').value = 'Consolação';
-            document.getElementById('cidadeInss').value = 'São Paulo';
-            document.getElementById('ufInss').value = 'SP';
-        }
-        
-        // Novos Campos Reavaliação
-        if (document.getElementById('idadeCliente')) document.getElementById('idadeCliente').value = '39';
-        if (document.getElementById('motivoIndeferimento')) document.getElementById('motivoIndeferimento').value = 'Avaliação biopsicossocial foi contrária a manutenção do benefício';
-        if (document.getElementById('dataInicioBeneficio')) document.getElementById('dataInicioBeneficio').value = '11/02/2014';
-        if (document.getElementById('dataCessacao')) document.getElementById('dataCessacao').value = '28/11/2025';
+        document.getElementById('cepInss').value = '01047-020';
+        document.getElementById('ruaInss').value = 'R. Cel. Xavier de Toledo';
+        document.getElementById('numeroInss').value = '280';
+        document.getElementById('bairroInss').value = 'Consolação';
+        document.getElementById('cidadeInss').value = 'São Paulo';
+        document.getElementById('ufInss').value = 'SP';
 
-        // Dados Médicos
-        if (document.getElementById('diagnosticoCid')) document.getElementById('diagnosticoCid').value = 'Transtorno do Espectro do Autismo Nível 3 (severo) (TEA)- CID 10 F 84.0';
-        if (document.getElementById('siglaDoenca')) document.getElementById('siglaDoenca').value = 'TEA';
-        if (document.getElementById('dataLaudo')) document.getElementById('dataLaudo').value = '15/05/2026';
-        if (document.getElementById('fatoresAvaliacao')) document.getElementById('fatoresAvaliacao').value = 'fatores ambientais GRAVE e atividades e participações MODERADA';
-        if (document.getElementById('oabAdvogado')) document.getElementById('oabAdvogado').value = '32.185';
-        if (document.getElementById('introLeiDeficiencia')) document.getElementById('introLeiDeficiencia').value = 'Ressalte-se que a legislação equipara a pessoa com diagnóstico de TEA à pessoa com deficiência...';
-        if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = 'Art. 1º Esta Lei institui a Política Nacional de Proteção...';
-        if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'Este transtorno do neurodesenvolvimento é uma condição permanente que se manifesta...';
-        if (document.getElementById('descricaoGrupoFamiliar')) document.getElementById('descricaoGrupoFamiliar').value = '04';
+        // --- NOVOS CAMPOS: PERÍCIA JUDICIAL ---
+        if (document.getElementById('tipoAcompanhamento')) document.getElementById('tipoAcompanhamento').value = 'multiprofissional';
+        if (document.getElementById('unidadeSaude')) document.getElementById('unidadeSaude').value = 'CAPS Infantil';
+        if (document.getElementById('naturezaImpedimento')) document.getElementById('naturezaImpedimento').value = 'mental';
+        if (document.getElementById('especialidadePerito')) document.getElementById('especialidadePerito').value = 'Psiquiatria ou Neurologia';
+
+        // --- NOVOS CAMPOS: JULGAMENTO ANTECIPADO ---
+        if (document.getElementById('radHipNotoria')) {
+            document.getElementById('radHipNotoria').checked = true;
+            alternarHipoteseJulgamento();
+        }
+        if (document.getElementById('caraterCondicao')) document.getElementById('caraterCondicao').value = 'irreversível';
+        if (document.getElementById('comprovantesDeficiencia')) document.getElementById('comprovantesDeficiencia').value = 'laudos da APAE e laudo psiquiátrico atualizado';
         
-        if (document.getElementById('cpfCliente')) document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
-        if (document.getElementById('cpfRepresentante')) document.getElementById('cpfRepresentante').dispatchEvent(new Event('blur'));
         
-        console.log("Campos preenchidos automaticamente para testes!");
+        // Dispara os eventos de formatação e Validação de CPF
+        document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
+        document.getElementById('cpfRepresentante').dispatchEvent(new Event('blur'));
+        
+        console.log("Campos base e teses preenchidos automaticamente para testes!");
     }
 });
 
 // =========================================================
-// FUNÇÃO INTELIGENTE: NÚMERO PARA EXTENSO (MOEDA BRASILEIRA)
+// 7. FUNÇÃO INTELIGENTE: NÚMERO PARA EXTENSO E MÁSCARAS
 // =========================================================
 function valorParaExtenso(valorFormatado) {
     if (!valorFormatado || valorFormatado === "R$ 0,00") return "";
@@ -653,11 +527,6 @@ function valorParaExtenso(valorFormatado) {
     return extensoCentavos;
 }
 
-// =========================================================
-// VALIDAÇÃO E MÁSCARAS DIVERSAS (MOEDA, DATA, CPF)
-// =========================================================
-
-// Máscara de Moeda (Valor da Causa)
 function mascararMoeda(evento) {
     let valor = evento.target.value.replace(/\D/g, ""); 
     if (valor === "") {
@@ -676,21 +545,16 @@ function mascararMoeda(evento) {
         document.getElementById('textoValorExtenso').innerText = valorParaExtenso(valorFinal);
     }
 }
-if (document.getElementById('valorCausa')) document.getElementById('valorCausa').addEventListener('input', mascararMoeda);
+document.getElementById('valorCausa').addEventListener('input', mascararMoeda);
 
-// Máscara de Data (DER, Laudo, Início de Benefício e Cessação)
 function mascararData(evento) {
     let v = evento.target.value.replace(/\D/g, "");
     v = v.replace(/^(\d{2})(\d)/, "$1/$2");
     v = v.replace(/^(\d{2})\/(\d{2})(\d)/, "$1/$2/$3");
     evento.target.value = v;
 }
-if (document.getElementById('der')) document.getElementById('der').addEventListener('input', mascararData);
-if (document.getElementById('dataLaudo')) document.getElementById('dataLaudo').addEventListener('input', mascararData);
-if (document.getElementById('dataInicioBeneficio')) document.getElementById('dataInicioBeneficio').addEventListener('input', mascararData);
-if (document.getElementById('dataCessacao')) document.getElementById('dataCessacao').addEventListener('input', mascararData);
+document.getElementById('der').addEventListener('input', mascararData);
 
-// Máscara e Validador de CPF
 function mascararCPF(evento) {
     let v = evento.target.value.replace(/\D/g, "");
     v = v.replace(/(\d{3})(\d)/, "$1.$2");
@@ -739,18 +603,12 @@ function verificarCampoCPF(evento) {
     }
 }
 
-if (document.getElementById('cpfCliente')) {
-    document.getElementById('cpfCliente').addEventListener('input', mascararCPF);
-    document.getElementById('cpfCliente').addEventListener('blur', verificarCampoCPF);
-}
-if (document.getElementById('cpfRepresentante')) {
-    document.getElementById('cpfRepresentante').addEventListener('input', mascararCPF);
-    document.getElementById('cpfRepresentante').addEventListener('blur', verificarCampoCPF);
-}
+document.getElementById('cpfCliente').addEventListener('input', mascararCPF);
+document.getElementById('cpfCliente').addEventListener('blur', verificarCampoCPF);
 
-// =========================================================
-// VALIDAÇÃO, MÁSCARA E BUSCA AUTOMÁTICA DE CEP (VIA CEP)
-// =========================================================
+document.getElementById('cpfRepresentante').addEventListener('input', mascararCPF);
+document.getElementById('cpfRepresentante').addEventListener('blur', verificarCampoCPF);
+
 function mascararCEP(evento) {
     let v = evento.target.value.replace(/\D/g, ""); 
     v = v.replace(/^(\d{5})(\d)/, "$1-$2"); 
@@ -802,5 +660,13 @@ async function buscarCEPApi(cepFormatado, sufixo = '') {
     }
 }
 
-if (document.getElementById('cep')) document.getElementById('cep').addEventListener('input', mascararCEP);
-if (document.getElementById('cepInss')) document.getElementById('cepInss').addEventListener('input', mascararCEP);
+document.getElementById('cep').addEventListener('input', mascararCEP);
+document.getElementById('cepInss').addEventListener('input', mascararCEP);
+
+document.addEventListener('input', function(evento) {
+    if (evento.target.tagName === 'INPUT' && evento.target.type === 'text') {
+        const cursorPosition = evento.target.selectionStart;
+        evento.target.value = evento.target.value.toUpperCase();
+        evento.target.setSelectionRange(cursorPosition, cursorPosition);
+    }
+});

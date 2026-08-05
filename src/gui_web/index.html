@@ -9,61 +9,53 @@
 </head>
 <body>
 
-    <!-- ================= TELA 1 e 2 ================= -->
-    <div id="telaSistema" class="step-screen active">
-        <h1>Banco de Petições</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Selecione o sistema desejado:</p>
-        
-        <div class="menu-card" onclick="irParaProcessos('bpc')">
-            <h3>BPC (Benefício de Prestação Continuada)</h3>
-            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Gerenciamento de petições de BPC LOAS (Deficiência e Renda)</p>
+    <div id="telaFormulario" class="step-screen active">
+        <h1 id="tituloFormulario">Iniciais BPC</h1>
+
+        <!-- ================= PAINEL DE TESES ================= -->
+        <div class="section-container modulo-universal">
+            <h3>Teses e Pedidos da Petição</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Marque os tópicos que devem constar no documento gerado:</p>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
+                    <input type="checkbox" id="chkPrioridade" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Prioridade de Tramitação
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
+                    <input type="checkbox" id="chkCoisaJulgada" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Ausência de Coisa Julgada
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
+                    <input type="checkbox" id="chkPericiaJudicial" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Necessidade de Perícia Judicial
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
+                    <input type="checkbox" id="chkJulgamentoAntecipado" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Julgamento Antecipado (Sem Perícia)
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
+                    <input type="checkbox" id="chkProvaEmprestada" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Prova Emprestada
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
+                    <input type="checkbox" id="chkFixacaoDib" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Fixação da DIB na DER
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; color: var(--text); font-weight: 500;">
+                    <input type="checkbox" id="chkReafirmacaoDer" onchange="atualizarTeses()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Reafirmação da DER
+                </label>
+            </div>
         </div>
 
-        <div class="menu-card" onclick="irParaProcessos('rural')" style="opacity: 0.6;">
-            <h3 style="color: var(--text-muted);">Rurais</h3>
-            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Módulo em desenvolvimento</p>
-        </div>
-    </div>
-
-    <div id="telaMotivoBpc" class="step-screen">
-        <button onclick="voltarPara('telaSistema')" style="margin-bottom: 20px;">← Voltar</button>
-        <h1>BPC - Motivo do Indeferimento</h1>
-        
-        <div class="menu-card" onclick="iniciarFormulario('deficiencia')">
-            <h3>Deficiência</h3>
-            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Indeferimento por não enquadramento no critério de deficiência</p>
-        </div>
-
-        <div class="menu-card" onclick="iniciarFormulario('deficiencia_curatela')">
-            <h3>Deficiência + Curatela</h3>
-            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Cliente incapaz necessitando de curador no processo</p>
-        </div>
-
-        <div class="menu-card" onclick="iniciarFormulario('reavaliacao')">
-            <h3>Reavaliação / Cessação</h3>
-            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Restabelecimento após pente-fino do INSS</p>
-        </div>
-
-        <div class="menu-card" onclick="iniciarFormulario('bolsa_familia')">
-            <h3>Renda - Bolsa Família</h3>
-            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;">Indeferimento com cômputo indevido do Bolsa Família na renda</p>
-        </div>
-    </div>
-
-    <!-- ================= TELA 3: O FORMULÁRIO MODULAR ================= -->
-    <div id="telaFormulario" class="step-screen">
-        <button onclick="voltarPara('telaMotivoBpc')" style="margin-bottom: 20px;">← Voltar ao Menu</button>
-        <h1 id="tituloFormulario">Formulário BPC</h1>
-
-        <input type="hidden" id="causaBpc" value="deficiencia">
-
-        <!-- ================= MÓDULO UNIVERSAL 1 ================= -->
+        <!-- ================= MÓDULO BASE 1: PROCESSO ================= -->
         <div class="section-container modulo-universal">
             <h3>Dados do Processo</h3>
             <div class="form-grid">
                 <div class="form-group">
                     <label>Subseção Judiciária:</label>
-                    <input type="text" id="subsecao" placeholder="Ex: SÃO PAULO/SP">
+                    <input type="text" id="subsecao" placeholder="Ex: CRATEÚS/CE">
                 </div>
                 <div class="form-group">
                     <label>DER (Data do Requerimento):</label>
@@ -78,16 +70,19 @@
                     <input type="text" id="valorCausa" placeholder="R$ 0,00">
                     <span id="textoValorExtenso" style="font-size: 0.75rem; color: var(--accent); display: block; margin-top: 5px; font-weight: 500;"></span>
                 </div>
-                <div class="form-group full-width">
+                <div class="form-group">
                     <label>Número da OAB:</label>
                     <input type="text" id="oabAdvogado" placeholder="Ex: 32.185">
+                </div>
+                <div class="form-group">
+                    <label>UF da OAB:</label>
+                    <input type="text" id="ufOab" placeholder="Ex: CE" maxlength="2">
                 </div>
                 
                 <!-- =============== ENDEREÇO DA AGÊNCIA DO INSS =============== -->
                 <div class="form-group full-width" style="margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 15px;">
-                    <label style="color: var(--accent);">ENDEREÇO DA AGÊNCIA DO INSS DO CLIENTE</label>
+                    <label style="color: var(--accent);">ENDEREÇO DA AGÊNCIA DO INSS</label>
                 </div>
-                
                 <div class="form-group">
                     <label>CEP do INSS:</label>
                     <input type="text" id="cepInss" placeholder="Ex: 00000-000" maxlength="9">
@@ -115,42 +110,41 @@
             </div>
         </div>
 
-        <!-- ================= MÓDULO UNIVERSAL 2 ================= -->
+        <!-- ================= MÓDULO BASE 2: QUALIFICAÇÃO ================= -->
         <div class="section-container modulo-universal">
             <h3>Dados Pessoais e Residenciais</h3>
             <div class="form-grid">
                 <!-- =============== DADOS DO CLIENTE =============== -->
                 <div class="form-group full-width">
-                    <label>Nome do Cliente:</label>
+                    <label>Nome do Requerente:</label>
                     <input type="text" id="nomeCliente">
                 </div>
                 <div class="form-group">
-                    <label>CPF do Cliente:</label>
+                    <label>CPF do Requerente:</label>
                     <input type="text" id="cpfCliente">
                 </div>
                 <div class="form-group">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
-                        <label style="margin-bottom: 0;">RG do Cliente:</label>
+                        <label style="margin-bottom: 0;">RG do Requerente:</label>
                         <label style="margin-bottom: 0; font-size: 0.65rem; color: var(--accent); display: flex; align-items: center; gap: 5px; cursor: pointer; text-transform: uppercase; font-weight: 700;">
                             <input type="checkbox" id="rgNovoCliente" onchange="sincronizarRgCpf('Cliente')" style="width: 14px; height: 14px; margin: 0; accent-color: var(--accent);">
-                            Usar CPF (Novo RG)
+                            RG Novo (Usar CPF)
                         </label>
                     </div>
                     <input type="text" id="rgCliente">
                 </div>
-
                 <div class="form-group">
-                    <label>Nacionalidade do Cliente:</label>
+                    <label>Nacionalidade:</label>
                     <input type="text" id="nacionalidadeCliente" placeholder="Ex: Brasileiro(a)">
                 </div>
                 <div class="form-group">
-                    <label>Estado Civil do Cliente:</label>
+                    <label>Estado Civil:</label>
                     <input type="text" id="estadoCivilCliente" placeholder="Ex: Solteiro(a)">
                 </div>
 
                 <!-- =============== REPRESENTANTE LEGAL =============== -->
                 <div class="full-width toggle-container" style="margin-top: 15px;">
-                    <span>O cliente possui Representante Legal?</span>
+                    <span>O requerente possui Representante Legal?</span>
                     <label class="switch">
                         <input type="checkbox" id="temRepresentante" onchange="alternarRepresentante()">
                         <span class="slider"></span>
@@ -171,12 +165,11 @@
                             <label style="margin-bottom: 0;">RG do Representante:</label>
                             <label style="margin-bottom: 0; font-size: 0.65rem; color: var(--accent); display: flex; align-items: center; gap: 5px; cursor: pointer; text-transform: uppercase; font-weight: 700;">
                                 <input type="checkbox" id="rgNovoRep" onchange="sincronizarRgCpf('Representante')" style="width: 14px; height: 14px; margin: 0; accent-color: var(--accent);">
-                                Usar CPF (Novo RG)
+                                RG Novo (Usar CPF)
                             </label>
                         </div>
                         <input type="text" id="rgRepresentante">
                     </div>
-
                     <div class="form-group">
                         <label>Nacionalidade do Rep.:</label>
                         <input type="text" id="nacionalidadeRepresentante" placeholder="Ex: Brasileiro(a)">
@@ -185,9 +178,9 @@
                         <label>Estado Civil do Rep.:</label>
                         <input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a)">
                     </div>
-                    <div class="form-group" id="blocoParentesco" style="display: none;">
-                        <label>Vínculo:</label>
-                        <input type="text" id="parentescoRepresentante" placeholder="Ex: Cônjuge, Mãe, Filho(a)...">
+                    <div class="form-group">
+                        <label>Parentesco (Vínculo):</label>
+                        <input type="text" id="parentescoRepresentante" placeholder="Ex: Genitora, Curador...">
                     </div>
                 </div>
 
@@ -195,7 +188,6 @@
                 <div class="form-group full-width" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 15px;">
                     <label style="color: var(--accent);">ENDEREÇO RESIDENCIAL</label>
                 </div>
-
                 <div class="form-group">
                     <label>CEP:</label>
                     <input type="text" id="cep" placeholder="Ex: 00000-000" maxlength="9">
@@ -206,7 +198,7 @@
                 </div>
                 <div class="form-group">
                     <label>Número:</label>
-                    <input type="text" id="numero" placeholder="Ex: 12">
+                    <input type="text" id="numero" placeholder="Ex: 12, Casa A">
                 </div>
                 <div class="form-group">
                     <label>Bairro:</label>
@@ -217,144 +209,230 @@
                     <input type="text" id="cidade" placeholder="Ex: Guaraciaba do Norte">
                 </div>
                 <div class="form-group">
-                    <label>UF (Sigla):</label>
+                    <label>UF:</label>
                     <input type="text" id="uf" placeholder="Ex: CE" maxlength="2">
                 </div>
             </div>
         </div>
 
-        <!-- ================= BLOCO EXCLUSIVO: REAVALIAÇÃO E CESSAÇÃO ================= -->
-        <div id="blocoReavaliacao" class="section-container modulo-especifico modulo-bpc" style="display: none; border-left: 4px solid #f59e0b;">
-            <h3 style="color: #f59e0b; margin-top: 0;">Dados do Benefício Cessado (Reavaliação)</h3>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Idade do Cliente:</label>
-                    <input type="text" id="idadeCliente" placeholder="Ex: 39" maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                </div>
-                <div class="form-group">
-                    <label>Motivo do Indeferimento/Cessação:</label>
-                    <input type="text" id="motivoIndeferimento" placeholder="Ex: Avaliação biopsicossocial foi contrária...">
-                </div>
-                <div class="form-group">
-                    <label>Data de Início do Benefício:</label>
-                    <input type="text" id="dataInicioBeneficio" placeholder="Ex: 11/02/2014" maxlength="10">
-                </div>
-                <div class="form-group">
-                    <label>Data da Cessação:</label>
-                    <input type="text" id="dataCessacao" placeholder="Ex: 28/11/2025" maxlength="10">
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= MÓDULO BPC (Só aparece para o BPC) ================= -->
-        <div class="section-container modulo-especifico modulo-bpc">
-            <h3>Dados Médicos e Legais</h3>
+        <!-- ================= MÓDULO BASE 3: DADOS MÉDICOS E LAUDOS ================= -->
+        <div class="section-container modulo-universal">
+            <h3>Dados Médicos e Fatores Periciais</h3>
             <div class="form-grid">
                 <div class="form-group">
                     <label>Diagnóstico e CID:</label>
-                    <input type="text" id="diagnosticoCid" placeholder="Ex: Transtorno do Espectro Autista (TEA) - CID 10 F 84.0">
+                    <input type="text" id="diagnosticoCid" placeholder="Ex: TEA - CID 10 F 84.0">
                 </div>
                 <div class="form-group">
-                    <label>Sigla da Doença ou Transtorno:</label>
+                    <label>Sigla da Doença/Transtorno:</label>
                     <input type="text" id="siglaDoenca" placeholder="Ex: TEA, Epilepsia...">
                 </div>
-
-                <div class="form-group" id="blocoDataLaudo">
-                    <label>Data do Laudo Médico:</label>
-                    <input type="text" id="dataLaudo" placeholder="Ex: 15/05/2026" maxlength="10">
-                </div>
-
-                <div class="form-group full-width" id="blocoFatores">
+                <div class="form-group full-width">
                     <label>Fatores da Avaliação Pericial:</label>
                     <input type="text" id="fatoresAvaliacao" placeholder="Ex: fatores ambientais GRAVE...">
                 </div>
-
-                <div class="form-group full-width">
-                    <label>Introdução da Lei:</label>
-                    <textarea id="introLeiDeficiencia" rows="2" placeholder="Ex: Ressalte-se que a legislação..."></textarea>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Citação Exata da Lei (Artigos e Incisos):</label>
-                    <textarea id="citacaoLeiDeficiencia" rows="4" placeholder="Ex: Art. 1º Esta Lei institui a Política Nacional de Proteção... § 2º A pessoa com transtorno do espectro autista é considerada..."></textarea>
-                </div>
                 <div class="form-group full-width">
                     <label>Detalhes do Laudo Médico:</label>
-                    <textarea id="detalhesLaudo" rows="4" placeholder="Ex: Este transtorno do neurodesenvolvimento é uma condição permanente que se manifesta..."></textarea>
-                </div>
-                <div class="form-group full-width">
-                    <label>Quantidade de Pessoas no Grupo Familiar:</label>
-                    <input type="text" id="descricaoGrupoFamiliar" placeholder="Ex: 04" maxlength="2">
+                    <textarea id="detalhesLaudo" rows="4" placeholder="Ex: Este transtorno se manifesta..."></textarea>
                 </div>
             </div>
-        </div>
 
-        <!-- ================= MÓDULO BPC - IMAGENS (Só aparece para o BPC) ================= -->
-        <div class="section-container modulo-especifico modulo-bpc">
-            <h3>Imagens Específicas e Anexos</h3>
-
-            <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box">
-                <strong>Imagem da Renda</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V) o print da renda ou Extrato do Bolsa Família</span>
-                <div id="preview_img_renda"></div>
+            <h4 style="margin: 20px 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Imagens Médicas (Múltiplos Arquivos Permitidos)</h4>
+            
+            <div onclick="selecionarCaixa('img_laudo')" id="caixa_img_laudo" class="image-box">
+                <strong>Imagem do Laudo Principal</strong>
+                <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                <div id="galeria_img_laudo" class="gallery-container"></div>
             </div>
 
             <div onclick="selecionarCaixa('img_pericial')" id="caixa_img_pericial" class="image-box">
                 <strong>Imagem da Avaliação Pericial</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V) o print dos fatores ambientais</span>
-                <div id="preview_img_pericial"></div>
+                <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                <div id="galeria_img_pericial" class="gallery-container"></div>
             </div>
 
-            <div onclick="selecionarCaixa('img_laudo')" id="caixa_img_laudo" class="image-box">
-                <strong>Imagem do Laudo Principal</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V) a imagem do laudo médico</span>
-                <div id="preview_img_laudo"></div>
-            </div>
-
-            <div onclick="selecionarCaixa('anexos_medicos')" id="caixa_anexos_medicos" class="image-box" style="border-color: #22c55e;">
-                <strong style="color: #178840;">+ Documentos Médicos Extras</strong>
-                <span class="hint-text">Clique aqui e cole (Ctrl+V) laudos extras, receitas, encaminhamentos.</span>
+            <div onclick="selecionarCaixa('anexos_medicos')" id="caixa_anexos_medicos" class="image-box" style="border-color: var(--success);">
+                <strong style="color: var(--success);">+ Documentos Médicos Extras (Receitas, Exames)</strong>
+                <span class="hint-text">Clique e cole (Ctrl+V). Você pode colar quantas imagens quiser.</span>
                 <div id="galeria_anexos_medicos" class="gallery-container"></div>
             </div>
+        </div>
 
-            <div onclick="selecionarCaixa('fotos_casa')" id="caixa_fotos_casa" class="image-box" style="border-color: #0ea5e9;">
-                <strong style="color: #0369a1;">+ Fotos da Residência</strong>
-                <span class="hint-text">Clique aqui e cole (Ctrl+V) as fotos da casa do cliente.</span>
-                <div id="galeria_fotos_casa" class="gallery-container"></div>
+        <!-- ================= MÓDULO BASE 4: SOCIOECONÔMICO ================= -->
+        <div class="section-container modulo-universal">
+            <h3>Dados Socioeconômicos e Residência</h3>
+
+            <div class="form-grid" style="margin-bottom: 20px;">
+                <div class="form-group">
+                    <label>Quantidade de pessoas na casa (Grupo Familiar):</label>
+                    <input type="text" id="descricaoGrupoFamiliar" placeholder="Ex: 3">
+                </div>
+            </div>
+            
+            <h4 style="margin: 0 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Imagens Socioeconômicas (Múltiplos Arquivos Permitidos)</h4>
+
+            <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box">
+                <strong>Imagem da Renda</strong>
+                <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                <div id="galeria_img_renda" class="gallery-container"></div>
             </div>
 
-            <!-- BLOCO DE IMAGENS EXCLUSIVO: REAVALIAÇÃO -->
-            <div id="blocoImagensReavaliacao" style="display: none; width: 100%; flex-direction: column; gap: 15px; margin-top: 15px;">
+            <div onclick="selecionarCaixa('fotos_casa')" id="caixa_fotos_casa" class="image-box" style="border-color: var(--info);">
+                <strong style="color: var(--info);">Fotos da Residência</strong>
+                <span class="hint-text">Clique e cole (Ctrl+V) as fotos da casa do cliente.</span>
+                <div id="galeria_fotos_casa" class="gallery-container"></div>
+            </div>
+        </div>
+
+        <!-- ================= TESES CONDICIONAIS ================= -->
+        <div id="containerDinamicoTeses">
+            
+            <!-- BLOCO PRIORIDADE DE TRAMITAÇÃO -->
+            <div id="blocoPrioridade" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
+                <h3>Dados da Prioridade de Tramitação</h3>
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Introdução à Lei (Ex: A Lei nº 12.764/12, institui...):</label>
+                        <input type="text" id="introLeiDeficiencia" placeholder="A legislação X define que...">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Citação da Lei (O texto da lei em si):</label>
+                        <textarea id="citacaoLeiDeficiencia" rows="4" placeholder="Art. 1º..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- BLOCO AUSÊNCIA DE COISA JULGADA -->
+            <div id="blocoCoisaJulgada" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
+                <h3>Dados da Ação Anterior (Coisa Julgada)</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Ano da Ação Anterior:</label>
+                        <input type="text" id="anoAcaoAnterior" placeholder="Ex: 2021" maxlength="4">
+                    </div>
+                    <div class="form-group">
+                        <label>Nome do Benefício Anterior:</label>
+                        <input type="text" id="nomeBeneficioAnterior" placeholder="Ex: BPC/LOAS">
+                    </div>
+                    <div class="form-group">
+                        <label>Nº do Processo Anterior:</label>
+                        <input type="text" id="numeroProcessoAnterior" placeholder="Ex: 0000000-00.0000.4.05.0000">
+                    </div>
+                    <div class="form-group">
+                        <label>Tempo Transcorrido (Anos):</label>
+                        <input type="text" id="tempoTranscorridoAnos" placeholder="Ex: 3">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Houve agravamento do quadro:</label>
+                        <select id="tipoAgravamento">
+                            <option value="de saúde">De saúde</option>
+                            <option value="socioeconômico">Socioeconômico</option>
+                            <option value="de saúde e socioeconômico">De saúde e socioeconômico</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Relação de Documentos Novos:</label>
+                        <textarea id="documentosNovosRelacao" rows="3" placeholder="Ex: atestados e relatórios médicos recentes, CadÚnico atualizado..."></textarea>
+                    </div>
+                </div>
+
+                <h4 style="margin: 20px 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Prints/Imagens de Documentos Novos</h4>
+                <div onclick="selecionarCaixa('img_coisa_julgada')" id="caixa_img_coisa_julgada" class="image-box">
+                    <strong>Adicionar Prints dos Documentos</strong>
+                    <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                    <div id="galeria_img_coisa_julgada" class="gallery-container"></div>
+                </div>
+            </div>
+
+            <!-- BLOCO PERÍCIA JUDICIAL -->
+            <div id="blocoPericiaJudicial" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
+                <h3>Dados da Perícia Judicial</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tipo de Acompanhamento:</label>
+                        <select id="tipoAcompanhamento">
+                            <option value="médico">Médico</option>
+                            <option value="psiquiátrico">Psiquiátrico</option>
+                            <option value="psicológico">Psicológico</option>
+                            <option value="multiprofissional">Multiprofissional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Unidade de Saúde (Local):</label>
+                        <input type="text" id="unidadeSaude" placeholder="Ex: CAPS, UBS, Casa Acolher...">
+                    </div>
+                    <div class="form-group">
+                        <label>Natureza do Impedimento:</label>
+                        <select id="naturezaImpedimento">
+                            <option value="mental">Mental</option>
+                            <option value="intelectual">Intelectual</option>
+                            <option value="física">Física</option>
+                            <option value="sensorial">Sensorial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Especialidade do Perito:</label>
+                        <input type="text" id="especialidadePerito" placeholder="Ex: Neurologia, Psiquiatria...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOCO JULGAMENTO ANTECIPADO -->
+            <div id="blocoJulgamentoAntecipado" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
+                <h3>Dados do Julgamento Antecipado (Sem Perícia)</h3>
                 
-                <div onclick="selecionarCaixa('img_extrato_cessacao')" id="caixa_img_extrato_cessacao" class="image-box" style="border-color: #f59e0b;">
-                    <strong style="color: #f59e0b;">Imagem do Extrato de Cessação</strong>
-                    <span class="hint-text">Clique e cole (Ctrl+V) o print da tela de cessação (Única imagem)</span>
-                    <div id="preview_img_extrato_cessacao"></div>
+                <div class="form-group full-width" style="margin-bottom: 15px;">
+                    <label>Escolha a Hipótese a ser utilizada na tese:</label>
+                    <div style="display: flex; gap: 20px; margin-top: 10px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;">
+                            <input type="radio" name="hipoteseJulgamento" id="radHipReconhecida" onchange="alternarHipoteseJulgamento()" style="accent-color: var(--accent);">
+                            1. Deficiência já reconhecida no INSS
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;">
+                            <input type="radio" name="hipoteseJulgamento" id="radHipNotoria" onchange="alternarHipoteseJulgamento()" style="accent-color: var(--accent);">
+                            2. Deficiência Notória e Incontroversa
+                        </label>
+                    </div>
                 </div>
 
-                <div onclick="selecionarCaixa('img_impedimento')" id="caixa_img_impedimento" class="image-box" style="border-color: #ea580c;">
-                    <strong style="color: #ea580c;">+ Imagens do Impedimento de Longo Prazo</strong>
-                    <span class="hint-text">Clique e cole (Ctrl+V) os prints do SABI</span>
-                    <div id="galeria_img_impedimento" class="gallery-container"></div>
+                <!-- Campos da Hipótese 1 -->
+                <div id="camposHipReconhecida" class="form-grid full-width" style="display: none; border-top: 1px dashed var(--border); padding-top: 15px;">
+                    <div class="form-group full-width">
+                        <label>Motivo do Indeferimento no INSS:</label>
+                        <input type="text" id="motivoIndeferimento" placeholder="Ex: renda per capita superior ao limite legal">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Comprovantes da Miserabilidade:</label>
+                        <textarea id="comprovantesMiserabilidade" rows="2" placeholder="Ex: extrato do CadÚnico, CNIS dos membros, comprovantes de despesas..."></textarea>
+                    </div>
                 </div>
 
-                <div onclick="selecionarCaixa('img_avaliacao_social')" id="caixa_img_avaliacao_social" class="image-box" style="border-color: #e11d48;">
-                    <strong style="color: #e11d48;">+ Imagens da Avaliação Social</strong>
-                    <span class="hint-text">Clique e cole (Ctrl+V) os prints da avaliação</span>
-                    <div id="galeria_img_avaliacao_social" class="gallery-container"></div>
+                <!-- Campos da Hipótese 2 -->
+                <div id="camposHipNotoria" class="form-grid full-width" style="display: none; border-top: 1px dashed var(--border); padding-top: 15px;">
+                    <div class="form-group">
+                        <label>Caráter da Condição:</label>
+                        <select id="caraterCondicao">
+                            <option value="permanente">Permanente</option>
+                            <option value="irreversível">Irreversível</option>
+                            <option value="degenerativa">Degenerativa</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Comprovantes da Deficiência Notória:</label>
+                        <textarea id="comprovantesDeficiencia" rows="2" placeholder="Ex: laudos, relatórios, exames, atestados, cartão de acompanhamento..."></textarea>
+                    </div>
                 </div>
-
             </div>
 
         </div>
 
         <!-- ================= FINALIZAÇÃO ================= -->
         <div class="section-container modulo-universal" style="display: flex; align-items: center; gap: 15px;">
-            <button onclick="selecionarPdf()">Anexar PA (PDF)</button>
+            <button onclick="selecionarPdf()">Anexar Arquivo PDF</button>
             <span id="label_pdf" style="font-size: 13px; color: var(--text-muted);">Nenhum PDF selecionado</span>
         </div>
 
-        <button class="btn-primary" onclick="enviarDados()">Gerar Arquivos</button>
+        <button class="btn-primary" onclick="enviarDados()">Gerar Petição</button>
     </div>
     
     <script src="script.js"></script>
