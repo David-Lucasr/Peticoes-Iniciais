@@ -553,3 +553,92 @@ input.campo-invalido {
 #cpfRepresentante.campo-valido:focus {
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
 }
+
+/* ========================================= */
+/* BOTÃO DE ALERTA / LIMPAR DADOS            */
+/* ========================================= */
+.btn-danger {
+    background: linear-gradient(180deg, #f87171, #ef4444) !important; /* Gradiente vermelho */
+    color: #ffffff !important;
+    border: none !important;
+    
+    /* COPIANDO O FORMATO EXATO DO BOTÃO GERAR PETIÇÃO */
+    padding: 15px !important; 
+    font-size: 1rem !important;    
+    font-weight: 700 !important;   
+    border-radius: var(--radius-md) !important; 
+    
+    /* Sombra vermelha para combinar com a dourada */
+    box-shadow: 0 12px 24px -10px rgba(239, 68, 68, 0.5) !important;
+}
+
+/* Efeito ao passar o mouse idêntico ao principal */
+.btn-danger:hover {
+    background: linear-gradient(180deg, #f87171, #ef4444) !important;
+    transform: translateY(-1px) !important;
+    filter: brightness(1.05) !important;
+}
+
+.btn-danger:active {
+    transform: translateY(0) !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(11, 15, 26, 0.85); /* Fundo escuro semitransparente */
+    backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-content p {
+    margin: 10px 0 25px 0;
+    color: var(--text);
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-cancelar {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-cancelar:hover {
+    background: var(--surface-3);
+    color: var(--text);
+    border-color: var(--text-faint);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}

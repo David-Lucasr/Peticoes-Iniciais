@@ -41,7 +41,7 @@ class Api:
         
         # Nome do arquivo de saída
         nome_cliente = dados.get('nome_cliente', 'Cliente_Sem_Nome').upper()
-        nome_arquivo_word = f"Inicial - {nome_cliente}.docx"
+        nome_arquivo_word = f"INICIAL - {nome_cliente}.docx"
         caminho_saida_word = os.path.join(pasta_destino, nome_arquivo_word)
 
         try:

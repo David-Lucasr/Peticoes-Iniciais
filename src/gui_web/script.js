@@ -717,3 +717,68 @@ document.addEventListener('input', function(evento) {
         evento.target.setSelectionRange(cursorPosition, cursorPosition);
     }
 });
+
+// =========================================================
+// 8. FUNÇÕES PARA LIMPAR TODOS OS DADOS DA TELA
+// =========================================================
+
+// Esta função agora apenas exibe o nosso modal HTML bonito
+function limparDados() {
+    document.getElementById('modalConfirmacao').style.display = 'flex';
+}
+
+// Esta função esconde o modal se o usuário clicar em "Cancelar"
+function fecharModalLimpar() {
+    document.getElementById('modalConfirmacao').style.display = 'none';
+}
+
+// Esta função realmente apaga tudo se o usuário clicar em "Sim, limpar tudo"
+function executarLimpeza() {
+    // 1. Esconde o modal primeiro
+    fecharModalLimpar();
+
+    // 2. Limpa todos os inputs de texto e textareas
+    document.querySelectorAll('input[type="text"], textarea').forEach(campo => {
+        campo.value = '';
+        campo.classList.remove('campo-invalido', 'campo-valido', 'campo-buscando');
+    });
+
+    // 3. Desmarca todos os checkboxes e radio buttons
+    document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(campo => {
+        campo.checked = false;
+    });
+
+    // 4. Reseta todos os selects (menus suspensos) para a primeira opção
+    document.querySelectorAll('select').forEach(campo => {
+        campo.selectedIndex = 0;
+    });
+
+    // 5. Limpa as variáveis das imagens coladas
+    imgRenda = [];
+    imgPericial = [];
+    imgLaudo = [];
+    anexosMedicos = []; 
+    fotosCasa = [];     
+    imgCoisaJulgada = [];
+    
+    // 6. Limpa a visualização das galerias na tela
+    document.querySelectorAll('.gallery-container').forEach(galeria => {
+        galeria.innerHTML = '';
+    });
+
+    // 7. Limpa textos dinâmicos (Valor por extenso e nome do PDF)
+    const textoValor = document.getElementById('textoValorExtenso');
+    if (textoValor) textoValor.innerText = '';
+    
+    const labelPdf = document.getElementById('label_pdf');
+    if (labelPdf) labelPdf.innerText = 'Nenhum PDF selecionado';
+    caminhoPdfAtual = "";
+
+    // 8. Força a atualização da tela para esconder os blocos dinâmicos
+    atualizarTeses();
+    alternarRepresentante();
+    if (typeof alternarHipoteseJulgamento === "function") alternarHipoteseJulgamento();
+
+    // 9. Rola a página suavemente de volta para o topo
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}

@@ -8,14 +8,22 @@
 </head>
 <body>
 
-    <!-- ================= PAINEL DE TESES ================= -->
+    <!-- CAIXA PRINCIPAL DA TELA (Garante o alinhamento e o fundo) -->
+    <div id="telaFormulario" class="step-screen active">
+
+        <!-- ================= CABEÇALHO ================= -->
+        <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+            <h1 id="tituloFormulario" style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700;">
+                Banco de Petições
+            </h1>
+        </div>
+
+        <!-- ================= PAINEL DE TESES ================= -->
         <div class="section-container modulo-universal">
             <h3>Teses e Pedidos da Petição</h3>
             <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Marque as teses que devem constar no documento gerado:</p>
             
-            <!-- NOVO GRID DE TESES -->
             <div class="teses-grid">
-                
                 <label class="tese-card">
                     <input type="checkbox" id="chkPrioridade" onchange="atualizarTeses()">
                     <div class="tese-content">
@@ -74,72 +82,11 @@
             </div>
         </div>
 
-        <!-- ================= MÓDULO BASE 1: PROCESSO ================= -->
-        <div class="section-container modulo-universal">
-            <h3>Dados do Processo</h3>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Subseção Judiciária:</label>
-                    <input type="text" id="subsecao" placeholder="Ex: CRATEÚS/CE">
-                </div>
-                <div class="form-group">
-                    <label>DER (Data do Requerimento):</label>
-                    <input type="text" id="der" placeholder="Ex: 24/03/2026" maxlength="10">
-                </div>
-                <div class="form-group">
-                    <label>Número do Benefício (NB):</label>
-                    <input type="text" id="nb" placeholder="Ex: 123.456.789-0">
-                </div>
-                <div class="form-group">
-                    <label>Valor da Causa:</label>
-                    <input type="text" id="valorCausa" placeholder="Ex: 15.450,00">
-                    <span id="textoValorExtenso" style="font-size: 0.75rem; color: var(--accent); display: block; margin-top: 5px; font-weight: 500;"></span>
-                </div>
-                <div class="form-group">
-                    <label>Número da OAB:</label>
-                    <input type="text" id="oabAdvogado" placeholder="Ex: 32185">
-                </div>
-                <div class="form-group">
-                    <label>UF da OAB:</label>
-                    <input type="text" id="ufOab" placeholder="Ex: CE, SP, RJ" maxlength="2">
-                </div>
-                
-                <!-- =============== ENDEREÇO DA AGÊNCIA DO INSS =============== -->
-                <div class="form-group full-width" style="margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 15px;">
-                    <label style="color: var(--accent);">ENDEREÇO DA AGÊNCIA DO INSS</label>
-                </div>
-                <div class="form-group">
-                    <label>CEP do INSS:</label>
-                    <input type="text" id="cepInss" placeholder="Ex: 00000-000" maxlength="9">
-                </div>
-                <div class="form-group">
-                    <label>Rua/Logradouro do INSS:</label>
-                    <input type="text" id="ruaInss" placeholder="Ex: R. Cel. Xavier de Toledo">
-                </div>
-                <div class="form-group">
-                    <label>Número (Agência):</label>
-                    <input type="text" id="numeroInss" placeholder="Ex: 280">
-                </div>
-                <div class="form-group">
-                    <label>Bairro do INSS:</label>
-                    <input type="text" id="bairroInss" placeholder="Ex: Consolação, Centro">
-                </div>
-                <div class="form-group">
-                    <label>Cidade do INSS:</label>
-                    <input type="text" id="cidadeInss" placeholder="Ex: São Paulo">
-                </div>
-                <div class="form-group">
-                    <label>UF do INSS (Sigla):</label>
-                    <input type="text" id="ufInss" placeholder="Ex: SP" maxlength="2">
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= MÓDULO BASE 2: QUALIFICAÇÃO ================= -->
+        <!-- ================= QUALIFICAÇÃO ================= -->
         <div class="section-container modulo-universal">
             <h3>Dados Pessoais e Residenciais</h3>
             <div class="form-grid">
-                <!-- =============== DADOS DO CLIENTE =============== -->
+                <!-- DADOS DO CLIENTE -->
                 <div class="form-group full-width">
                     <label>Nome do Requerente:</label>
                     <input type="text" id="nomeCliente" placeholder="Nome completo do(a) autor(a) da ação">
@@ -167,7 +114,7 @@
                     <input type="text" id="estadoCivilCliente" placeholder="Ex: Solteiro(a), Casado(a), Divorciado(a)">
                 </div>
 
-                <!-- =============== REPRESENTANTE LEGAL =============== -->
+                <!-- REPRESENTANTE LEGAL -->
                 <div class="full-width toggle-container" style="margin-top: 15px;">
                     <span>O Requerente possui Representante?</span>
                     <label class="switch">
@@ -209,8 +156,8 @@
                     </div>
                 </div>
 
-                <!-- =============== ENDEREÇO DO CLIENTE =============== -->
-                <div class="form-group full-width" style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 15px;">
+                <!-- ENDEREÇO DO CLIENTE -->
+                <div class="form-group full-width">
                     <h3>Endereço</h3>
                 </div>
                 <div class="form-group">
@@ -240,7 +187,68 @@
             </div>
         </div>
 
-        <!-- ================= MÓDULO BASE 3: DADOS MÉDICOS E LAUDOS ================= -->
+        <!-- ================= DADOS DO PROCESSO ================= -->
+        <div class="section-container modulo-universal">
+            <h3>Dados do Processo</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Subseção Judiciária:</label>
+                    <input type="text" id="subsecao" placeholder="Ex: CRATEÚS/CE">
+                </div>
+                <div class="form-group">
+                    <label>DER (Data do Requerimento):</label>
+                    <input type="text" id="der" placeholder="Ex: 24/03/2026" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label>Número do Benefício (NB):</label>
+                    <input type="text" id="nb" placeholder="Ex: 123.456.789-0">
+                </div>
+                <div class="form-group">
+                    <label>Valor da Causa:</label>
+                    <input type="text" id="valorCausa" placeholder="Ex: 15.470,00">
+                    <span id="textoValorExtenso" style="font-size: 0.75rem; color: var(--accent); display: block; margin-top: 5px; font-weight: 500;"></span>
+                </div>
+                <div class="form-group">
+                    <label>Número da OAB:</label>
+                    <input type="text" id="oabAdvogado" placeholder="Ex: 32185">
+                </div>
+                <div class="form-group">
+                    <label>UF da OAB:</label>
+                    <input type="text" id="ufOab" placeholder="Ex: CE, SP, RJ" maxlength="2">
+                </div>
+                
+                <!-- ENDEREÇO DA AGÊNCIA DO INSS -->
+                <div class="form-group full-width">
+                    <h3>Endereço da Agência do INSS</h3>
+                </div>
+                <div class="form-group">
+                    <label>CEP do INSS:</label>
+                    <input type="text" id="cepInss" placeholder="Ex: 00000-000" maxlength="9">
+                </div>
+                <div class="form-group">
+                    <label>Rua do INSS:</label>
+                    <input type="text" id="ruaInss" placeholder="Ex: R. Cel. Xavier de Toledo">
+                </div>
+                <div class="form-group">
+                    <label>Número (Agência):</label>
+                    <input type="text" id="numeroInss" placeholder="Ex: 280">
+                </div>
+                <div class="form-group">
+                    <label>Bairro do INSS:</label>
+                    <input type="text" id="bairroInss" placeholder="Ex: Consolação, Centro">
+                </div>
+                <div class="form-group">
+                    <label>Cidade do INSS:</label>
+                    <input type="text" id="cidadeInss" placeholder="Ex: São Paulo">
+                </div>
+                <div class="form-group">
+                    <label>UF do INSS (Sigla):</label>
+                    <input type="text" id="ufInss" placeholder="Ex: SP" maxlength="2">
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= DADOS MÉDICOS ================= -->
         <div class="section-container modulo-universal">
             <h3>Dados Médicos e Fatores Periciais</h3>
             <div class="form-grid">
@@ -262,28 +270,28 @@
                 </div>
             </div>
 
-            <h4 style="margin: 20px 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Imagens Médicas (Múltiplos Arquivos Permitidos)</h4>
+            <h4 style="margin: 20px 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Imagens Médicas</h4>
             
             <div onclick="selecionarCaixa('img_laudo')" id="caixa_img_laudo" class="image-box">
                 <strong>Imagem do Laudo Principal</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                <span class="hint-text">Clique e cole (Ctrl+V).</span>
                 <div id="galeria_img_laudo" class="gallery-container"></div>
             </div>
 
             <div onclick="selecionarCaixa('img_pericial')" id="caixa_img_pericial" class="image-box">
                 <strong>Imagem da Avaliação Pericial</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                <span class="hint-text">Clique e cole (Ctrl+V).</span>
                 <div id="galeria_img_pericial" class="gallery-container"></div>
             </div>
 
             <div onclick="selecionarCaixa('anexos_medicos')" id="caixa_anexos_medicos" class="image-box" style="border-color: var(--success);">
                 <strong style="color: var(--success);">+ Documentos Médicos Extras (Receitas, Exames)</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V). Você pode colar quantas imagens quiser.</span>
+                <span class="hint-text">Clique e cole (Ctrl+V).</span>
                 <div id="galeria_anexos_medicos" class="gallery-container"></div>
             </div>
         </div>
 
-        <!-- ================= MÓDULO BASE 4: SOCIOECONÔMICO ================= -->
+        <!-- ================= SOCIOECONÔMICO ================= -->
         <div class="section-container modulo-universal">
             <h3>Dados Socioeconômicos e Residência</h3>
 
@@ -294,11 +302,11 @@
                 </div>
             </div>
             
-            <h4 style="margin: 0 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Imagens Socioeconômicas (Múltiplos Arquivos Permitidos)</h4>
+            <h4 style="margin: 0 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Imagens Socioeconômicas</h4>
 
             <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box">
                 <strong>Imagem da Renda</strong>
-                <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                <span class="hint-text">Clique e cole (Ctrl+V).</span>
                 <div id="galeria_img_renda" class="gallery-container"></div>
             </div>
 
@@ -312,7 +320,6 @@
         <!-- ================= TESES CONDICIONAIS ================= -->
         <div id="containerDinamicoTeses">
             
-            <!-- BLOCO PRIORIDADE DE TRAMITAÇÃO -->
             <div id="blocoPrioridade" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
                 <h3>Dados da Prioridade de Tramitação</h3>
                 <div class="form-grid">
@@ -327,7 +334,6 @@
                 </div>
             </div>
             
-            <!-- BLOCO AUSÊNCIA DE COISA JULGADA -->
             <div id="blocoCoisaJulgada" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
                 <h3>Dados da Ação Anterior (Coisa Julgada)</h3>
                 <div class="form-grid">
@@ -360,16 +366,14 @@
                         <textarea id="documentosNovosRelacao" rows="3" placeholder="Liste os documentos que provam a piora. Ex: laudo psiquiátrico atualizado, receituários novos e extrato do CadÚnico demonstrando a perda de renda..."></textarea>
                     </div>
                 </div>
-
                 <h4 style="margin: 20px 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Prints/Imagens de Documentos Novos</h4>
                 <div onclick="selecionarCaixa('img_coisa_julgada')" id="caixa_img_coisa_julgada" class="image-box">
                     <strong>Adicionar Prints dos Documentos</strong>
-                    <span class="hint-text">Clique e cole (Ctrl+V). Pode colar mais de uma.</span>
+                    <span class="hint-text">Clique e cole (Ctrl+V).</span>
                     <div id="galeria_img_coisa_julgada" class="gallery-container"></div>
                 </div>
             </div>
 
-            <!-- BLOCO PERÍCIA JUDICIAL -->
             <div id="blocoPericiaJudicial" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
                 <h3>Dados da Perícia Judicial</h3>
                 <div class="form-grid">
@@ -397,10 +401,8 @@
                 </div>
             </div>
 
-            <!-- BLOCO JULGAMENTO ANTECIPADO -->
             <div id="blocoJulgamentoAntecipado" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
                 <h3>Dados do Julgamento Antecipado (Sem Perícia)</h3>
-                
                 <div class="form-group full-width" style="margin-bottom: 15px;">
                     <label>Escolha a Hipótese a ser utilizada na tese:</label>
                     <div style="display: flex; gap: 20px; margin-top: 10px;">
@@ -415,7 +417,6 @@
                     </div>
                 </div>
 
-                <!-- Campos da Hipótese 1 -->
                 <div id="camposHipReconhecida" class="form-grid full-width" style="display: none; border-top: 1px dashed var(--border); padding-top: 15px;">
                     <div class="form-group full-width">
                         <label>Motivo do Indeferimento no INSS:</label>
@@ -427,7 +428,6 @@
                     </div>
                 </div>
 
-                <!-- Campos da Hipótese 2 -->
                 <div id="camposHipNotoria" class="form-grid full-width" style="display: none; border-top: 1px dashed var(--border); padding-top: 15px;">
                     <div class="form-group">
                         <label>Caráter da Condição:</label>
@@ -444,7 +444,6 @@
                 </div>
             </div>
 
-            <!-- BLOCO PROVA EMPRESTADA -->
             <div id="blocoProvaEmprestada" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
                 <h3>Dados da Prova Emprestada (Interdição/Curatela)</h3>
                 <div class="form-grid">
@@ -479,7 +478,6 @@
                 </div>
             </div>
 
-            <!-- BLOCO FIXAÇÃO DA DIB -->
             <div id="blocoFixacaoDib" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
                 <h3>Dados da Fixação da DIB na DER</h3>
                 <div class="form-grid">
@@ -494,7 +492,6 @@
                 </div>
             </div>
 
-            <!-- BLOCO REAFIRMAÇÃO DA DER -->
             <div id="blocoReafirmacaoDer" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
                 <h3>Dados da Reafirmação da DER</h3>
                 <div class="form-grid">
@@ -504,18 +501,34 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- ================= FINALIZAÇÃO ================= -->
-        <div class="section-container modulo-universal" style="display: flex; align-items: center; gap: 15px;">
-            <button onclick="selecionarPdf()">Anexar Arquivo PDF</button>
-            <span id="label_pdf" style="font-size: 13px; color: var(--text-muted);">Nenhum PDF selecionado</span>
+        <div class="section-container modulo-universal" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button onclick="selecionarPdf()" style="margin: 0;">Anexar Arquivo PDF</button>
+                <span id="label_pdf" style="font-size: 13px; color: var(--text-muted);">Nenhum PDF selecionado</span>
+            </div>
+            
+            <!-- Grupo dos Botões Principais -->
+            <div style="display: flex; gap: 15px; flex: 1; justify-content: flex-end;">
+                <button class="btn-primary btn-danger" style="margin: 0; width: auto; white-space: nowrap; padding: 14px 28px;" onclick="limparDados()">Limpar Dados</button>
+                <button class="btn-primary" style="margin: 0; width: auto; white-space: nowrap; padding: 14px 28px;" onclick="enviarDados()">Gerar Petição</button>
+            </div>
         </div>
+    </div> <!-- FIM DO TELA FORMULARIO -->
 
-        <button class="btn-primary" onclick="enviarDados()">Gerar Petição</button>
+    <!-- ================= MODAL CUSTOMIZADO DE CONFIRMAÇÃO ================= -->
+    <div id="modalConfirmacao" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <p>Tem certeza que deseja limpar todos os dados preenchidos?</p>
+            <div class="modal-buttons">
+                <button class="btn-cancelar" onclick="fecharModalLimpar()">Cancelar</button>
+                <button class="btn-primary btn-danger" style="margin: 0; width: auto; padding: 12px 24px;" onclick="executarLimpeza()">Sim, limpar tudo</button>
+            </div>
+        </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
