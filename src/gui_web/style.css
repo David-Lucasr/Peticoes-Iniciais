@@ -90,7 +90,7 @@ h3 {
     font-family: 'Fraunces', serif;
     font-weight: 600;
     color: var(--text);
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     letter-spacing: 0.02em;
     width: 100%;
 }
@@ -526,4 +526,30 @@ input.campo-invalido {
     color: #111; /* Cor escura para dar contraste com o fundo colorido */
     font-size: 14px;
     font-weight: 900;
+}
+
+#cpfCliente.campo-invalido,
+#cpfRepresentante.campo-invalido {
+    border-color: #ef4444 !important; /* Borda vermelha */
+    background-color: rgba(239, 68, 68, 0.05) !important; /* Fundo levemente avermelhado */
+    color: #ef4444 !important; /* Texto avermelhado */
+}
+
+/* Efeito de brilho vermelho ao clicar na caixa errada */
+#cpfCliente.campo-invalido:focus,
+#cpfRepresentante.campo-invalido:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ✅ Quando o CPF está CERTO */
+#cpfCliente.campo-valido,
+#cpfRepresentante.campo-valido {
+    border-color: #10b981 !important; /* Borda verde */
+    background-color: rgba(16, 185, 129, 0.05) !important; /* Fundo levemente esverdeado */
+}
+
+/* Efeito de brilho verde ao clicar na caixa certa */
+#cpfCliente.campo-valido:focus,
+#cpfRepresentante.campo-valido:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
 }

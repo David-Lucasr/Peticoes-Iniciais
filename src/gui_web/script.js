@@ -494,6 +494,12 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
 
         // --- NOVOS CAMPOS: REAFIRMAÇÃO DA DER ---
         if (document.getElementById('dataReafirmacaoDer')) document.getElementById('dataReafirmacaoDer').value = '15 de agosto de 2026';
+
+        // --- DADOS MÉDICOS E FATORES PERICIAIS ---
+        if (document.getElementById('diagnosticoCid')) document.getElementById('diagnosticoCid').value = 'Transtorno do Espectro Autista - CID 10 F84.0';
+        if (document.getElementById('siglaDoenca')) document.getElementById('siglaDoenca').value = 'TEA';
+        if (document.getElementById('fatoresAvaliacao')) document.getElementById('fatoresAvaliacao').value = 'Impedimento de longo prazo e fatores ambientais GRAVES';
+        if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'O paciente apresenta severa dificuldade de interação social, ausência de fala e crises de agressividade constantes, necessitando de acompanhamento contínuo para atividades básicas da vida diária.';
         
         // Dispara os eventos de formatação e Validação de CPF
         document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
@@ -626,11 +632,14 @@ function verificarCampoCPF(evento) {
     const input = evento.target;
     const cpf = input.value;
     
-    if (cpf === "") {
+    // Se o campo estiver vazio ou incompleto (menos de 14 caracteres com a máscara), fica neutro.
+    // Isso evita que a caixa fique vermelha enquanto o usuário ainda está na metade do CPF.
+    if (cpf.length < 14) {
         input.classList.remove('campo-valido', 'campo-invalido');
         return;
     }
     
+    // Assim que bater os 14 caracteres, ele testa na mesma hora
     if (calcularValidadeCPF(cpf)) {
         input.classList.remove('campo-invalido');
         input.classList.add('campo-valido');
@@ -641,11 +650,12 @@ function verificarCampoCPF(evento) {
 }
 
 document.getElementById('cpfCliente').addEventListener('input', mascararCPF);
-document.getElementById('cpfCliente').addEventListener('blur', verificarCampoCPF);
+// Trocamos o 'blur' por 'input' abaixo para checar em tempo real:
+document.getElementById('cpfCliente').addEventListener('input', verificarCampoCPF); 
 
 document.getElementById('cpfRepresentante').addEventListener('input', mascararCPF);
-document.getElementById('cpfRepresentante').addEventListener('blur', verificarCampoCPF);
-
+// Trocamos o 'blur' por 'input' abaixo para checar em tempo real:
+document.getElementById('cpfRepresentante').addEventListener('input', verificarCampoCPF);
 function mascararCEP(evento) {
     let v = evento.target.value.replace(/\D/g, ""); 
     v = v.replace(/^(\d{5})(\d)/, "$1-$2"); 
