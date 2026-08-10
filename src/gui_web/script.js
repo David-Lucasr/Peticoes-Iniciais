@@ -228,36 +228,36 @@ async function selecionarPdf() {
 // 5. ENVIO PARA O PYTHON
 // =========================================================
 async function enviarDados() {
+
+    // =========================================================
+    // TRAVA DE SEGURANÇA: BLOQUEIA CPF INVÁLIDO
+    // =========================================================
+    // Usamos nomes diferentes (elementoCpf) para não dar conflito no JavaScript
+    const elementoCpfCliente = document.getElementById('cpfCliente');
+    if (elementoCpfCliente.classList.contains('campo-invalido')) {
+        alert("⚠️ O CPF do Requerente está inválido! Por favor, corrija antes de gerar a petição.");
+        elementoCpfCliente.focus(); // Joga o cursor piscando de volta para a caixa
+        return; // PARA TUDO AQUI!
+    }
+
+    const possuiRep = document.getElementById('temRepresentante').checked;
+    const elementoCpfRep = document.getElementById('cpfRepresentante');
+    if (possuiRep && elementoCpfRep.classList.contains('campo-invalido')) {
+        alert("⚠️ O CPF do Representante está inválido! Por favor, corrija antes de gerar a petição.");
+        elementoCpfRep.focus();
+        return; 
+    }
+    // =========================================================
+    
     const pastaSelecionada = await pywebview.api.escolher_pasta();
     if (!pastaSelecionada) {
         alert("Você precisa escolher uma pasta de destino!");
         return;
     }
 
-    const cpfCliente = document.getElementById('cpfCliente').value;
-    const possuiRep = document.getElementById('temRepresentante').checked;
-    const cpfRep = document.getElementById('cpfRepresentante').value;
-    
-    let erroCpf = false;
-
-    if (!calcularValidadeCPF(cpfCliente)) {
-        document.getElementById('cpfCliente').classList.add('campo-invalido');
-        erroCpf = true;
-    } else {
-        document.getElementById('cpfCliente').classList.remove('campo-invalido');
-    }
-
-    if (possuiRep && !calcularValidadeCPF(cpfRep)) {
-        document.getElementById('cpfRepresentante').classList.add('campo-invalido');
-        erroCpf = true;
-    } else if (possuiRep) {
-        document.getElementById('cpfRepresentante').classList.remove('campo-invalido');
-    }
-
-    if (erroCpf) {
-        alert("Atenção: Os CPFs destacados em vermelho são inválidos. Corrija-os antes de gerar a petição.");
-        return; 
-    }
+    // Agora pegamos os valores em texto limpo
+    const cpfCliente = elementoCpfCliente.value;
+    const cpfRep = elementoCpfRep.value;
 
     let rgClienteFinal = document.getElementById('rgCliente').value.trim();
     if (rgClienteFinal === "") rgClienteFinal = "______________";
@@ -289,6 +289,9 @@ async function enviarDados() {
     }
 
     const payloadBruto = {
+        // --- VARIÁVEL DO SUBMENU: Avisa o Python qual modelo usar! ---
+        tipo_beneficio_escolhido: tipoBpcSelecionado,
+
         // --- TESES CONDICIONAIS ---
         tese_coisa_julgada: document.getElementById('chkCoisaJulgada') ? document.getElementById('chkCoisaJulgada').checked : false,
         tese_pericia_judicial: document.getElementById('chkPericiaJudicial') ? document.getElementById('chkPericiaJudicial').checked : false,
@@ -330,7 +333,7 @@ async function enviarDados() {
         rua_inss: ruaInss, numero_inss: numeroInss, bairro_inss: bairroInss, 
         cidade_inss: cidadeInss, uf_inss: ufInss, cep_inss: cepInss,
         
-        // --- DADOS DINÂMICOS DA DEFICIÊNCIA (se existirem na tela) ---
+        // --- DADOS DINÂMICOS DA DEFICIÊNCIA ---
         diagnostico_cid: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
         sigla_doenca: document.getElementById('siglaDoenca') ? document.getElementById('siglaDoenca').value : "",
         fatores_avaliacao: document.getElementById('fatoresAvaliacao') ? document.getElementById('fatoresAvaliacao').value : "",
@@ -781,4 +784,54 @@ function executarLimpeza() {
 
     // 9. Rola a página suavemente de volta para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// =========================================================
+// 9. NAVEGAÇÃO ENTRE TELAS (MENU <-> SUBMENU <-> FORMULÁRIOS)
+// =========================================================
+
+// Variável global para saber qual BPC o usuário escolheu
+let tipoBpcSelecionado = ""; 
+
+// 1. Sai do Menu Principal e abre o Submenu de BPC
+function abrirSubMenuBpc() {
+    document.getElementById('telaMenu').classList.remove('active');
+    document.getElementById('telaSubMenuBpc').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 2. Volta do Submenu de BPC para o Menu Principal
+function voltarMenuPrincipal() {
+    document.getElementById('telaSubMenuBpc').classList.remove('active');
+    document.getElementById('telaMenu').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/// 3. Sai do Submenu e abre o Formulário (Guardando a escolha!)
+function abrirFormularioBpc(tipo) {
+    tipoBpcSelecionado = tipo; // Salva se é 'deficiencia' ou 'renda'
+    
+    // Atualiza o título da tela para o usuário saber em qual modelo está trabalhando
+    const titulo = document.getElementById('tituloFormulario');
+    if (tipo === 'deficiencia') {
+        titulo.innerText = "Formulário: BPC por Deficiência";
+    } else if (tipo === 'renda') {
+        titulo.innerText = "Formulário: BPC (Renda)";
+    }
+
+    document.getElementById('telaSubMenuBpc').classList.remove('active');
+    document.getElementById('telaFormulario').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 4. Volta do Formulário para o Submenu
+function voltarSubMenuBpc() {
+    document.getElementById('telaFormulario').classList.remove('active');
+    document.getElementById('telaSubMenuBpc').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Aviso temporário para os botões que ainda não têm formulário
+function abrirEmBreve() {
+    alert("Em breve! O formulário para este benefício será adicionado nas próximas atualizações.");
 }

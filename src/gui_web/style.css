@@ -524,7 +524,7 @@ input.campo-invalido {
 .tese-card input[type="checkbox"]:checked + .tese-content .custom-checkbox::after {
     content: "✓";
     color: #111; /* Cor escura para dar contraste com o fundo colorido */
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 900;
 }
 
@@ -558,17 +558,15 @@ input.campo-invalido {
 /* BOTÃO DE ALERTA / LIMPAR DADOS            */
 /* ========================================= */
 .btn-danger {
-    background: linear-gradient(180deg, #f87171, #ef4444) !important; /* Gradiente vermelho */
-    color: #ffffff !important;
-    border: none !important;
+    background: linear-gradient(180deg, #ff6c6c, #ef4444) !important; /* Gradiente vermelho */
+    color: #f8f8f8 !important;
+    border: 2px solid #ef4444 !important;
     
     /* COPIANDO O FORMATO EXATO DO BOTÃO GERAR PETIÇÃO */
     padding: 15px !important; 
     font-size: 1rem !important;    
     font-weight: 700 !important;   
     border-radius: var(--radius-md) !important; 
-    
-    /* Sombra vermelha para combinar com a dourada */
     box-shadow: 0 12px 24px -10px rgba(239, 68, 68, 0.5) !important;
 }
 

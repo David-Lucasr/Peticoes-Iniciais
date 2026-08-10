@@ -8,14 +8,87 @@
 </head>
 <body>
 
-    <!-- CAIXA PRINCIPAL DA TELA (Garante o alinhamento e o fundo) -->
-    <div id="telaFormulario" class="step-screen active">
-
-        <!-- ================= CABEÇALHO ================= -->
-        <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
-            <h1 id="tituloFormulario" style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700;">
+    <!-- ======================================================= -->
+    <!-- TELA 1: MENU PRINCIPAL                                  -->
+    <!-- ======================================================= -->
+    <div id="telaMenu" class="step-screen active">
+        
+        <div class="header-container" style="margin-bottom: 35px; padding-bottom: 15px; border-bottom: 1px solid var(--border); text-align: center;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 2.2rem; font-weight: 700;">
                 Banco de Petições
             </h1>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 5px;">Selecione o tipo de benefício para gerar a petição inicial</p>
+        </div>
+
+        <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;">
+            <!-- MUDANÇA: Agora este botão chama o Submenu -->
+            <div class="menu-card" onclick="abrirSubMenuBpc()">
+                <h3>BPC / LOAS</h3>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Benefício Assistencial à Pessoa com Deficiência ou Idoso</p>
+            </div>
+
+            <div class="menu-card" onclick="abrirEmBreve()">
+                <h3>Rural</h3>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Segurado Especial, Trabalhador Rural, Pescador</p>
+            </div>
+
+            <div class="menu-card" onclick="abrirEmBreve()">
+                <h3>Urbana</h3>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Trabalhador Urbano</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- TELA 1.5: SUBMENU BPC / LOAS                            -->
+    <!-- ======================================================= -->
+    <div id="telaSubMenuBpc" class="step-screen">
+        
+        <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); text-align: center;">
+            <button class="btn-cancelar" style="margin-bottom: 15px; padding: 6px 12px; font-size: 13px;" onclick="voltarMenuPrincipal()">
+                ← Voltar ao Menu Principal
+            </button>
+            <h1 style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700;">
+                Qual o tipo de BPC?
+            </h1>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 5px;">Selecione o fundamento do benefício assistencial</p>
+        </div>
+
+        <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;">
+            
+            <div class="menu-card" onclick="abrirFormularioBpc('deficiencia')">
+                <h3 style="color:  #ffffff;">BPC por Deficiência</h3>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Impedimentos de longo prazo (físico, mental, intelectual ou sensorial)</p>
+            </div>
+
+            <!-- O BOTÃO FOI ATUALIZADO AQUI -->
+            <div class="menu-card" onclick="abrirFormularioBpc('renda')">
+                <h3 style="color: #ffffff;">BPC (Renda)</h3>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Foco na comprovação de miserabilidade e superação do critério de 1/4 do salário mínimo</p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ======================================================= -->
+    <!-- TELA 2: FORMULÁRIO BPC/LOAS                             -->
+    <!-- ======================================================= -->
+    <div id="telaFormulario" class="step-screen">
+
+        <!-- CABEÇALHO DO BPC COM BOTÃO DE VOLTAR -->
+        <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+            
+            <!-- MUDANÇA: Agora este botão volta para o Submenu -->
+            <button class="btn-cancelar" style="margin-bottom: 15px; padding: 6px 12px; font-size: 13px;" onclick="voltarSubMenuBpc()">
+                ← Voltar
+            </button>
+
+            <!-- O JavaScript vai mudar este título automaticamente dependendo do clique -->
+            <h1 id="tituloFormulario" style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700; text-align: left;">
+                Formulário: BPC / LOAS
+            </h1>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px; text-align: left;">Selecione as teses e preencha os dados do processo para gerar o documento formatado.</p>
         </div>
 
         <!-- ================= PAINEL DE TESES ================= -->
@@ -506,7 +579,7 @@
         <!-- ================= FINALIZAÇÃO ================= -->
         <div class="section-container modulo-universal" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <button onclick="selecionarPdf()" style="margin: 0;">Anexar Arquivo PDF</button>
+                <button onclick="selecionarPdf()" style="margin: 0;">Anexar PA (PDF)</button>
                 <span id="label_pdf" style="font-size: 13px; color: var(--text-muted);">Nenhum PDF selecionado</span>
             </div>
             
