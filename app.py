@@ -1,7 +1,8 @@
 import os
 import sys
 import webview
-from src.word_processor import gerar_documento, converter_para_maiusculo_recursivo
+import re
+from src.word_processor import gerar_documento
 from src.pdf_processor import processar_pdf
 
 def obter_caminho_raiz(caminho_relativo):
@@ -29,6 +30,9 @@ class Api:
     def gerar_formulario(self, dados):
         print(f"Dados recebidos do JS: {dados}")
 
+        if not dados or 'pasta_destino' not in dados or not dados['pasta_destino']:
+            return "Erro: A pasta de destino é obrigatória e não foi enviada pelo formulário."
+
         # Verifica se a chave de representante está ligada para colocar o sufixo
         sufixo_rep = "_rep" if dados.get('tem_representante') else ""
         
@@ -40,8 +44,10 @@ class Api:
         pasta_destino = dados['pasta_destino']
         
         # Nome do arquivo de saída
-        nome_cliente = dados.get('nome_cliente', 'Cliente_Sem_Nome').upper()
-        nome_arquivo_word = f"INICIAL - {nome_cliente}.docx"
+        nome_cliente_bruto = dados.get('nome_cliente', 'Cliente_Sem_Nome').upper()
+        nome_cliente_seguro = re.sub(r'[^\w\s-]', '', nome_cliente_bruto).strip()
+
+        nome_arquivo_word = f"INICIAL - {nome_cliente_seguro}.docx"
         caminho_saida_word = os.path.join(pasta_destino, nome_arquivo_word)
 
         try:
@@ -53,6 +59,9 @@ class Api:
             if 'caminho_pdf' in dados and dados['caminho_pdf']:
                 processar_pdf(dados['caminho_pdf'], pasta_destino, dados['nome_cliente'])
                 mensagem += "\n\nO PA foi anexado!"
+
+            if os.name == 'nt':
+                os.startfile(pasta_destino)
                 
             return mensagem
         except FileNotFoundError:

@@ -11,15 +11,22 @@ def converter_para_maiusculo_recursivo(dado, chave_atual=None):
     }
     
     if isinstance(dado, str):
-        if chave_atual in chaves_excecao:
-            return dado
-        return dado.upper()
+        # 1. Mantém original se for exceção, senão passa para maiúsculo
+        texto = dado if chave_atual in chaves_excecao else dado.upper()
+        
+        # 2. ESCUDO XML: Converte caracteres especiais para que o Word entenda como texto
+        # É vital que o '&' seja o primeiro a ser substituído!
+        texto = texto.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        
+        return texto
+        
     elif isinstance(dado, dict):
         return {k: converter_para_maiusculo_recursivo(v, chave_atual=k) for k, v in dado.items()}
+    
     elif isinstance(dado, list):
         return [converter_para_maiusculo_recursivo(item, chave_atual=chave_atual) for item in dado]
+    
     return dado
-
 def processar_lista_imagens(doc, lista_base64, prefixo, arquivos_temp):
     lista_inline = []
     if lista_base64:

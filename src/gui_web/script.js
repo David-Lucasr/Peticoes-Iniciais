@@ -98,6 +98,17 @@ function sincronizarRgCpf(tipo) {
 // =========================================================
 // 3. GESTÃO DE IMAGENS (Todas as caixas aceitam múltiplas imagens)
 // =========================================================
+
+function escaparHtml(texto) {
+    if (!texto) return "";
+    return String(texto)
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
 let imgRenda = [];
 let imgPericial = [];
 let imgLaudo = [];
@@ -171,8 +182,11 @@ function renderizarGaleria(idContainer, arrayDados, tipo) {
         const card = document.createElement('div');
         card.className = 'gallery-card';
         
+        // NOVO: Passa o título pelo escudo antes de injetar
+        let tituloSeguro = escaparHtml(item.titulo);
+        
         let htmlInput = tipo === 'medicos' 
-            ? `<input type="text" placeholder="Ex: Receita" value="${item.titulo}" onchange="atualizarTitulo(${item.id}, this.value)" onclick="event.stopPropagation();">` 
+            ? `<input type="text" placeholder="Ex: Receita" value="${tituloSeguro}" onchange="atualizarTitulo(${item.id}, this.value)" onclick="event.stopPropagation();">` 
             : '';
 
         card.innerHTML = `
@@ -389,7 +403,9 @@ async function enviarDados() {
 
     try {
         const resposta = await pywebview.api.gerar_formulario(JSON.parse(dadosJsonString));
-        alert(resposta);
+        if (resposta.includes("Erro")) {
+            alert(resposta);
+        }
     } catch (erro) {
         alert("Ocorreu um erro: " + erro);
     } finally {
