@@ -33,13 +33,13 @@ class TestSegurancaApi(unittest.TestCase):
         api = Api()
 
         pasta_segura = "/pasta/destino/segura"
-        dados_maliciosos = {
+        dados = {
             "nome_cliente": "../../../Windows/System32/cmd.exe",
             "pasta_destino": pasta_segura,
             "tem_representante": False
         }
 
-        api.gerar_formulario(dados_maliciosos)
+        api.gerar_formulario(dados)
 
         args = mock_gerar_documento.call_args[0]
         caminho_salvamento = args[1]
