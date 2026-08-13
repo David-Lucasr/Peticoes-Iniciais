@@ -11,11 +11,8 @@ def converter_para_maiusculo_recursivo(dado, chave_atual=None):
     }
     
     if isinstance(dado, str):
-        # 1. Mantém original se for exceção, senão passa para maiúsculo
         texto = dado if chave_atual in chaves_excecao else dado.upper()
-        
-        # 2. ESCUDO XML: Converte caracteres especiais para que o Word entenda como texto
-        # É vital que o '&' seja o primeiro a ser substituído!
+
         texto = texto.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
         
         return texto
@@ -49,14 +46,12 @@ def gerar_documento(caminho_template, caminho_saida, dados_formulario):
     doc = DocxTemplate(caminho_template)
     arquivos_temp = []
 
-    # 1. Processando todas as listas de imagens gerais dinamicamente
     dados_formulario['lista_img_renda'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_renda', []), 'renda', arquivos_temp)
     dados_formulario['lista_img_pericial'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_pericial', []), 'pericial', arquivos_temp)
     dados_formulario['lista_img_laudo'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_laudo', []), 'laudo', arquivos_temp)
     dados_formulario['lista_fotos_casa'] = processar_lista_imagens(doc, dados_formulario.get('fotos_casa', []), 'casa', arquivos_temp)
     dados_formulario['lista_img_coisa_julgada'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_coisa_julgada', []), 'cj', arquivos_temp)
 
-    # 2. Processando a Lista Dinâmica de Documentos Médicos (que possui títulos)
     lista_anexos_medicos = []
     if 'anexos_medicos_dinamicos' in dados_formulario:
         for i, item in enumerate(dados_formulario['anexos_medicos_dinamicos']):
@@ -77,7 +72,6 @@ def gerar_documento(caminho_template, caminho_saida, dados_formulario):
                 })
     dados_formulario['lista_anexos_medicos'] = lista_anexos_medicos
 
-    # 3. Converte os textos para Maiúsculo
     dados_formulario = converter_para_maiusculo_recursivo(dados_formulario)
 
     try:
