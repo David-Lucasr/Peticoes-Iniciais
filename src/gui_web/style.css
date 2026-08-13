@@ -558,11 +558,9 @@ input.campo-invalido {
 /* BOTÃO DE ALERTA / LIMPAR DADOS            */
 /* ========================================= */
 .btn-danger {
-    background: linear-gradient(180deg, #ff6c6c, #ef4444) !important; /* Gradiente vermelho */
+    background: linear-gradient(180deg, #f74343, #df2121) !important; /* Gradiente vermelho */
     color: #f8f8f8 !important;
-    border: 2px solid #ef4444 !important;
-    
-    /* COPIANDO O FORMATO EXATO DO BOTÃO GERAR PETIÇÃO */
+    border: 2px solid #df2121 !important;
     padding: 15px !important; 
     font-size: 1rem !important;    
     font-weight: 700 !important;   
@@ -572,7 +570,7 @@ input.campo-invalido {
 
 /* Efeito ao passar o mouse idêntico ao principal */
 .btn-danger:hover {
-    background: linear-gradient(180deg, #f87171, #ef4444) !important;
+    background: linear-gradient(180deg, #e74d4d, #ef4444) !important;
     transform: translateY(-1px) !important;
     filter: brightness(1.05) !important;
 }
