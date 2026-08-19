@@ -21,7 +21,6 @@
         </div>
 
         <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;">
-            <!-- MUDANÇA: Agora este botão chama o Submenu -->
             <div class="menu-card" onclick="abrirSubMenuBpc()">
                 <h3>BPC / LOAS</h3>
                 <p style="font-size: 0.85rem; margin-top: 5px;">Benefício Assistencial à Pessoa com Deficiência ou Idoso</p>
@@ -43,7 +42,7 @@
     <!-- TELA 1.5: SUBMENU BPC / LOAS                            -->
     <!-- ======================================================= -->
     <div id="telaSubMenuBpc" class="step-screen">
-        
+
         <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); text-align: center;">
             <button class="btn-cancelar" style="margin-bottom: 15px; padding: 6px 12px; font-size: 13px;" onclick="voltarMenuPrincipal()">
                 ← Voltar ao Menu Principal
@@ -54,37 +53,30 @@
             <p style="font-size: 14px; color: var(--text-muted); margin-top: 5px;">Selecione o fundamento do benefício assistencial</p>
         </div>
 
-        <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;">
-            
+        <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;"> 
             <div class="menu-card" onclick="abrirFormularioBpc('deficiencia')">
-                <h3 style="color:  #ffffff;">BPC por Deficiência</h3>
+                <h3 style="color: #ffffff;">BPC por Deficiência</h3>
                 <p style="font-size: 0.85rem; margin-top: 5px;">Impedimentos de longo prazo (físico, mental, intelectual ou sensorial)</p>
             </div>
 
-            <!-- O BOTÃO FOI ATUALIZADO AQUI -->
             <div class="menu-card" onclick="abrirFormularioBpc('renda')">
                 <h3 style="color: #ffffff;">BPC (Renda)</h3>
                 <p style="font-size: 0.85rem; margin-top: 5px;">Foco na comprovação de miserabilidade e superação do critério de 1/4 do salário mínimo</p>
             </div>
-
         </div>
     </div>
-
 
     <!-- ======================================================= -->
     <!-- TELA 2: FORMULÁRIO BPC/LOAS                             -->
     <!-- ======================================================= -->
     <div id="telaFormulario" class="step-screen">
 
-        <!-- CABEÇALHO DO BPC COM BOTÃO DE VOLTAR -->
         <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
             
-            <!-- MUDANÇA: Agora este botão volta para o Submenu -->
             <button class="btn-cancelar" style="margin-bottom: 15px; padding: 6px 12px; font-size: 13px;" onclick="voltarSubMenuBpc()">
                 ← Voltar
             </button>
 
-            <!-- O JavaScript vai mudar este título automaticamente dependendo do clique -->
             <h1 id="tituloFormulario" style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700; text-align: left;">
                 Formulário: BPC / LOAS
             </h1>
@@ -157,9 +149,8 @@
 
         <!-- ================= QUALIFICAÇÃO ================= -->
         <div class="section-container modulo-universal">
-            <h3>Dados Pessoais e Residenciais</h3>
+            <h3>Dados Pessoais</h3>
             <div class="form-grid">
-                <!-- DADOS DO CLIENTE -->
                 <div class="form-group full-width">
                     <label>Nome do Requerente:</label>
                     <input type="text" id="nomeCliente" placeholder="Nome completo do(a) autor(a) da ação">
@@ -187,7 +178,6 @@
                     <input type="text" id="estadoCivilCliente" placeholder="Ex: Solteiro(a), Casado(a), Divorciado(a)">
                 </div>
 
-                <!-- REPRESENTANTE LEGAL -->
                 <div class="full-width toggle-container" style="margin-top: 15px;">
                     <span>Possui Representante?</span>
                     <label class="switch">
@@ -229,7 +219,6 @@
                     </div>
                 </div>
 
-                <!-- ENDEREÇO DO CLIENTE -->
                 <div class="form-group full-width">
                     <h3>Endereço</h3>
                 </div>
@@ -256,6 +245,10 @@
                 <div class="form-group">
                     <label>UF:</label>
                     <input type="text" id="uf" placeholder="Ex: CE, PE, RN" maxlength="2">
+                </div>
+                <div class="form-group full-width">
+                    <label>Pontos de Referência:</label>
+                    <input type="text" id="pontosReferencia" placeholder="Ex: Próximo ao mercadinho central, casa de esquina...">
                 </div>
             </div>
         </div>
@@ -290,7 +283,6 @@
                     <input type="text" id="ufOab" placeholder="Ex: CE, SP, RJ" maxlength="2">
                 </div>
                 
-                <!-- ENDEREÇO DA AGÊNCIA DO INSS -->
                 <div class="form-group full-width">
                     <h3>Endereço da Agência do INSS</h3>
                 </div>
@@ -364,7 +356,7 @@
             </div>
         </div>
 
-        <!-- ================= SOCIOECONÔMICO ================= -->
+        <!-- ================= SOCIOECONÔMICO E GRUPO FAMILIAR ================= -->
         <div class="section-container modulo-universal">
             <h3>Dados Socioeconômicos e Residência</h3>
 
@@ -375,6 +367,46 @@
                 </div>
             </div>
             
+            <h4 style="margin: 0 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Membros da Família (Declaração da Composição e Renda)</h4>
+            <div id="container-familia" style="margin-bottom: 25px;">
+                <script>
+                    let htmlFamilia = "";
+                    for(let i=1; i<=9; i++) {
+                        htmlFamilia += `
+                        <div style="background: var(--surface-2); padding: 15px; border-radius: 6px; margin-bottom: 12px; border: 1px solid var(--border);">
+                            <div style="font-size: 0.9rem; font-weight: bold; color: var(--accent); margin-bottom: 10px;">FAMILIAR ${i}</div>
+                            <div class="form-grid" style="gap: 12px;">
+                                <div class="form-group">
+                                    <label>Nome Completo:</label>
+                                    <input type="text" id="fam_${i}_nome" placeholder="Nome do familiar">
+                                </div>
+                                <div class="form-group">
+                                    <label>CPF:</label>
+                                    <input type="text" id="fam_${i}_cpf" placeholder="Ex: 000.000.000-00" maxlength="14" oninput="mascararCPF(event)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Parentesco:</label>
+                                    <input type="text" id="fam_${i}_parentesco" placeholder="Ex: Filho, Cônjuge">
+                                </div>
+                                <div class="form-group">
+                                    <label>Data Nasc.:</label>
+                                    <input type="text" id="fam_${i}_nasc" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascararData(event)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Renda Mensal:</label>
+                                    <input type="text" id="fam_${i}_renda" placeholder="R$ 0,00" oninput="mascararMoeda(event)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Estado Civil:</label>
+                                    <input type="text" id="fam_${i}_estadocivil" placeholder="Ex: Solteiro">
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                    document.write(htmlFamilia);
+                </script>
+            </div>
+
             <h4 style="margin: 0 0 10px 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Imagens Socioeconômicas</h4>
 
             <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box">
@@ -583,10 +615,9 @@
                 <span id="label_pdf" style="font-size: 13px; color: var(--text-muted);">Nenhum PDF selecionado</span>
             </div>
             
-            <!-- Grupo dos Botões Principais -->
             <div style="display: flex; gap: 15px; flex: 1; justify-content: flex-end;">
                 <button class="btn-primary btn-danger" style="margin: 0; width: auto; white-space: nowrap; padding: 14px 28px;" onclick="limparDados()">Limpar Dados</button>
-                <button class="btn-primary" style="margin: 0; width: auto; white-space: nowrap; padding: 14px 28px;" onclick="enviarDados()">Gerar Petição</button>
+                <button class="btn-primary" style="margin: 0; width: auto; white-space: nowrap; padding: 14px 28px;" onclick="enviarDados()">Gerar Petição e Declaração</button>
             </div>
         </div>
     </div> <!-- FIM DO TELA FORMULARIO -->

@@ -2,6 +2,7 @@ import os
 import sys
 import webview
 import re
+from datetime import datetime
 from src.word_processor import gerar_documento
 from src.pdf_processor import processar_pdf
 
@@ -33,29 +34,55 @@ class Api:
         if not dados or 'pasta_destino' not in dados or not dados['pasta_destino']:
             return "Erro: A pasta de destino é obrigatória e não foi enviada pelo formulário."
 
-        # Verifica se a chave de representante está ligada para colocar o sufixo
-        sufixo_rep = "_rep" if dados.get('tem_representante') else ""
-        
-        # Monta o nome do template dinamicamente
-        nome_template = f"bpc_template_unificado{sufixo_rep}.docx"
-        caminho_relativo_template = f"assets/templates/{nome_template}" 
-        
-        caminho_template = obter_caminho_raiz(caminho_relativo_template)
         pasta_destino = dados['pasta_destino']
         
-        # Nome do arquivo de saída
+        # Nome do arquivo de saída seguro
         nome_cliente_bruto = dados.get('nome_cliente', 'Cliente_Sem_Nome').upper()
         nome_cliente_seguro = re.sub(r'[^\w\s-]', '', nome_cliente_bruto).strip()
 
-        nome_arquivo_word = f"INICIAL - {nome_cliente_seguro}.docx"
-        caminho_saida_word = os.path.join(pasta_destino, nome_arquivo_word)
+        # === TRATAMENTO INTELIGENTE DOS DIAGNÓSTICOS PARA TEXTO CORRIDO (TESES) ===
+        lista_diag = dados.get('lista_diagnosticos', [])
+        # Remove as bolinhas caso venham e limpa os espaços vazios
+        lista_diag_limpa = [d.replace('•', '').strip() for d in lista_diag if d.strip()]
+        
+        if len(lista_diag_limpa) == 1:
+            dados['diagnosticos_texto_corrido'] = lista_diag_limpa[0]
+        elif len(lista_diag_limpa) > 1:
+            dados['diagnosticos_texto_corrido'] = ", ".join(lista_diag_limpa[:-1]) + " e " + lista_diag_limpa[-1]
+        else:
+            dados['diagnosticos_texto_corrido'] = ""
+
+        # === TRATAMENTO DA DATA ATUAL PARA A DECLARAÇÃO DE RENDA ===
+        hoje = datetime.now()
+        meses = ["", "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+        dados['dia_atual'] = f"{hoje.day:02d}"
+        dados['mes_atual'] = meses[hoje.month]
+        dados['ano_atual'] = hoje.year
+
+        # Verifica se a chave de representante está ligada para colocar o sufixo da Inicial
+        sufixo_rep = "_rep" if dados.get('tem_representante') else ""
+        nome_template = f"bpc_template_unificado{sufixo_rep}.docx"
+        
+        caminho_template_inicial = obter_caminho_raiz(f"assets/templates/{nome_template}")
+        caminho_saida_inicial = os.path.join(pasta_destino, f"INICIAL - {nome_cliente_seguro}.docx")
+
+        # Caminho da Declaração de Renda
+        caminho_template_renda = obter_caminho_raiz("assets/templates/declaracao_renda_template.docx")
+        caminho_saida_renda = os.path.join(pasta_destino, f"DECLARACAO DA COMPOSIÇÃO E RENDA - {nome_cliente_seguro}.docx")
 
         try:
-            # 1. Gera o Word
-            gerar_documento(caminho_template, caminho_saida_word, dados)
-            mensagem = f"Sucesso! Arquivo salvo em:\n{pasta_destino}"
+            # 1. Gera a Petição Inicial
+            gerar_documento(caminho_template_inicial, caminho_saida_inicial, dados)
+
+            # 2. Gera a Declaração de Renda (Se o template existir na pasta)
+            if os.path.exists(caminho_template_renda):
+                gerar_documento(caminho_template_renda, caminho_saida_renda, dados)
+            else:
+                print("Aviso: Template de Declaração de Renda não encontrado em assets/templates/.")
+
+            mensagem = f"Sucesso! Arquivos salvos em:\n{pasta_destino}"
             
-            # 2. Processa o PDF (se o usuário escolheu um)
+            # 3. Processa o PDF (se o usuário escolheu um)
             if 'caminho_pdf' in dados and dados['caminho_pdf']:
                 processar_pdf(dados['caminho_pdf'], pasta_destino, dados['nome_cliente'])
                 mensagem += "\n\nO PA foi anexado!"
@@ -64,6 +91,7 @@ class Api:
                 os.startfile(pasta_destino)
                 
             return mensagem
+            
         except FileNotFoundError:
             return f"Erro: O modelo '{nome_template}' não foi encontrado na pasta assets/templates."
         except Exception as e:

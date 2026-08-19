@@ -75,6 +75,11 @@ function alternarRepresentante() {
 
         document.getElementById('cpfRepresentante').classList.remove('campo-invalido', 'campo-valido');
     }
+    
+    // NOVO: Aciona a sincronização para limpar o Familiar 2 se o representante for desligado
+    if (typeof sincronizarFamiliar2 === "function") {
+        sincronizarFamiliar2();
+    }
 }
 
 function sincronizarRgCpf(tipo) {
@@ -246,12 +251,11 @@ async function enviarDados() {
     // =========================================================
     // TRAVA DE SEGURANÇA: BLOQUEIA CPF INVÁLIDO
     // =========================================================
-    // Usamos nomes diferentes (elementoCpf) para não dar conflito no JavaScript
     const elementoCpfCliente = document.getElementById('cpfCliente');
     if (elementoCpfCliente.classList.contains('campo-invalido')) {
         alert("⚠️ O CPF do Requerente está inválido! Por favor, corrija antes de gerar a petição.");
-        elementoCpfCliente.focus(); // Joga o cursor piscando de volta para a caixa
-        return; // PARA TUDO AQUI!
+        elementoCpfCliente.focus(); 
+        return; 
     }
 
     const possuiRep = document.getElementById('temRepresentante').checked;
@@ -269,7 +273,6 @@ async function enviarDados() {
         return;
     }
 
-    // Agora pegamos os valores em texto limpo
     const cpfCliente = elementoCpfCliente.value;
     const cpfRep = elementoCpfRep.value;
 
@@ -302,8 +305,30 @@ async function enviarDados() {
         valorCausaFinal = `${valorDigitado} (${valorExtenso})`;
     }
 
+    // --- LÓGICA DO TEXTO CORRIDO DOS DIAGNÓSTICOS PARA AS TESES ---
+    const campoDiagnostico = document.getElementById('diagnosticoCid');
+    const listaDiagPura = campoDiagnostico ? campoDiagnostico.value.split('\n').map(d => d.trim()).filter(d => d !== '') : [];
+    
+    let diagTextoCorrido = "";
+    if (listaDiagPura.length === 1) {
+        diagTextoCorrido = listaDiagPura[0];
+    } else if (listaDiagPura.length > 1) {
+        diagTextoCorrido = listaDiagPura.slice(0, -1).join(', ') + ' e ' + listaDiagPura[listaDiagPura.length - 1];
+    }
+
+    // --- COLETA DOS MEMBROS DA FAMÍLIA EM FORMATO FIXO (1 a 9) ---
+    let payloadFamilia = {};
+    for(let i=1; i<=9; i++) {
+        payloadFamilia[`fam_${i}_nome`] = document.getElementById(`fam_${i}_nome`) ? document.getElementById(`fam_${i}_nome`).value.toUpperCase() : "";
+        payloadFamilia[`fam_${i}_cpf`] = document.getElementById(`fam_${i}_cpf`) ? document.getElementById(`fam_${i}_cpf`).value : "";
+        payloadFamilia[`fam_${i}_parentesco`] = document.getElementById(`fam_${i}_parentesco`) ? document.getElementById(`fam_${i}_parentesco`).value.toUpperCase() : "";
+        payloadFamilia[`fam_${i}_nasc`] = document.getElementById(`fam_${i}_nasc`) ? document.getElementById(`fam_${i}_nasc`).value : "";
+        payloadFamilia[`fam_${i}_renda`] = document.getElementById(`fam_${i}_renda`) ? document.getElementById(`fam_${i}_renda`).value : "R$ 0,00";
+        payloadFamilia[`fam_${i}_estadocivil`] = document.getElementById(`fam_${i}_estadocivil`) ? document.getElementById(`fam_${i}_estadocivil`).value.toUpperCase() : "";
+    }
+
     const payloadBruto = {
-        // --- VARIÁVEL DO SUBMENU: Avisa o Python qual modelo usar! ---
+        // --- VARIÁVEL DO SUBMENU ---
         tipo_beneficio_escolhido: tipoBpcSelecionado,
 
         // --- TESES CONDICIONAIS ---
@@ -331,6 +356,11 @@ async function enviarDados() {
         estado_civil_cliente: document.getElementById('estadoCivilCliente').value,
         descricao_grupo_familiar: document.getElementById('descricaoGrupoFamiliar') ? document.getElementById('descricaoGrupoFamiliar').value : "",
         
+        // --- DECLARAÇÃO DE RENDA (PONTOS E FAMÍLIA FIXA) ---
+        pontos_referencia: document.getElementById('pontosReferencia') ? document.getElementById('pontosReferencia').value.toUpperCase() : "NÃO INFORMADO",
+        ...payloadFamilia, // Joga todas as variáveis fam_1_nome até fam_9_renda aqui de uma vez
+        diagnosticos_texto_corrido: diagTextoCorrido,
+
         // --- DADOS DO REPRESENTANTE ---
         tem_representante: possuiRep,
         nome_representante: possuiRep && document.getElementById('nomeRepresentante') ? document.getElementById('nomeRepresentante').value : "",
@@ -347,8 +377,13 @@ async function enviarDados() {
         rua_inss: ruaInss, numero_inss: numeroInss, bairro_inss: bairroInss, 
         cidade_inss: cidadeInss, uf_inss: ufInss, cep_inss: cepInss,
         
-        // --- DADOS DINÂMICOS DA DEFICIÊNCIA ---
+       // --- DADOS MÉDICOS E FATORES PERICIAIS ---
         diagnostico_cid: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
+        
+        // NOVO: Transforma o texto com quebras de linha em uma lista limpa para o Word criar as bolinhas
+        lista_diagnosticos: document.getElementById('diagnosticoCid') ? 
+            document.getElementById('diagnosticoCid').value.split('\n').map(d => d.trim()).filter(d => d !== '').map(d => "• " + d) : [],
+
         sigla_doenca: document.getElementById('siglaDoenca') ? document.getElementById('siglaDoenca').value : "",
         fatores_avaliacao: document.getElementById('fatoresAvaliacao') ? document.getElementById('fatoresAvaliacao').value : "",
         detalhes_laudo: document.getElementById('detalhesLaudo') ? document.getElementById('detalhesLaudo').value : "",
@@ -395,6 +430,8 @@ async function enviarDados() {
 
         pasta_destino: pastaSelecionada,
         caminho_pdf: caminhoPdfAtual
+
+        
     };
 
     const dadosJsonString = JSON.stringify(payloadBruto);
@@ -405,6 +442,8 @@ async function enviarDados() {
         const resposta = await pywebview.api.gerar_formulario(JSON.parse(dadosJsonString));
         if (resposta.includes("Erro")) {
             alert(resposta);
+        } else {
+            alert(resposta); // Aviso de sucesso
         }
     } catch (erro) {
         alert("Ocorreu um erro: " + erro);
@@ -428,11 +467,9 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('chkFixacaoDib')) document.getElementById('chkFixacaoDib').checked = true;
         atualizarTeses();
         
-        // --- NOVOS CAMPOS: PRIORIDADE DE TRAMITAÇÃO ---
         if (document.getElementById('introLeiDeficiencia')) document.getElementById('introLeiDeficiencia').value = 'A Lei nº 12.764/12 (Lei Berenice Piana) define em seu art. 1º, § 2º que';
         if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = '§ 2º A pessoa com transtorno do espectro autista é considerada pessoa com deficiência, para todos os efeitos legais.';
         
-        // --- NOVOS CAMPOS: COISA JULGADA ---
         if (document.getElementById('anoAcaoAnterior')) document.getElementById('anoAcaoAnterior').value = '2023';
         if (document.getElementById('nomeBeneficioAnterior')) document.getElementById('nomeBeneficioAnterior').value = 'BPC/LOAS';
         if (document.getElementById('numeroProcessoAnterior')) document.getElementById('numeroProcessoAnterior').value = '0001234-56.2023.4.05.8100';
@@ -440,7 +477,6 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('tipoAgravamento')) document.getElementById('tipoAgravamento').value = 'de saúde e socioeconômico';
         if (document.getElementById('documentosNovosRelacao')) document.getElementById('documentosNovosRelacao').value = 'laudo médico pericial recente, receitas atualizadas e novo extrato do CadÚnico demonstrando a piora financeira';
         
-        // --- RESTANTE DOS DADOS ---
         document.getElementById('temRepresentante').checked = true;
         alternarRepresentante();
 
@@ -475,6 +511,33 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         document.getElementById('bairro').value = 'Capão do Embira';
         document.getElementById('cidade').value = 'São Paulo';
         document.getElementById('uf').value = 'SP';
+
+        // --- PREENCHE DADOS DOS 9 FAMILIARES PARA TESTE ---
+        if (document.getElementById('pontosReferencia')) document.getElementById('pontosReferencia').value = 'Próximo à padaria central';
+
+        const dadosTesteFamilia = [
+            { nome: 'MARIA DA SILVA', cpf: '111.111.111-11', parentesco: 'CÔNJUGE', nasc: '10/05/1980', renda: 'R$ 1.412,00', civil: 'CASADA' },
+            { nome: 'JOÃO DA SILVA', cpf: '222.222.222-22', parentesco: 'FILHO', nasc: '15/08/2010', renda: 'R$ 0,00', civil: 'SOLTEIRO' },
+            { nome: 'ANA DA SILVA', cpf: '333.333.333-33', parentesco: 'FILHA', nasc: '20/10/2012', renda: 'R$ 0,00', civil: 'SOLTEIRA' },
+            { nome: 'PEDRO DA SILVA', cpf: '444.444.444-44', parentesco: 'PAI', nasc: '02/01/1955', renda: 'R$ 1.412,00', civil: 'CASADO' },
+            { nome: 'ANTONIA DA SILVA', cpf: '555.555.555-55', parentesco: 'MÃE', nasc: '12/12/1958', renda: 'R$ 0,00', civil: 'CASADA' },
+            { nome: 'CARLOS DA SILVA', cpf: '666.666.666-66', parentesco: 'IRMÃO', nasc: '25/04/1990', renda: 'R$ 800,00', civil: 'SOLTEIRO' },
+            { nome: 'JULIANA DA SILVA', cpf: '777.777.777-77', parentesco: 'NETA', nasc: '05/06/2018', renda: 'R$ 0,00', civil: 'SOLTEIRA' },
+            { nome: 'LUCAS DA SILVA', cpf: '888.888.888-88', parentesco: 'NETO', nasc: '18/09/2020', renda: 'R$ 0,00', civil: 'SOLTEIRO' },
+            { nome: 'BEATRIZ DA SILVA', cpf: '999.999.999-99', parentesco: 'SOBRINHA', nasc: '30/11/2015', renda: 'R$ 0,00', civil: 'SOLTEIRA' }
+        ];
+
+        dadosTesteFamilia.forEach((fam, index) => {
+            let i = index + 1;
+            if (document.getElementById(`fam_${i}_nome`)) {
+                document.getElementById(`fam_${i}_nome`).value = fam.nome;
+                document.getElementById(`fam_${i}_cpf`).value = fam.cpf;
+                document.getElementById(`fam_${i}_parentesco`).value = fam.parentesco;
+                document.getElementById(`fam_${i}_nasc`).value = fam.nasc;
+                document.getElementById(`fam_${i}_renda`).value = fam.renda;
+                document.getElementById(`fam_${i}_estadocivil`).value = fam.civil;
+            }
+        });
         
         document.getElementById('cepInss').value = '01047-020';
         document.getElementById('ruaInss').value = 'R. Cel. Xavier de Toledo';
@@ -483,13 +546,11 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         document.getElementById('cidadeInss').value = 'São Paulo';
         document.getElementById('ufInss').value = 'SP';
 
-        // --- NOVOS CAMPOS: PERÍCIA JUDICIAL ---
         if (document.getElementById('tipoAcompanhamento')) document.getElementById('tipoAcompanhamento').value = 'multiprofissional';
         if (document.getElementById('unidadeSaude')) document.getElementById('unidadeSaude').value = 'CAPS Infantil';
         if (document.getElementById('naturezaImpedimento')) document.getElementById('naturezaImpedimento').value = 'mental';
         if (document.getElementById('especialidadePerito')) document.getElementById('especialidadePerito').value = 'Psiquiatria ou Neurologia';
 
-        // --- NOVOS CAMPOS: JULGAMENTO ANTECIPADO ---
         if (document.getElementById('radHipNotoria')) {
             document.getElementById('radHipNotoria').checked = true;
             alternarHipoteseJulgamento();
@@ -497,7 +558,6 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('caraterCondicao')) document.getElementById('caraterCondicao').value = 'irreversível';
         if (document.getElementById('comprovantesDeficiencia')) document.getElementById('comprovantesDeficiencia').value = 'laudos da APAE e laudo psiquiátrico atualizado';
 
-        // --- NOVOS CAMPOS: PROVA EMPRESTADA ---
         if (document.getElementById('numeroProcessoInterdicao')) document.getElementById('numeroProcessoInterdicao').value = '0123456-78.2024.8.06.0087';
         if (document.getElementById('varaInterdicao')) document.getElementById('varaInterdicao').value = 'Vara Única';
         if (document.getElementById('comarcaInterdicao')) document.getElementById('comarcaInterdicao').value = 'Guaraciaba do Norte/CE';
@@ -505,22 +565,18 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('complementoLaudoInterdicao')) document.getElementById('complementoLaudoInterdicao').value = 'e corroborado por relatório multidisciplinar do CAPS Infantil';
         if (document.getElementById('sintomasManifestacoes')) document.getElementById('sintomasManifestacoes').value = 'crises convulsivas recorrentes, ausência de fala e total dependência para atividades básicas de higiene e alimentação';
 
-        // --- NOVOS CAMPOS: FIXAÇÃO DA DIB ---
         if (document.getElementById('dataDocumentoComprovacao')) document.getElementById('dataDocumentoComprovacao').value = '10 de fevereiro de 2026';
         if (document.getElementById('fundamentacaoLegalDib')) document.getElementById('fundamentacaoLegalDib').value = 'art. 20 da Lei nº 8.742/93 c/c art. 174 do Decreto nº 3.048/99';
 
         if (document.getElementById('chkReafirmacaoDer')) document.getElementById('chkReafirmacaoDer').checked = true;
 
-        // --- NOVOS CAMPOS: REAFIRMAÇÃO DA DER ---
         if (document.getElementById('dataReafirmacaoDer')) document.getElementById('dataReafirmacaoDer').value = '15 de agosto de 2026';
 
-        // --- DADOS MÉDICOS E FATORES PERICIAIS ---
         if (document.getElementById('diagnosticoCid')) document.getElementById('diagnosticoCid').value = 'Transtorno do Espectro Autista - CID 10 F84.0';
         if (document.getElementById('siglaDoenca')) document.getElementById('siglaDoenca').value = 'TEA';
         if (document.getElementById('fatoresAvaliacao')) document.getElementById('fatoresAvaliacao').value = 'Impedimento de longo prazo e fatores ambientais GRAVES';
         if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'O paciente apresenta severa dificuldade de interação social, ausência de fala e crises de agressividade constantes, necessitando de acompanhamento contínuo para atividades básicas da vida diária.';
         
-        // Dispara os eventos de formatação e Validação de CPF
         document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
         document.getElementById('cpfRepresentante').dispatchEvent(new Event('blur'));
         
@@ -851,3 +907,70 @@ function voltarSubMenuBpc() {
 function abrirEmBreve() {
     alert("Em breve! O formulário para este benefício será adicionado nas próximas atualizações.");
 }
+
+// =========================================================
+// 10. REAPROVEITAMENTO INTELIGENTE (AUTO-PREENCHIMENTO DE FAMÍLIA)
+// =========================================================
+
+// Sincroniza Cliente -> Familiar 1
+function sincronizarFamiliar1() {
+    const nome = document.getElementById('nomeCliente').value;
+    const cpf = document.getElementById('cpfCliente').value;
+    const estadoCivil = document.getElementById('estadoCivilCliente').value;
+
+    const fam1Nome = document.getElementById('fam_1_nome');
+    const fam1Cpf = document.getElementById('fam_1_cpf');
+    const fam1Parentesco = document.getElementById('fam_1_parentesco');
+    const fam1EstadoCivil = document.getElementById('fam_1_estadocivil');
+
+    if (fam1Nome) fam1Nome.value = nome;
+    if (fam1Cpf) fam1Cpf.value = cpf;
+    if (fam1EstadoCivil) fam1EstadoCivil.value = estadoCivil;
+    
+    // Se o parentesco estiver vazio, auto-preenche com a palavra REQUERENTE
+    if (fam1Parentesco && fam1Parentesco.value.trim() === "") {
+        fam1Parentesco.value = "AUTOR";
+    }
+}
+
+// Sincroniza Representante -> Familiar 2
+function sincronizarFamiliar2() {
+    const temRep = document.getElementById('temRepresentante').checked;
+    
+    const fam2Nome = document.getElementById('fam_2_nome');
+    const fam2Cpf = document.getElementById('fam_2_cpf');
+    const fam2Parentesco = document.getElementById('fam_2_parentesco');
+    const fam2EstadoCivil = document.getElementById('fam_2_estadocivil');
+
+    if (!fam2Nome) return;
+
+    if (temRep) {
+        fam2Nome.value = document.getElementById('nomeRepresentante').value;
+        fam2Cpf.value = document.getElementById('cpfRepresentante').value;
+        fam2Parentesco.value = document.getElementById('parentescoRepresentante').value;
+        fam2EstadoCivil.value = document.getElementById('estadoCivilRepresentante').value;
+    } else {
+        // Se a chave do representante for desligada, limpa os campos do Familiar 2
+        fam2Nome.value = "";
+        fam2Cpf.value = "";
+        fam2Parentesco.value = "";
+        fam2EstadoCivil.value = "";
+    }
+}
+
+// Ativa os rastreadores de digitação assim que a tela terminar de carregar
+document.addEventListener('DOMContentLoaded', () => {
+    // Escuta os campos do Cliente
+    const camposCliente = ['nomeCliente', 'cpfCliente', 'estadoCivilCliente'];
+    camposCliente.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', sincronizarFamiliar1);
+    });
+
+    // Escuta os campos do Representante
+    const camposRep = ['nomeRepresentante', 'cpfRepresentante', 'parentescoRepresentante', 'estadoCivilRepresentante'];
+    camposRep.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', sincronizarFamiliar2);
+    });
+});
