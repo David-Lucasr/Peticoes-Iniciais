@@ -859,6 +859,23 @@ function executarLimpeza() {
 }
 
 // =========================================================
+// VALIDAÇÃO E MÁSCARA DINÂMICA PARA OS CPFS DOS FAMILIARES (1 a 9)
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Loop de 1 até 9 para aplicar máscara e validação em cada CPF de familiar
+    for (let i = 1; i <= 9; i++) {
+        const inputFamCpf = document.getElementById(`fam_${i}_cpf`);
+        if (inputFamCpf) {
+            // Aplica a máscara enquanto o usuário digita
+            inputFamCpf.addEventListener('input', (evento) => {
+                mascararCPF(evento);
+                verificarCampoCPF(evento); // Reutiliza a sua função de validação existente!
+            });
+        }
+    }
+});
+
+// =========================================================
 // 9. NAVEGAÇÃO ENTRE TELAS (MENU <-> SUBMENU <-> FORMULÁRIOS)
 // =========================================================
 
