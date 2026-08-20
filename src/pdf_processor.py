@@ -5,7 +5,7 @@ def processar_pdf(pdf_entrada, pasta_destino, nome_cliente):
     if not pdf_entrada:
         return False
         
-    caminho_saida = os.path.join(pasta_destino, f"PA - {nome_cliente}.pdf")
+    caminho_saida = os.path.join(pasta_destino, f"P.A. - {nome_cliente}.pdf")
     
     doc_original = fitz.open(pdf_entrada)
     doc_novo = fitz.open()
