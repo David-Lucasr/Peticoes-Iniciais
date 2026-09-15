@@ -43,11 +43,10 @@ function atualizarTeses() {
     const blocoCoisaJulgada = document.getElementById('blocoCoisaJulgada');
     if (blocoCoisaJulgada) blocoCoisaJulgada.style.display = isCoisaJulgada ? 'block' : 'none';
 
-
     // Blocos Exclusivos BPC (Deficiência)
     const blocoPericiaJudicial = document.getElementById('blocoPericiaJudicial');
     if (blocoPericiaJudicial) blocoPericiaJudicial.style.display = isPericiaJudicial ? 'block' : 'none';
-    
+
     const blocoJulgamento = document.getElementById('blocoJulgamentoAntecipado');
     if (blocoJulgamento) blocoJulgamento.style.display = isJulgamentoAntecipado ? 'block' : 'none';
 
@@ -76,7 +75,6 @@ function atualizarTeses() {
     const blocoEquivoco = document.getElementById('blocoEquivocoRenda');
     if (blocoEquivoco) blocoEquivoco.style.display = isEquivoco ? 'block' : 'none';
 
-
     // Blocos Exclusivos Auxílio-Doença (Contribuinte Individual)
     const blocoRestabelecimento = document.getElementById('blocoRestabelecimento');
     if (blocoRestabelecimento) blocoRestabelecimento.style.display = isRestabelecimento ? 'block' : 'none';
@@ -90,10 +88,10 @@ function atualizarTeses() {
 function alternarHipoteseJulgamento() {
     const isReconhecida = document.getElementById('radHipReconhecida') && document.getElementById('radHipReconhecida').checked;
     const isNotoria = document.getElementById('radHipNotoria') && document.getElementById('radHipNotoria').checked;
-    
+
     const camposReconhecida = document.getElementById('camposHipReconhecida');
     const camposNotoria = document.getElementById('camposHipNotoria');
-    
+
     if (camposReconhecida) camposReconhecida.style.display = isReconhecida ? 'grid' : 'none';
     if (camposNotoria) camposNotoria.style.display = isNotoria ? 'grid' : 'none';
 }
@@ -106,7 +104,7 @@ window.onload = atualizarTeses;
 function alternarRepresentante() {
     const checkbox = document.getElementById('temRepresentante');
     const grupo = document.getElementById('grupoRepresentante');
-    
+
     if (checkbox.checked) {
         grupo.style.display = 'grid'; 
     } else {
@@ -117,7 +115,7 @@ function alternarRepresentante() {
         document.getElementById('nacionalidadeRepresentante').value = '';
         document.getElementById('estadoCivilRepresentante').value = '';
         if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = '';
-        
+
         if (document.getElementById('numeroProcessoInterdicaoAux')) document.getElementById('numeroProcessoInterdicaoAux').value = '';
         if (document.getElementById('comarcaInterdicaoAux')) document.getElementById('comarcaInterdicaoAux').value = '';
 
@@ -127,7 +125,6 @@ function alternarRepresentante() {
 
         document.getElementById('cpfRepresentante').classList.remove('campo-invalido', 'campo-valido');
     }
-    
     if (typeof sincronizarFamiliar2 === "function") {
         sincronizarFamiliar2();
     }
@@ -250,7 +247,7 @@ function renderizarGaleria(idContainer, arrayDados, tipo) {
     arrayDados.forEach(item => {
         const card = document.createElement('div');
         card.className = 'gallery-card';
-        
+
         let tituloSeguro = escaparHtml(item.titulo);
         let htmlInput = tipo === 'medicos' 
             ? `<input type="text" placeholder="Ex: Receita" value="${tituloSeguro}" onchange="atualizarTitulo(${item.id}, this.value)" onclick="event.stopPropagation();">` 
@@ -338,7 +335,7 @@ async function enviarDados() {
         elementoCpfRep.focus();
         return; 
     }
-    
+
     const pastaSelecionada = await pywebview.api.escolher_pasta();
     if (!pastaSelecionada) {
         alert("Você precisa escolher uma pasta de destino!");
@@ -412,14 +409,14 @@ async function enviarDados() {
         valor_causa: valorCausaFinal,
         oab_advogado: document.getElementById('oabAdvogado') ? document.getElementById('oabAdvogado').value : "",
         uf_oab: document.getElementById('ufOab') ? document.getElementById('ufOab').value : "",
-        
+
         nome_cliente: document.getElementById('nomeCliente').value,
         cpf_cliente: cpfCliente,
         rg_cliente: rgClienteFinal,
         nacionalidade_cliente: document.getElementById('nacionalidadeCliente').value,
         estado_civil_cliente: document.getElementById('estadoCivilCliente').value,
         descricao_grupo_familiar: document.getElementById('descricaoGrupoFamiliar') ? document.getElementById('descricaoGrupoFamiliar').value : "",
-        
+
         pontos_referencia: document.getElementById('pontosReferencia') ? document.getElementById('pontosReferencia').value: "NÃO INFORMADO",
         ...payloadFamilia,
 
@@ -430,13 +427,13 @@ async function enviarDados() {
         parentesco_representante: possuiRep && document.getElementById('parentescoRepresentante') ? document.getElementById('parentescoRepresentante').value : "",
         nacionalidade_representante: possuiRep && document.getElementById('nacionalidadeRepresentante') ? document.getElementById('nacionalidadeRepresentante').value : "",
         estado_civil_representante: possuiRep && document.getElementById('estadoCivilRepresentante') ? document.getElementById('estadoCivilRepresentante').value : "",
-        
+
         endereco_completo: enderecoMontado,
         endereco_inss: enderecoInssMontado, 
         rua: rua, numero: numero, bairro: bairro, cidade: cidade, uf: uf, cep: cep,
         rua_inss: ruaInss, numero_inss: numeroInss, bairro_inss: bairroInss, 
         cidade_inss: cidadeInss, uf_inss: ufInss, cep_inss: cepInss,
-        
+
         diagnostico_cid: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
         diagnosticos_texto_corrido: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
         lista_diagnosticos: document.getElementById('diagnosticoCid') ? 
@@ -447,7 +444,7 @@ async function enviarDados() {
         detalhes_laudo: document.getElementById('detalhesLaudo') ? document.getElementById('detalhesLaudo').value : "",
         intro_lei_deficiencia: document.getElementById('introLeiDeficiencia') ? document.getElementById('introLeiDeficiencia').value : "",
         citacao_lei_deficiencia: document.getElementById('citacaoLeiDeficiencia') ? document.getElementById('citacaoLeiDeficiencia').value : "",
-        
+
         lista_img_renda: imgRenda.map(img => img.base64),
         lista_img_pericial: imgPericial.map(img => img.base64),
         lista_img_laudo: imgLaudo.map(img => img.base64),
@@ -494,7 +491,7 @@ async function enviarDados() {
         unidade_saude: document.getElementById('unidadeSaude') ? document.getElementById('unidadeSaude').value : "",
         natureza_impedimento: document.getElementById('naturezaImpedimento') ? document.getElementById('naturezaImpedimento').value : "",
         especialidade_perito: document.getElementById('especialidadePerito') ? document.getElementById('especialidadePerito').value : "",
-        
+
         hip_ja_reconhecida: document.getElementById('radHipReconhecida') ? document.getElementById('radHipReconhecida').checked : false,
         hip_ja_notoria: document.getElementById('radHipNotoria') ? document.getElementById('radHipNotoria').checked : false,
         motivo_indeferimento: motivo_indeferimento,
@@ -526,7 +523,7 @@ async function enviarDados() {
         nb_anterior: document.getElementById('nbAnterior') ? document.getElementById('nbAnterior').value : "",
         resultado_sentenca_anterior: document.getElementById('resultadoSentencaAnterior') ? document.getElementById('resultadoSentencaAnterior').value : "",
         periodo_beneficio_anterior: document.getElementById('periodoBeneficioAnterior') ? document.getElementById('periodoBeneficioAnterior').value : "",
-        
+
         // Teses Auxílio-Doença
         tese_restabelecimento: document.getElementById('chkRestabelecimento') ? document.getElementById('chkRestabelecimento').checked : false,
         tese_segredo_justica: document.getElementById('chkSegredoJustica') ? document.getElementById('chkSegredoJustica').checked : false,
@@ -561,7 +558,7 @@ async function enviarDados() {
 // =========================================================
 document.getElementById('nomeCliente').addEventListener('keyup', function(evento) {
     const valorDigitado = evento.target.value.trim().toLowerCase();
-    
+
     if (valorDigitado === 'teste da silva') {
         const chks = ['chkJulgamentoAntecipado', 'chkCoisaJulgada', 'chkProvaEmprestada', 'chkPrioridade', 'chkFixacaoDib', 'chkBolsaFamilia', 'chkFlexibilizacaoRenda', 'chkDespesasFamiliares', 'chkVinculoEncerrado', 'chkEquivocoRenda'];
         chks.forEach(id => {
@@ -569,17 +566,17 @@ document.getElementById('nomeCliente').addEventListener('keyup', function(evento
             if (el) el.checked = true;
         });
         if (typeof atualizarTeses === 'function') atualizarTeses();
-        
+
         if (document.getElementById('introLeiDeficiencia')) document.getElementById('introLeiDeficiencia').value = 'A Lei nº 12.764/12 (Lei Berenice Piana) define em seu art. 1º, § 2º que';
         if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = '§ 2º A pessoa com transtorno do espectro autista é considerada pessoa com deficiência, para todos os efeitos legais.';
-        
+
         if (document.getElementById('anoAcaoAnterior')) document.getElementById('anoAcaoAnterior').value = '2023';
         if (document.getElementById('nomeBeneficioAnterior')) document.getElementById('nomeBeneficioAnterior').value = 'BPC/LOAS';
         if (document.getElementById('numeroProcessoAnterior')) document.getElementById('numeroProcessoAnterior').value = '0001234-56.2023.4.05.8100';
         if (document.getElementById('tempoTranscorridoAnos')) document.getElementById('tempoTranscorridoAnos').value = '3';
         if (document.getElementById('tipoAgravamento')) document.getElementById('tipoAgravamento').value = 'de saúde e socioeconômico';
         if (document.getElementById('documentosNovosRelacao')) document.getElementById('documentosNovosRelacao').value = 'laudo médico pericial recente, receitas atualizadas e novo extrato do CadÚnico demonstrando a piora financeira';
-        
+
         const rep = document.getElementById('temRepresentante');
         if (rep) {
             rep.checked = true;
@@ -593,19 +590,19 @@ document.getElementById('nomeCliente').addEventListener('keyup', function(evento
         document.getElementById('nb').value = '729.397.891-0';
         document.getElementById('oabAdvogado').value = '32.185';
         if (document.getElementById('ufOab')) document.getElementById('ufOab').value = 'SP';
-        
+
         const valCausa = document.getElementById('valorCausa');
         if (valCausa) {
             valCausa.value = 'R$ 14.589,00';
             valCausa.dispatchEvent(new Event('input'));
         }
-        
+
         document.getElementById('cpfCliente').value = '606.162.208-20';
         document.getElementById('rgNovoCliente').checked = true;
         if (typeof sincronizarRgCpf === 'function') sincronizarRgCpf('Cliente');
         document.getElementById('nacionalidadeCliente').value = 'BRASILEIRO(A)';
         document.getElementById('estadoCivilCliente').value = 'SOLTEIRO(A)';
-        
+
         document.getElementById('nomeRepresentante').value = 'LARISSA BARBOSA MARIANO';
         document.getElementById('cpfRepresentante').value = '445.670.968-51';
         document.getElementById('rgNovoRep').checked = true;
@@ -613,7 +610,7 @@ document.getElementById('nomeCliente').addEventListener('keyup', function(evento
         if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = 'CÔNJUGE';
         document.getElementById('nacionalidadeRepresentante').value = 'BRASILEIRO(A)';
         document.getElementById('estadoCivilRepresentante').value = 'CASADO(A)';
-        
+
         document.getElementById('cep').value = '01047-020';
         document.getElementById('rua').value = 'RUA RIO ESPERA';
         document.getElementById('numero').value = '12, CASA 10';
@@ -644,7 +641,7 @@ document.getElementById('nomeCliente').addEventListener('keyup', function(evento
                 document.getElementById(`fam_${i}_renda`).value = fam.renda;
             }
         });
-        
+
         document.getElementById('cepInss').value = '01047-020';
         document.getElementById('ruaInss').value = 'R. CEL. XAVIER DE TOLEDO';
         document.getElementById('numeroInss').value = '280';
@@ -663,7 +660,7 @@ document.getElementById('nomeCliente').addEventListener('keyup', function(evento
             if (document.getElementById('motivoIndeferimento')) document.getElementById('motivoIndeferimento').value = 'RENDA PER CAPITA SUPERIOR A 1/4 DO SALÁRIO MÍNIMO';
             if (document.getElementById('comprovantesMiserabilidade')) document.getElementById('comprovantesMiserabilidade').value = 'EXTRATO ATUALIZADO DO CADÚNICO DEMONSTRANDO A COMPOSIÇÃO FAMILIAR E RENDA REAL';
         }
-        
+
         if (document.getElementById('caraterCondicao')) document.getElementById('caraterCondicao').value = 'IRREVERSÍVEL';
         if (document.getElementById('comprovantesDeficiencia')) document.getElementById('comprovantesDeficiencia').value = 'LAUDOS DA APAE E LAUDO PSIQUIÁTRICO ATUALIZADO';
 
@@ -684,7 +681,7 @@ document.getElementById('nomeCliente').addEventListener('keyup', function(evento
         if (document.getElementById('siglaDoenca')) document.getElementById('siglaDoenca').value = 'TEA';
         if (document.getElementById('fatoresAvaliacao')) document.getElementById('fatoresAvaliacao').value = 'IMPEDIMENTO DE LONGO PRAZO E FATORES AMBIENTAIS GRAVES';
         if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'O PACIENTE APRESENTA SEVERA DIFICULDADE DE INTERAÇÃO SOCIAL, AUSÊNCIA DE FALA E CRISES DE AGRESSIVIDADE CONSTANTES, NECESSITANDO DE ACOMPANHAMENTO CONTÍNUO PARA ATIVIDADES BÁSICAS DA VIDA DIÁRIA.';
-        
+
         if (document.getElementById('salarioMinimoVigente')) document.getElementById('salarioMinimoVigente').value = 'R$ 1.518,00';
         if (document.getElementById('meioSalarioMinimo')) document.getElementById('meioSalarioMinimo').value = 'R$ 759,00';
         if (document.getElementById('provedorRenda')) document.getElementById('provedorRenda').value = 'A GENITORA DO REQUERENTE';
@@ -698,7 +695,7 @@ document.getElementById('nomeCliente').addEventListener('keyup', function(evento
         if (document.getElementById('despesaTransporte')) document.getElementById('despesaTransporte').value = 'R$ 150,00';
         if (document.getElementById('despesaContas')) document.getElementById('despesaContas').value = 'R$ 200,00';
         if (document.getElementById('despesaAluguel')) document.getElementById('despesaAluguel').value = 'R$ 500,00';
-        
+
         if (typeof calcularDespesaTotal === 'function') {
             calcularDespesaTotal();
         }
