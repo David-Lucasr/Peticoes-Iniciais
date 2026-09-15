@@ -1,21 +1,50 @@
 // =========================================================
-// 1. GERENCIADOR DE TESES (Acompanha as checkboxes)
+// 1. GERENCIADOR DE TESES E MODO DE TELA
 // =========================================================
 function atualizarTeses() {
-    const isCoisaJulgada = document.getElementById('chkCoisaJulgada') ? document.getElementById('chkCoisaJulgada').checked : false;
+    const isAux = document.getElementById('telaFormulario') && document.getElementById('telaFormulario').classList.contains('modo-aux_doenca');
+
+    // --- 1. CAPTURA DOS ESTADOS (CHECKBOXES) ---
+    // Compartilhados / Gerais
+    const isCoisaJulgada = (document.getElementById('chkCoisaJulgada') && document.getElementById('chkCoisaJulgada').checked) || (document.getElementById('chkCoisaJulgadaAux') && document.getElementById('chkCoisaJulgadaAux').checked);
+    const isPrioridade = (document.getElementById('chkPrioridade') && document.getElementById('chkPrioridade').checked) || (document.getElementById('chkPrioridadeAux') && document.getElementById('chkPrioridadeAux').checked);
+
+    // Exclusivos BPC (Deficiência)
     const isPericiaJudicial = document.getElementById('chkPericiaJudicial') ? document.getElementById('chkPericiaJudicial').checked : false;
     const isJulgamentoAntecipado = document.getElementById('chkJulgamentoAntecipado') ? document.getElementById('chkJulgamentoAntecipado').checked : false;
     const isProvaEmprestada = document.getElementById('chkProvaEmprestada') ? document.getElementById('chkProvaEmprestada').checked : false;
     const isFixacaoDib = document.getElementById('chkFixacaoDib') ? document.getElementById('chkFixacaoDib').checked : false;
     const isReafirmacaoDer = document.getElementById('chkReafirmacaoDer') ? document.getElementById('chkReafirmacaoDer').checked : false;
-    const isPrioridade = document.getElementById('chkPrioridade') ? document.getElementById('chkPrioridade').checked : false;
 
+    // Exclusivos BPC (Renda)
+    const isFlexibilizacao = document.getElementById('chkFlexibilizacaoRenda') ? document.getElementById('chkFlexibilizacaoRenda').checked : false;
+    const isDespesas = document.getElementById('chkDespesasFamiliares') ? document.getElementById('chkDespesasFamiliares').checked : false;
+    const isVinculo = document.getElementById('chkVinculoEncerrado') ? document.getElementById('chkVinculoEncerrado').checked : false;
+    const isBolsaFamilia = document.getElementById('chkBolsaFamilia') ? document.getElementById('chkBolsaFamilia').checked : false;
+    const isEquivoco = document.getElementById('chkEquivocoRenda') ? document.getElementById('chkEquivocoRenda').checked : false;
+
+    // Exclusivos Auxílio-Doença (Contribuinte Individual)
+    const isRestabelecimento = document.getElementById('chkRestabelecimento') ? document.getElementById('chkRestabelecimento').checked : false;
+    const isSegredoJustica = document.getElementById('chkSegredoJustica') ? document.getElementById('chkSegredoJustica').checked : false;
+    const isBeneficioAnterior = document.getElementById('chkBeneficioAnterior') ? document.getElementById('chkBeneficioAnterior').checked : false;
+    const isAtestmed = document.getElementById('chkAtestmed') ? document.getElementById('chkAtestmed').checked : false;
+    const isAtestmedLaudo = document.getElementById('chkAtestmedLaudo') ? document.getElementById('chkAtestmedLaudo').checked : false;
+    const isCarencia120 = document.getElementById('chkCarencia120') ? document.getElementById('chkCarencia120').checked : false;
+    const isCarenciaAtraso = document.getElementById('chkCarenciaAtraso') ? document.getElementById('chkCarenciaAtraso').checked : false;
+    const isCarenciaPerda = document.getElementById('chkCarenciaPerda') ? document.getElementById('chkCarenciaPerda').checked : false;
+
+
+    // --- 2. APLICAÇÃO DA EXIBIÇÃO DOS BLOCOS (DISPLAY) ---
+    
+    // Blocos Compartilhados e Gerais
     const blocoPrioridade = document.getElementById('blocoPrioridade');
-    if (blocoPrioridade) blocoPrioridade.style.display = isPrioridade ? 'block' : 'none';
+    if (blocoPrioridade) blocoPrioridade.style.display = (isPrioridade && !isAux) ? 'block' : 'none'; 
 
     const blocoCoisaJulgada = document.getElementById('blocoCoisaJulgada');
     if (blocoCoisaJulgada) blocoCoisaJulgada.style.display = isCoisaJulgada ? 'block' : 'none';
 
+
+    // Blocos Exclusivos BPC (Deficiência)
     const blocoPericiaJudicial = document.getElementById('blocoPericiaJudicial');
     if (blocoPericiaJudicial) blocoPericiaJudicial.style.display = isPericiaJudicial ? 'block' : 'none';
     
@@ -31,12 +60,33 @@ function atualizarTeses() {
     const blocoReafirmacaoDer = document.getElementById('blocoReafirmacaoDer');
     if (blocoReafirmacaoDer) blocoReafirmacaoDer.style.display = isReafirmacaoDer ? 'block' : 'none';
 
-    console.log("Teses ativas:", { 
-        isCoisaJulgada, isPericiaJudicial, isJulgamentoAntecipado, 
-        isProvaEmprestada, isFixacaoDib, isReafirmacaoDer, isPrioridade
-    });
-}
+    // Blocos Exclusivos BPC (Renda)
+    const blocoFlex = document.getElementById('blocoFlexibilizacaoRenda');
+    if (blocoFlex) blocoFlex.style.display = isFlexibilizacao ? 'block' : 'none';
 
+    const blocoDesp = document.getElementById('blocoDespesasFamiliares');
+    if (blocoDesp) blocoDesp.style.display = isDespesas ? 'block' : 'none';
+
+    const blocoVinc = document.getElementById('blocoVinculoEncerrado');
+    if (blocoVinc) blocoVinc.style.display = isVinculo ? 'block' : 'none';
+
+    const blocoBolsa = document.getElementById('blocoBolsaFamilia');
+    if (blocoBolsa) blocoBolsa.style.display = isBolsaFamilia ? 'block' : 'none';
+
+    const blocoEquivoco = document.getElementById('blocoEquivocoRenda');
+    if (blocoEquivoco) blocoEquivoco.style.display = isEquivoco ? 'block' : 'none';
+
+
+    // Blocos Exclusivos Auxílio-Doença (Contribuinte Individual)
+    const blocoRestabelecimento = document.getElementById('blocoRestabelecimento');
+    if (blocoRestabelecimento) blocoRestabelecimento.style.display = isRestabelecimento ? 'block' : 'none';
+
+    const blocoBeneficioAnterior = document.getElementById('blocoBeneficioAnterior');
+    if (blocoBeneficioAnterior) blocoBeneficioAnterior.style.display = isBeneficioAnterior ? 'block' : 'none';
+
+    const blocoAtestmed = document.getElementById('blocoAtestmed');
+    if (blocoAtestmed) blocoAtestmed.style.display = (isAtestmed || isAtestmedLaudo) ? 'block' : 'none';
+}
 function alternarHipoteseJulgamento() {
     const isReconhecida = document.getElementById('radHipReconhecida') && document.getElementById('radHipReconhecida').checked;
     const isNotoria = document.getElementById('radHipNotoria') && document.getElementById('radHipNotoria').checked;
@@ -48,7 +98,6 @@ function alternarHipoteseJulgamento() {
     if (camposNotoria) camposNotoria.style.display = isNotoria ? 'grid' : 'none';
 }
 
-// Roda uma vez ao carregar para garantir que o layout comece certo
 window.onload = atualizarTeses;
 
 // =========================================================
@@ -69,6 +118,9 @@ function alternarRepresentante() {
         document.getElementById('estadoCivilRepresentante').value = '';
         if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = '';
         
+        if (document.getElementById('numeroProcessoInterdicaoAux')) document.getElementById('numeroProcessoInterdicaoAux').value = '';
+        if (document.getElementById('comarcaInterdicaoAux')) document.getElementById('comarcaInterdicaoAux').value = '';
+
         const cbRgRep = document.getElementById('rgNovoRep');
         if (cbRgRep) cbRgRep.checked = false;
         sincronizarRgCpf('Representante');
@@ -76,7 +128,6 @@ function alternarRepresentante() {
         document.getElementById('cpfRepresentante').classList.remove('campo-invalido', 'campo-valido');
     }
     
-    // NOVO: Aciona a sincronização para limpar o Familiar 2 se o representante for desligado
     if (typeof sincronizarFamiliar2 === "function") {
         sincronizarFamiliar2();
     }
@@ -101,9 +152,8 @@ function sincronizarRgCpf(tipo) {
 }
 
 // =========================================================
-// 3. GESTÃO DE IMAGENS (Todas as caixas aceitam múltiplas imagens)
+// 3. GESTÃO DE IMAGENS
 // =========================================================
-
 function escaparHtml(texto) {
     if (!texto) return "";
     return String(texto)
@@ -114,6 +164,10 @@ function escaparHtml(texto) {
          .replace(/'/g, "&#039;");
 }
 
+let imgBolsaFamilia = [];
+let imgCnis = [];
+let imgRelatorioInss = [];
+let imgCadunico = [];
 let imgRenda = [];
 let imgPericial = [];
 let imgLaudo = [];
@@ -126,13 +180,11 @@ let caixaAtivaParaColar = null;
 function selecionarCaixa(chave){
     caixaAtivaParaColar = chave;
     
-    // Reseta as bordas
-    ['img_renda', 'img_pericial', 'img_laudo', 'anexos_medicos', 'fotos_casa', 'img_coisa_julgada'].forEach(c => {
+    ['img_renda', 'img_pericial', 'img_laudo', 'anexos_medicos', 'fotos_casa', 'img_coisa_julgada', 'img_bolsa_familia', 'img_cnis', 'img_relatorio_inss', 'img_cadunico'].forEach(c => {
         const divCaixa = document.getElementById('caixa_' + c);
         if (divCaixa) divCaixa.style.border = "1px dashed var(--border)";
     });
 
-    // Destaca a caixa ativa
     const divAtiva = document.getElementById('caixa_' + chave);
     if(divAtiva) {
         if(chave === 'anexos_medicos') divAtiva.style.border = "3px solid var(--success)";
@@ -171,7 +223,19 @@ document.addEventListener('paste', function(evento) {
                 } else if (caixaAtivaParaColar === 'img_coisa_julgada') {
                     imgCoisaJulgada.push({ id: contadorId++, base64: base64 });
                     renderizarGaleria('galeria_img_coisa_julgada', imgCoisaJulgada, 'img_coisa_julgada');
-                } 
+                } else if (caixaAtivaParaColar === 'img_bolsa_familia') {
+                    imgBolsaFamilia.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_bolsa_familia', imgBolsaFamilia, 'img_bolsa_familia');
+                } else if (caixaAtivaParaColar === 'img_cnis') {
+                    imgCnis.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_cnis', imgCnis, 'img_cnis');
+                } else if (caixaAtivaParaColar === 'img_relatorio_inss') {
+                    imgRelatorioInss.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_relatorio_inss', imgRelatorioInss, 'img_relatorio_inss');
+                } else if (caixaAtivaParaColar === 'img_cadunico') {
+                    imgCadunico.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_cadunico', imgCadunico, 'img_cadunico');
+                }
             };
             leitor.readAsDataURL(arquivoBlob);
         }
@@ -187,9 +251,7 @@ function renderizarGaleria(idContainer, arrayDados, tipo) {
         const card = document.createElement('div');
         card.className = 'gallery-card';
         
-        // NOVO: Passa o título pelo escudo antes de injetar
         let tituloSeguro = escaparHtml(item.titulo);
-        
         let htmlInput = tipo === 'medicos' 
             ? `<input type="text" placeholder="Ex: Receita" value="${tituloSeguro}" onchange="atualizarTitulo(${item.id}, this.value)" onclick="event.stopPropagation();">` 
             : '';
@@ -227,6 +289,18 @@ function removerItem(id, tipo) {
     } else if (tipo === 'img_coisa_julgada') {
         imgCoisaJulgada = imgCoisaJulgada.filter(i => i.id !== id);
         renderizarGaleria('galeria_img_coisa_julgada', imgCoisaJulgada, tipo);
+    } else if (tipo === 'img_bolsa_familia') {
+        imgBolsaFamilia = imgBolsaFamilia.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_bolsa_familia', imgBolsaFamilia, tipo);
+    } else if (tipo === 'img_cnis') {
+        imgCnis = imgCnis.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_cnis', imgCnis, tipo);
+    } else if (tipo === 'img_relatorio_inss') {
+        imgRelatorioInss = imgRelatorioInss.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_relatorio_inss', imgRelatorioInss, tipo);
+    } else if (tipo === 'img_cadunico') {
+        imgCadunico = imgCadunico.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_cadunico', imgCadunico, tipo);
     }
 }
 
@@ -247,10 +321,8 @@ async function selecionarPdf() {
 // 5. ENVIO PARA O PYTHON
 // =========================================================
 async function enviarDados() {
+    const isAux = document.getElementById('telaFormulario') && document.getElementById('telaFormulario').classList.contains('modo-aux_doenca');
 
-    // =========================================================
-    // TRAVA DE SEGURANÇA: BLOQUEIA CPF INVÁLIDO
-    // =========================================================
     const elementoCpfCliente = document.getElementById('cpfCliente');
     if (elementoCpfCliente.classList.contains('campo-invalido')) {
         alert("⚠️ O CPF do Requerente está inválido! Por favor, corrija antes de gerar a petição.");
@@ -260,12 +332,12 @@ async function enviarDados() {
 
     const possuiRep = document.getElementById('temRepresentante').checked;
     const elementoCpfRep = document.getElementById('cpfRepresentante');
-    if (possuiRep && elementoCpfRep.classList.contains('campo-invalido')) {
+    // Só barra CPF do Rep no BPC (Auxílio Doença não usa o CPF do Rep no texto)
+    if (!isAux && possuiRep && elementoCpfRep.classList.contains('campo-invalido')) {
         alert("⚠️ O CPF do Representante está inválido! Por favor, corrija antes de gerar a petição.");
         elementoCpfRep.focus();
         return; 
     }
-    // =========================================================
     
     const pastaSelecionada = await pywebview.api.escolher_pasta();
     if (!pastaSelecionada) {
@@ -305,42 +377,35 @@ async function enviarDados() {
         valorCausaFinal = `${valorDigitado} (${valorExtenso})`;
     }
 
-    // --- LÓGICA DO TEXTO CORRIDO DOS DIAGNÓSTICOS PARA AS TESES ---
-    const campoDiagnostico = document.getElementById('diagnosticoCid');
-    const listaDiagPura = campoDiagnostico ? campoDiagnostico.value.split('\n').map(d => d.trim()).filter(d => d !== '') : [];
-    
-    let diagTextoCorrido = "";
-    if (listaDiagPura.length === 1) {
-        diagTextoCorrido = listaDiagPura[0];
-    } else if (listaDiagPura.length > 1) {
-        diagTextoCorrido = listaDiagPura.slice(0, -1).join(', ') + ' e ' + listaDiagPura[listaDiagPura.length - 1];
-    }
-
-    // --- COLETA DOS MEMBROS DA FAMÍLIA EM FORMATO FIXO (1 a 9) ---
     let payloadFamilia = {};
     for(let i=1; i<=9; i++) {
-        payloadFamilia[`fam_${i}_nome`] = document.getElementById(`fam_${i}_nome`) ? document.getElementById(`fam_${i}_nome`).value.toUpperCase() : "";
-        payloadFamilia[`fam_${i}_cpf`] = document.getElementById(`fam_${i}_cpf`) ? document.getElementById(`fam_${i}_cpf`).value : "";
-        payloadFamilia[`fam_${i}_parentesco`] = document.getElementById(`fam_${i}_parentesco`) ? document.getElementById(`fam_${i}_parentesco`).value.toUpperCase() : "";
+        payloadFamilia[`fam_${i}_nome`] = document.getElementById(`fam_${i}_nome`) ? document.getElementById(`fam_${i}_nome`).value : "";
+        payloadFamilia[`fam_${i}_parentesco`] = document.getElementById(`fam_${i}_parentesco`) ? document.getElementById(`fam_${i}_parentesco`).value: "";
         payloadFamilia[`fam_${i}_nasc`] = document.getElementById(`fam_${i}_nasc`) ? document.getElementById(`fam_${i}_nasc`).value : "";
         payloadFamilia[`fam_${i}_renda`] = document.getElementById(`fam_${i}_renda`) ? document.getElementById(`fam_${i}_renda`).value : "R$ 0,00";
-        payloadFamilia[`fam_${i}_estadocivil`] = document.getElementById(`fam_${i}_estadocivil`) ? document.getElementById(`fam_${i}_estadocivil`).value.toUpperCase() : "";
     }
 
-    const payloadBruto = {
-        // --- VARIÁVEL DO SUBMENU ---
-        tipo_beneficio_escolhido: tipoBpcSelecionado,
+    const numero_processo_interdicao = isAux ? (document.getElementById('numeroProcessoInterdicaoAux')?.value || "") : (document.getElementById('numeroProcessoInterdicao')?.value || "");
+    const comarca_interdicao = isAux ? (document.getElementById('comarcaInterdicaoAux')?.value || "") : (document.getElementById('comarcaInterdicao')?.value || "");
+    const motivo_indeferimento = isAux ? (document.getElementById('motivoIndeferimentoAux')?.value || "") : (document.getElementById('motivoIndeferimento')?.value || "");
+    const data_documento_comprovacao = isAux ? (document.getElementById('dataDocumentoComprovacaoAux')?.value || "") : (document.getElementById('dataDocumentoComprovacao')?.value || "");
+    const nome_beneficio_anterior = isAux ? (document.getElementById('nomeBeneficioAnteriorAux')?.value || document.getElementById('nomeBeneficioAnterior')?.value || "") : (document.getElementById('nomeBeneficioAnterior')?.value || "");
 
-        // --- TESES CONDICIONAIS ---
-        tese_coisa_julgada: document.getElementById('chkCoisaJulgada') ? document.getElementById('chkCoisaJulgada').checked : false,
+    const payloadBruto = {
+        tipo_beneficio_escolhido: tipoBpcSelecionado,
+        tese_bolsa_familia: document.getElementById('chkBolsaFamilia') ? document.getElementById('chkBolsaFamilia').checked : false,
+        tese_flexibilizacao_renda: document.getElementById('chkFlexibilizacaoRenda') ? document.getElementById('chkFlexibilizacaoRenda').checked : false,
+        tese_despesas_familiares: document.getElementById('chkDespesasFamiliares') ? document.getElementById('chkDespesasFamiliares').checked : false,
+        tese_vinculo_encerrado: document.getElementById('chkVinculoEncerrado') ? document.getElementById('chkVinculoEncerrado').checked : false,
+        tese_equivoco_renda: document.getElementById('chkEquivocoRenda') ? document.getElementById('chkEquivocoRenda').checked : false,
+        tese_coisa_julgada: (document.getElementById('chkCoisaJulgada') && document.getElementById('chkCoisaJulgada').checked) || (document.getElementById('chkCoisaJulgadaAux') && document.getElementById('chkCoisaJulgadaAux').checked),
         tese_pericia_judicial: document.getElementById('chkPericiaJudicial') ? document.getElementById('chkPericiaJudicial').checked : false,
         tese_julgamento_antecipado: document.getElementById('chkJulgamentoAntecipado') ? document.getElementById('chkJulgamentoAntecipado').checked : false,
         tese_prova_emprestada: document.getElementById('chkProvaEmprestada') ? document.getElementById('chkProvaEmprestada').checked : false,
         tese_fixacao_dib: document.getElementById('chkFixacaoDib') ? document.getElementById('chkFixacaoDib').checked : false,
         tese_reafirmacao_der: document.getElementById('chkReafirmacaoDer') ? document.getElementById('chkReafirmacaoDer').checked : false,
-        tese_prioridade: document.getElementById('chkPrioridade') ? document.getElementById('chkPrioridade').checked : false,
+        tese_prioridade: (document.getElementById('chkPrioridade') && document.getElementById('chkPrioridade').checked) || (document.getElementById('chkPrioridadeAux') && document.getElementById('chkPrioridadeAux').checked),
 
-        // --- DADOS DO PROCESSO ---
         subsecao_judiciaria: document.getElementById('subsecao').value,
         der: document.getElementById('der').value,
         nb: document.getElementById('nb').value,
@@ -348,7 +413,6 @@ async function enviarDados() {
         oab_advogado: document.getElementById('oabAdvogado') ? document.getElementById('oabAdvogado').value : "",
         uf_oab: document.getElementById('ufOab') ? document.getElementById('ufOab').value : "",
         
-        // --- DADOS DO CLIENTE ---
         nome_cliente: document.getElementById('nomeCliente').value,
         cpf_cliente: cpfCliente,
         rg_cliente: rgClienteFinal,
@@ -356,12 +420,9 @@ async function enviarDados() {
         estado_civil_cliente: document.getElementById('estadoCivilCliente').value,
         descricao_grupo_familiar: document.getElementById('descricaoGrupoFamiliar') ? document.getElementById('descricaoGrupoFamiliar').value : "",
         
-        // --- DECLARAÇÃO DE RENDA (PONTOS E FAMÍLIA FIXA) ---
-        pontos_referencia: document.getElementById('pontosReferencia') ? document.getElementById('pontosReferencia').value.toUpperCase() : "NÃO INFORMADO",
-        ...payloadFamilia, // Joga todas as variáveis fam_1_nome até fam_9_renda aqui de uma vez
-        diagnosticos_texto_corrido: diagTextoCorrido,
+        pontos_referencia: document.getElementById('pontosReferencia') ? document.getElementById('pontosReferencia').value: "NÃO INFORMADO",
+        ...payloadFamilia,
 
-        // --- DADOS DO REPRESENTANTE ---
         tem_representante: possuiRep,
         nome_representante: possuiRep && document.getElementById('nomeRepresentante') ? document.getElementById('nomeRepresentante').value : "",
         cpf_representante: possuiRep ? cpfRep : "",
@@ -370,17 +431,14 @@ async function enviarDados() {
         nacionalidade_representante: possuiRep && document.getElementById('nacionalidadeRepresentante') ? document.getElementById('nacionalidadeRepresentante').value : "",
         estado_civil_representante: possuiRep && document.getElementById('estadoCivilRepresentante') ? document.getElementById('estadoCivilRepresentante').value : "",
         
-        // --- ENDEREÇOS ---
         endereco_completo: enderecoMontado,
         endereco_inss: enderecoInssMontado, 
         rua: rua, numero: numero, bairro: bairro, cidade: cidade, uf: uf, cep: cep,
         rua_inss: ruaInss, numero_inss: numeroInss, bairro_inss: bairroInss, 
         cidade_inss: cidadeInss, uf_inss: ufInss, cep_inss: cepInss,
         
-       // --- DADOS MÉDICOS E FATORES PERICIAIS ---
         diagnostico_cid: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
-        
-        // NOVO: Transforma o texto com quebras de linha em uma lista limpa para o Word criar as bolinhas
+        diagnosticos_texto_corrido: document.getElementById('diagnosticoCid') ? document.getElementById('diagnosticoCid').value : "",
         lista_diagnosticos: document.getElementById('diagnosticoCid') ? 
             document.getElementById('diagnosticoCid').value.split('\n').map(d => d.trim()).filter(d => d !== '').map(d => "• " + d) : [],
 
@@ -390,7 +448,6 @@ async function enviarDados() {
         intro_lei_deficiencia: document.getElementById('introLeiDeficiencia') ? document.getElementById('introLeiDeficiencia').value : "",
         citacao_lei_deficiencia: document.getElementById('citacaoLeiDeficiencia') ? document.getElementById('citacaoLeiDeficiencia').value : "",
         
-        // --- ARRAYS DE IMAGENS ---
         lista_img_renda: imgRenda.map(img => img.base64),
         lista_img_pericial: imgPericial.map(img => img.base64),
         lista_img_laudo: imgLaudo.map(img => img.base64),
@@ -398,12 +455,40 @@ async function enviarDados() {
         fotos_casa: fotosCasa.map(foto => foto.base64),
 
         ano_acao_anterior: document.getElementById('anoAcaoAnterior') ? document.getElementById('anoAcaoAnterior').value : "",
-        nome_beneficio_anterior: document.getElementById('nomeBeneficioAnterior') ? document.getElementById('nomeBeneficioAnterior').value : "",
+        nome_beneficio_anterior: nome_beneficio_anterior,
         numero_processo_anterior: document.getElementById('numeroProcessoAnterior') ? document.getElementById('numeroProcessoAnterior').value : "",
         tipo_agravamento: document.getElementById('tipoAgravamento') ? document.getElementById('tipoAgravamento').value : "",
         documentos_novos_relacao: document.getElementById('documentosNovosRelacao') ? document.getElementById('documentosNovosRelacao').value : "",
         tempo_transcorrido_anos: document.getElementById('tempoTranscorridoAnos') ? document.getElementById('tempoTranscorridoAnos').value : "",
         lista_img_coisa_julgada: imgCoisaJulgada.map(img => img.base64),
+
+        salario_minimo_vigente: document.getElementById('salarioMinimoVigente') ? document.getElementById('salarioMinimoVigente').value : "",
+        meio_salario_minimo: document.getElementById('meioSalarioMinimo') ? document.getElementById('meioSalarioMinimo').value : "",
+        provedor_renda: document.getElementById('provedorRenda') ? document.getElementById('provedorRenda').value : "",
+        renda_total_familia: document.getElementById('rendaTotalFamilia') ? document.getElementById('rendaTotalFamilia').value : "",
+        renda_per_capita: document.getElementById('rendaPerCapita') ? document.getElementById('rendaPerCapita').value : "",
+        composicao_familiar_texto: document.getElementById('composicaoFamiliarTexto') ? document.getElementById('composicaoFamiliarTexto').value : "",
+
+        despesa_medicamentos: document.getElementById('despesaMedicamentos') ? document.getElementById('despesaMedicamentos').value : "",
+        despesa_exames: document.getElementById('despesaExames') ? document.getElementById('despesaExames').value : "",
+        despesa_alimentacao: document.getElementById('despesaAlimentacao') ? document.getElementById('despesaAlimentacao').value : "",
+        despesa_transporte: document.getElementById('despesaTransporte') ? document.getElementById('despesaTransporte').value : "",
+        despesa_contas: document.getElementById('despesaContas') ? document.getElementById('despesaContas').value : "",
+        despesa_aluguel: document.getElementById('despesaAluguel') ? document.getElementById('despesaAluguel').value : "",
+        despesa_total: document.getElementById('despesaTotal') ? document.getElementById('despesaTotal').value : "",
+        tratamentos_necessarios: document.getElementById('tratamentosNecessarios') ? document.getElementById('tratamentosNecessarios').value : "",
+        cuidador_principal: document.getElementById('cuidadorPrincipal') ? document.getElementById('cuidadorPrincipal').value : "",
+
+        lista_img_bolsa_familia: imgBolsaFamilia.map(img => img.base64),
+        lista_img_cnis: imgCnis.map(img => img.base64),
+        lista_img_relatorio_inss: imgRelatorioInss.map(img => img.base64),
+        lista_img_cadunico: imgCadunico.map(img => img.base64),
+
+        familiar_vinculo_encerrado: document.getElementById('familiarVinculoEncerrado') ? document.getElementById('familiarVinculoEncerrado').value : "",
+        empregador_vinculo_encerrado: document.getElementById('empregadorVinculoEncerrado') ? document.getElementById('empregadorVinculoEncerrado').value : "",
+        data_encerramento_vinculo: document.getElementById('dataEncerramentoVinculo') ? document.getElementById('dataEncerramentoVinculo').value : "",
+        situacao_renda_atual: document.getElementById('situacaoRendaAtual') ? document.getElementById('situacaoRendaAtual').value : "",
+        meios_subsistencia_atual: document.getElementById('meiosSubsidioAtual') ? document.getElementById('meiosSubsidioAtual').value : "",
 
         tipo_acompanhamento: document.getElementById('tipoAcompanhamento') ? document.getElementById('tipoAcompanhamento').value : "",
         unidade_saude: document.getElementById('unidadeSaude') ? document.getElementById('unidadeSaude').value : "",
@@ -412,39 +497,58 @@ async function enviarDados() {
         
         hip_ja_reconhecida: document.getElementById('radHipReconhecida') ? document.getElementById('radHipReconhecida').checked : false,
         hip_ja_notoria: document.getElementById('radHipNotoria') ? document.getElementById('radHipNotoria').checked : false,
-        motivo_indeferimento: document.getElementById('motivoIndeferimento') ? document.getElementById('motivoIndeferimento').value : "",
+        motivo_indeferimento: motivo_indeferimento,
         comprovantes_miserabilidade: document.getElementById('comprovantesMiserabilidade') ? document.getElementById('comprovantesMiserabilidade').value : "",
         carater_condicao: document.getElementById('caraterCondicao') ? document.getElementById('caraterCondicao').value : "",
         comprovantes_deficiencia: document.getElementById('comprovantesDeficiencia') ? document.getElementById('comprovantesDeficiencia').value : "",
 
-        numero_processo_interdicao: document.getElementById('numeroProcessoInterdicao') ? document.getElementById('numeroProcessoInterdicao').value : "",
+        numero_processo_interdicao: numero_processo_interdicao,
         vara_interdicao: document.getElementById('varaInterdicao') ? document.getElementById('varaInterdicao').value : "",
-        comarca_interdicao: document.getElementById('comarcaInterdicao') ? document.getElementById('comarcaInterdicao').value : "",
+        comarca_interdicao: comarca_interdicao,
         tipo_curatela: document.getElementById('tipoCuratela') ? document.getElementById('tipoCuratela').value : "",
         complemento_laudo_interdicao: document.getElementById('complementoLaudoInterdicao') ? document.getElementById('complementoLaudoInterdicao').value : "",
         sintomas_manifestacoes: document.getElementById('sintomasManifestacoes') ? document.getElementById('sintomasManifestacoes').value : "",
 
-        data_documento_comprovacao: document.getElementById('dataDocumentoComprovacao') ? document.getElementById('dataDocumentoComprovacao').value : "",
+        data_documento_comprovacao: data_documento_comprovacao,
         fundamentacao_legal_dib: document.getElementById('fundamentacaoLegalDib') ? document.getElementById('fundamentacaoLegalDib').value : "",
         data_reafirmacao_der: document.getElementById('dataReafirmacaoDer') ? document.getElementById('dataReafirmacaoDer').value : "",
 
+        // Dados Exclusivos Auxílio-Doença
+        tipo_vinculo_cliente: document.getElementById('tipoVinculoCliente') ? document.getElementById('tipoVinculoCliente').value : "",
+        funcao_cargo_cliente: document.getElementById('funcaoCargoCliente') ? document.getElementById('funcaoCargoCliente').value : "",
+        consequencias_retorno_trabalho: document.getElementById('consequenciasRetorno') ? document.getElementById('consequenciasRetorno').value : "",
+        data_dii: document.getElementById('dataDii') ? document.getElementById('dataDii').value : "",
+        data_ultimo_vinculo: document.getElementById('dataUltimoVinculo') ? document.getElementById('dataUltimoVinculo').value : "",
+        data_fim_periodo_graca: document.getElementById('dataFimPeriodoGraca') ? document.getElementById('dataFimPeriodoGraca').value : "",
+        carencia_meses: document.getElementById('carenciaMeses') ? document.getElementById('carenciaMeses').value : "",
+        prazo_afastamento_dias: document.getElementById('prazoAfastamentoDias') ? document.getElementById('prazoAfastamentoDias').value : "",
+        data_cessacao_beneficio: document.getElementById('dataCessacaoBeneficio') ? document.getElementById('dataCessacaoBeneficio').value : "",
+        nb_anterior: document.getElementById('nbAnterior') ? document.getElementById('nbAnterior').value : "",
+        resultado_sentenca_anterior: document.getElementById('resultadoSentencaAnterior') ? document.getElementById('resultadoSentencaAnterior').value : "",
+        periodo_beneficio_anterior: document.getElementById('periodoBeneficioAnterior') ? document.getElementById('periodoBeneficioAnterior').value : "",
+        
+        // Teses Auxílio-Doença
+        tese_restabelecimento: document.getElementById('chkRestabelecimento') ? document.getElementById('chkRestabelecimento').checked : false,
+        tese_segredo_justica: document.getElementById('chkSegredoJustica') ? document.getElementById('chkSegredoJustica').checked : false,
+        recebeu_beneficio_anteriormente: document.getElementById('chkBeneficioAnterior') ? document.getElementById('chkBeneficioAnterior').checked : false, 
+        tese_atestmed: document.getElementById('chkAtestmed') ? document.getElementById('chkAtestmed').checked : false,
+        tese_atestmed_laudo: document.getElementById('chkAtestmedLaudo') ? document.getElementById('chkAtestmedLaudo').checked : false,
+        tese_carencia_120_meses: document.getElementById('chkCarencia120') ? document.getElementById('chkCarencia120').checked : false,
+        tese_carencia_atraso_sem_perda: document.getElementById('chkCarenciaAtraso') ? document.getElementById('chkCarenciaAtraso').checked : false,
+        tese_carencia_perda_qualidade: document.getElementById('chkCarenciaPerda') ? document.getElementById('chkCarenciaPerda').checked : false,
+        tese_carencia_facultativo: document.getElementById('chkCarenciaFacultativo') ? document.getElementById('chkCarenciaFacultativo').checked : false,
+        tese_seguro_desemprego: document.getElementById('chkSeguroDesemprego') ? document.getElementById('chkSeguroDesemprego').checked : false,
+
         pasta_destino: pastaSelecionada,
         caminho_pdf: caminhoPdfAtual
-
-        
     };
 
     const dadosJsonString = JSON.stringify(payloadBruto);
-
     document.body.style.cursor = 'wait';
 
     try {
         const resposta = await pywebview.api.gerar_formulario(JSON.parse(dadosJsonString));
-        if (resposta.includes("Erro")) {
-            alert(resposta);
-        } else {
-            alert(resposta); // Aviso de sucesso
-        }
+        alert(resposta);
     } catch (erro) {
         alert("Ocorreu um erro: " + erro);
     } finally {
@@ -455,17 +559,16 @@ async function enviarDados() {
 // =========================================================
 // 6. ATALHO DE DESENVOLVEDOR: Preenchimento Automático
 // =========================================================
-document.getElementById('nomeCliente').addEventListener('input', function(evento) {
+document.getElementById('nomeCliente').addEventListener('keyup', function(evento) {
     const valorDigitado = evento.target.value.trim().toLowerCase();
+    
     if (valorDigitado === 'teste da silva') {
-        
-        // Marca algumas das novas teses base para o teste
-        if (document.getElementById('chkJulgamentoAntecipado')) document.getElementById('chkJulgamentoAntecipado').checked = true;
-        if (document.getElementById('chkCoisaJulgada')) document.getElementById('chkCoisaJulgada').checked = true;
-        if (document.getElementById('chkProvaEmprestada')) document.getElementById('chkProvaEmprestada').checked = true;
-        if (document.getElementById('chkPrioridade')) document.getElementById('chkPrioridade').checked = true;
-        if (document.getElementById('chkFixacaoDib')) document.getElementById('chkFixacaoDib').checked = true;
-        atualizarTeses();
+        const chks = ['chkJulgamentoAntecipado', 'chkCoisaJulgada', 'chkProvaEmprestada', 'chkPrioridade', 'chkFixacaoDib', 'chkBolsaFamilia', 'chkFlexibilizacaoRenda', 'chkDespesasFamiliares', 'chkVinculoEncerrado', 'chkEquivocoRenda'];
+        chks.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.checked = true;
+        });
+        if (typeof atualizarTeses === 'function') atualizarTeses();
         
         if (document.getElementById('introLeiDeficiencia')) document.getElementById('introLeiDeficiencia').value = 'A Lei nº 12.764/12 (Lei Berenice Piana) define em seu art. 1º, § 2º que';
         if (document.getElementById('citacaoLeiDeficiencia')) document.getElementById('citacaoLeiDeficiencia').value = '§ 2º A pessoa com transtorno do espectro autista é considerada pessoa com deficiência, para todos os efeitos legais.';
@@ -477,8 +580,11 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         if (document.getElementById('tipoAgravamento')) document.getElementById('tipoAgravamento').value = 'de saúde e socioeconômico';
         if (document.getElementById('documentosNovosRelacao')) document.getElementById('documentosNovosRelacao').value = 'laudo médico pericial recente, receitas atualizadas e novo extrato do CadÚnico demonstrando a piora financeira';
         
-        document.getElementById('temRepresentante').checked = true;
-        alternarRepresentante();
+        const rep = document.getElementById('temRepresentante');
+        if (rep) {
+            rep.checked = true;
+            if (typeof alternarRepresentante === 'function') alternarRepresentante();
+        }
 
         if (document.getElementById('descricaoGrupoFamiliar')) document.getElementById('descricaoGrupoFamiliar').value = '4';
 
@@ -488,99 +594,123 @@ document.getElementById('nomeCliente').addEventListener('input', function(evento
         document.getElementById('oabAdvogado').value = '32.185';
         if (document.getElementById('ufOab')) document.getElementById('ufOab').value = 'SP';
         
-        document.getElementById('valorCausa').value = 'R$ 14.589,00';
-        document.getElementById('valorCausa').dispatchEvent(new Event('input'));
+        const valCausa = document.getElementById('valorCausa');
+        if (valCausa) {
+            valCausa.value = 'R$ 14.589,00';
+            valCausa.dispatchEvent(new Event('input'));
+        }
         
         document.getElementById('cpfCliente').value = '606.162.208-20';
         document.getElementById('rgNovoCliente').checked = true;
-        sincronizarRgCpf('Cliente');
-        document.getElementById('nacionalidadeCliente').value = 'Brasileiro(a)';
-        document.getElementById('estadoCivilCliente').value = 'Solteiro(a)';
+        if (typeof sincronizarRgCpf === 'function') sincronizarRgCpf('Cliente');
+        document.getElementById('nacionalidadeCliente').value = 'BRASILEIRO(A)';
+        document.getElementById('estadoCivilCliente').value = 'SOLTEIRO(A)';
         
-        document.getElementById('nomeRepresentante').value = 'Larissa Barbosa Mariano';
+        document.getElementById('nomeRepresentante').value = 'LARISSA BARBOSA MARIANO';
         document.getElementById('cpfRepresentante').value = '445.670.968-51';
         document.getElementById('rgNovoRep').checked = true;
-        sincronizarRgCpf('Representante');
-        if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = 'Cônjuge';
-        document.getElementById('nacionalidadeRepresentante').value = 'Brasileiro(a)';
-        document.getElementById('estadoCivilRepresentante').value = 'Casado(a)';
+        if (typeof sincronizarRgCpf === 'function') sincronizarRgCpf('Representante');
+        if (document.getElementById('parentescoRepresentante')) document.getElementById('parentescoRepresentante').value = 'CÔNJUGE';
+        document.getElementById('nacionalidadeRepresentante').value = 'BRASILEIRO(A)';
+        document.getElementById('estadoCivilRepresentante').value = 'CASADO(A)';
         
         document.getElementById('cep').value = '01047-020';
-        document.getElementById('rua').value = 'Rua Rio Espera';
-        document.getElementById('numero').value = '12, Casa 10';
-        document.getElementById('bairro').value = 'Capão do Embira';
-        document.getElementById('cidade').value = 'São Paulo';
+        document.getElementById('rua').value = 'RUA RIO ESPERA';
+        document.getElementById('numero').value = '12, CASA 10';
+        document.getElementById('bairro').value = 'CAPÃO DO EMBIRA';
+        document.getElementById('cidade').value = 'SÃO PAULO';
         document.getElementById('uf').value = 'SP';
 
-        // --- PREENCHE DADOS DOS 9 FAMILIARES PARA TESTE ---
-        if (document.getElementById('pontosReferencia')) document.getElementById('pontosReferencia').value = 'Próximo à padaria central';
+        if (document.getElementById('pontosReferencia')) document.getElementById('pontosReferencia').value = 'PRÓXIMO À PADARIA CENTRAL';
 
         const dadosTesteFamilia = [
-            { nome: 'MARIA DA SILVA', cpf: '111.111.111-11', parentesco: 'CÔNJUGE', nasc: '10/05/1980', renda: 'R$ 1.412,00', civil: 'CASADA' },
-            { nome: 'JOÃO DA SILVA', cpf: '222.222.222-22', parentesco: 'FILHO', nasc: '15/08/2010', renda: 'R$ 0,00', civil: 'SOLTEIRO' },
-            { nome: 'ANA DA SILVA', cpf: '333.333.333-33', parentesco: 'FILHA', nasc: '20/10/2012', renda: 'R$ 0,00', civil: 'SOLTEIRA' },
-            { nome: 'PEDRO DA SILVA', cpf: '444.444.444-44', parentesco: 'PAI', nasc: '02/01/1955', renda: 'R$ 1.412,00', civil: 'CASADO' },
-            { nome: 'ANTONIA DA SILVA', cpf: '555.555.555-55', parentesco: 'MÃE', nasc: '12/12/1958', renda: 'R$ 0,00', civil: 'CASADA' },
-            { nome: 'CARLOS DA SILVA', cpf: '666.666.666-66', parentesco: 'IRMÃO', nasc: '25/04/1990', renda: 'R$ 800,00', civil: 'SOLTEIRO' },
-            { nome: 'JULIANA DA SILVA', cpf: '777.777.777-77', parentesco: 'NETA', nasc: '05/06/2018', renda: 'R$ 0,00', civil: 'SOLTEIRA' },
-            { nome: 'LUCAS DA SILVA', cpf: '888.888.888-88', parentesco: 'NETO', nasc: '18/09/2020', renda: 'R$ 0,00', civil: 'SOLTEIRO' },
-            { nome: 'BEATRIZ DA SILVA', cpf: '999.999.999-99', parentesco: 'SOBRINHA', nasc: '30/11/2015', renda: 'R$ 0,00', civil: 'SOLTEIRA' }
+            { nome: 'MARIA DA SILVA', parentesco: 'CÔNJUGE', nasc: '10/05/1980', renda: 'R$ 1.412,00' },
+            { nome: 'JOÃO DA SILVA', parentesco: 'FILHO', nasc: '15/08/2010', renda: 'R$ 0,00' },
+            { nome: 'ANA DA SILVA', parentesco: 'FILHA', nasc: '20/10/2012', renda: 'R$ 0,00' },
+            { nome: 'PEDRO DA SILVA', parentesco: 'PAI', nasc: '02/01/1955', renda: 'R$ 1.412,00' },
+            { nome: 'ANTONIA DA SILVA', parentesco: 'MÃE', nasc: '12/12/1958', renda: 'R$ 0,00' },
+            { nome: 'CARLOS DA SILVA', parentesco: 'IRMÃO', nasc: '25/04/1990', renda: 'R$ 800,00' },
+            { nome: 'JULIANA DA SILVA', parentesco: 'NETA', nasc: '05/06/2018', renda: 'R$ 0,00' },
+            { nome: 'LUCAS DA SILVA', parentesco: 'NETO', nasc: '18/09/2020', renda: 'R$ 0,00' },
+            { nome: 'BEATRIZ DA SILVA', parentesco: 'SOBRINHA', nasc: '30/11/2015', renda: 'R$ 0,00' }
         ];
 
         dadosTesteFamilia.forEach((fam, index) => {
             let i = index + 1;
             if (document.getElementById(`fam_${i}_nome`)) {
                 document.getElementById(`fam_${i}_nome`).value = fam.nome;
-                document.getElementById(`fam_${i}_cpf`).value = fam.cpf;
                 document.getElementById(`fam_${i}_parentesco`).value = fam.parentesco;
                 document.getElementById(`fam_${i}_nasc`).value = fam.nasc;
                 document.getElementById(`fam_${i}_renda`).value = fam.renda;
-                document.getElementById(`fam_${i}_estadocivil`).value = fam.civil;
             }
         });
         
         document.getElementById('cepInss').value = '01047-020';
-        document.getElementById('ruaInss').value = 'R. Cel. Xavier de Toledo';
+        document.getElementById('ruaInss').value = 'R. CEL. XAVIER DE TOLEDO';
         document.getElementById('numeroInss').value = '280';
-        document.getElementById('bairroInss').value = 'Consolação';
-        document.getElementById('cidadeInss').value = 'São Paulo';
+        document.getElementById('bairroInss').value = 'CONSOLAÇÃO';
+        document.getElementById('cidadeInss').value = 'SÃO PAULO';
         document.getElementById('ufInss').value = 'SP';
 
-        if (document.getElementById('tipoAcompanhamento')) document.getElementById('tipoAcompanhamento').value = 'multiprofissional';
-        if (document.getElementById('unidadeSaude')) document.getElementById('unidadeSaude').value = 'CAPS Infantil';
-        if (document.getElementById('naturezaImpedimento')) document.getElementById('naturezaImpedimento').value = 'mental';
-        if (document.getElementById('especialidadePerito')) document.getElementById('especialidadePerito').value = 'Psiquiatria ou Neurologia';
+        if (document.getElementById('tipoAcompanhamento')) document.getElementById('tipoAcompanhamento').value = 'MULTIPROFISSIONAL';
+        if (document.getElementById('unidadeSaude')) document.getElementById('unidadeSaude').value = 'CAPS INFANTIL';
+        if (document.getElementById('naturezaImpedimento')) document.getElementById('naturezaImpedimento').value = 'MENTAL';
+        if (document.getElementById('especialidadePerito')) document.getElementById('especialidadePerito').value = 'PSIQUIATRIA OU NEUROLOGIA';
 
-        if (document.getElementById('radHipNotoria')) {
-            document.getElementById('radHipNotoria').checked = true;
-            alternarHipoteseJulgamento();
+        if (document.getElementById('radHipReconhecida')) {
+            document.getElementById('radHipReconhecida').checked = true;
+            if (typeof alternarHipoteseJulgamento === 'function') alternarHipoteseJulgamento();
+            if (document.getElementById('motivoIndeferimento')) document.getElementById('motivoIndeferimento').value = 'RENDA PER CAPITA SUPERIOR A 1/4 DO SALÁRIO MÍNIMO';
+            if (document.getElementById('comprovantesMiserabilidade')) document.getElementById('comprovantesMiserabilidade').value = 'EXTRATO ATUALIZADO DO CADÚNICO DEMONSTRANDO A COMPOSIÇÃO FAMILIAR E RENDA REAL';
         }
-        if (document.getElementById('caraterCondicao')) document.getElementById('caraterCondicao').value = 'irreversível';
-        if (document.getElementById('comprovantesDeficiencia')) document.getElementById('comprovantesDeficiencia').value = 'laudos da APAE e laudo psiquiátrico atualizado';
+        
+        if (document.getElementById('caraterCondicao')) document.getElementById('caraterCondicao').value = 'IRREVERSÍVEL';
+        if (document.getElementById('comprovantesDeficiencia')) document.getElementById('comprovantesDeficiencia').value = 'LAUDOS DA APAE E LAUDO PSIQUIÁTRICO ATUALIZADO';
 
         if (document.getElementById('numeroProcessoInterdicao')) document.getElementById('numeroProcessoInterdicao').value = '0123456-78.2024.8.06.0087';
-        if (document.getElementById('varaInterdicao')) document.getElementById('varaInterdicao').value = 'Vara Única';
-        if (document.getElementById('comarcaInterdicao')) document.getElementById('comarcaInterdicao').value = 'Guaraciaba do Norte/CE';
-        if (document.getElementById('tipoCuratela')) document.getElementById('tipoCuratela').value = 'definitiva';
-        if (document.getElementById('complementoLaudoInterdicao')) document.getElementById('complementoLaudoInterdicao').value = 'e corroborado por relatório multidisciplinar do CAPS Infantil';
-        if (document.getElementById('sintomasManifestacoes')) document.getElementById('sintomasManifestacoes').value = 'crises convulsivas recorrentes, ausência de fala e total dependência para atividades básicas de higiene e alimentação';
+        if (document.getElementById('varaInterdicao')) document.getElementById('varaInterdicao').value = 'VARA ÚNICA';
+        if (document.getElementById('comarcaInterdicao')) document.getElementById('comarcaInterdicao').value = 'GUARACIABA DO NORTE/CE';
+        if (document.getElementById('tipoCuratela')) document.getElementById('tipoCuratela').value = 'DEFINITIVA';
+        if (document.getElementById('complementoLaudoInterdicao')) document.getElementById('complementoLaudoInterdicao').value = 'E CORROBORADO POR RELATÓRIO MULTIDISCIPLINAR DO CAPS INFANTIL';
+        if (document.getElementById('sintomasManifestacoes')) document.getElementById('sintomasManifestacoes').value = 'CRISES CONVULSIVAS RECORRENTES, AUSÊNCIA DE FALA E TOTAL DEPENDÊNCIA PARA ATIVIDADES BÁSICAS DE HIGIENE E ALIMENTAÇÃO';
 
-        if (document.getElementById('dataDocumentoComprovacao')) document.getElementById('dataDocumentoComprovacao').value = '10 de fevereiro de 2026';
-        if (document.getElementById('fundamentacaoLegalDib')) document.getElementById('fundamentacaoLegalDib').value = 'art. 20 da Lei nº 8.742/93 c/c art. 174 do Decreto nº 3.048/99';
+        if (document.getElementById('dataDocumentoComprovacao')) document.getElementById('dataDocumentoComprovacao').value = '10 DE FEVEREIRO DE 2026';
+        if (document.getElementById('fundamentacaoLegalDib')) document.getElementById('fundamentacaoLegalDib').value = 'ART. 20 DA LEI Nº 8.742/93 C/C ART. 174 DO DECRETO Nº 3.048/99';
 
         if (document.getElementById('chkReafirmacaoDer')) document.getElementById('chkReafirmacaoDer').checked = true;
+        if (document.getElementById('dataReafirmacaoDer')) document.getElementById('dataReafirmacaoDer').value = '15 DE AGOSTO DE 2026';
 
-        if (document.getElementById('dataReafirmacaoDer')) document.getElementById('dataReafirmacaoDer').value = '15 de agosto de 2026';
-
-        if (document.getElementById('diagnosticoCid')) document.getElementById('diagnosticoCid').value = 'Transtorno do Espectro Autista - CID 10 F84.0';
+        if (document.getElementById('diagnosticoCid')) document.getElementById('diagnosticoCid').value = 'TRANSTORNO DO ESPECTRO AUTISTA - CID 10 F84.0';
         if (document.getElementById('siglaDoenca')) document.getElementById('siglaDoenca').value = 'TEA';
-        if (document.getElementById('fatoresAvaliacao')) document.getElementById('fatoresAvaliacao').value = 'Impedimento de longo prazo e fatores ambientais GRAVES';
-        if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'O paciente apresenta severa dificuldade de interação social, ausência de fala e crises de agressividade constantes, necessitando de acompanhamento contínuo para atividades básicas da vida diária.';
+        if (document.getElementById('fatoresAvaliacao')) document.getElementById('fatoresAvaliacao').value = 'IMPEDIMENTO DE LONGO PRAZO E FATORES AMBIENTAIS GRAVES';
+        if (document.getElementById('detalhesLaudo')) document.getElementById('detalhesLaudo').value = 'O PACIENTE APRESENTA SEVERA DIFICULDADE DE INTERAÇÃO SOCIAL, AUSÊNCIA DE FALA E CRISES DE AGRESSIVIDADE CONSTANTES, NECESSITANDO DE ACOMPANHAMENTO CONTÍNUO PARA ATIVIDADES BÁSICAS DA VIDA DIÁRIA.';
         
-        document.getElementById('cpfCliente').dispatchEvent(new Event('blur'));
-        document.getElementById('cpfRepresentante').dispatchEvent(new Event('blur'));
+        if (document.getElementById('salarioMinimoVigente')) document.getElementById('salarioMinimoVigente').value = 'R$ 1.518,00';
+        if (document.getElementById('meioSalarioMinimo')) document.getElementById('meioSalarioMinimo').value = 'R$ 759,00';
+        if (document.getElementById('provedorRenda')) document.getElementById('provedorRenda').value = 'A GENITORA DO REQUERENTE';
+        if (document.getElementById('rendaTotalFamilia')) document.getElementById('rendaTotalFamilia').value = 'R$ 500,00';
+        if (document.getElementById('rendaPerCapita')) document.getElementById('rendaPerCapita').value = 'R$ 125,00';
+        if (document.getElementById('composicaoFamiliarTexto')) document.getElementById('composicaoFamiliarTexto').value = 'O REQUERENTE, SUA GENITORA E DOIS IRMÃOS MENORES';
+
+        if (document.getElementById('despesaMedicamentos')) document.getElementById('despesaMedicamentos').value = 'R$ 250,00';
+        if (document.getElementById('despesaExames')) document.getElementById('despesaExames').value = 'R$ 100,00';
+        if (document.getElementById('despesaAlimentacao')) document.getElementById('despesaAlimentacao').value = 'R$ 600,00';
+        if (document.getElementById('despesaTransporte')) document.getElementById('despesaTransporte').value = 'R$ 150,00';
+        if (document.getElementById('despesaContas')) document.getElementById('despesaContas').value = 'R$ 200,00';
+        if (document.getElementById('despesaAluguel')) document.getElementById('despesaAluguel').value = 'R$ 500,00';
         
-        console.log("Campos base e teses preenchidos automaticamente para testes!");
+        if (typeof calcularDespesaTotal === 'function') {
+            calcularDespesaTotal();
+        }
+
+        if (document.getElementById('tratamentosNecessarios')) document.getElementById('tratamentosNecessarios').value = 'TERAPIA OCUPACIONAL E FONOAUDIOLOGIA';
+        if (document.getElementById('cuidadorPrincipal')) document.getElementById('cuidadorPrincipal').value = 'SUA GENITORA';
+
+        if (document.getElementById('familiarVinculoEncerrado')) document.getElementById('familiarVinculoEncerrado').value = 'DO GENITOR DO AUTOR';
+        if (document.getElementById('empregadorVinculoEncerrado')) document.getElementById('empregadorVinculoEncerrado').value = 'CONSTRUTORA X LTDA';
+        if (document.getElementById('dataEncerramentoVinculo')) document.getElementById('dataEncerramentoVinculo').value = '10/01/2025';
+        if (document.getElementById('situacaoRendaAtual')) document.getElementById('situacaoRendaAtual').value = 'NÃO CONTA COM QUALQUER FONTE DE RENDA FIXA';
+        if (document.getElementById('meiosSubsidioAtual')) document.getElementById('meiosSubsidioAtual').value = 'AUXÍLIO DE FAMILIARES E DOAÇÕES DE VIZINHOS';
     }
 });
 
@@ -707,14 +837,11 @@ function verificarCampoCPF(evento) {
     const input = evento.target;
     const cpf = input.value;
     
-    // Se o campo estiver vazio ou incompleto (menos de 14 caracteres com a máscara), fica neutro.
-    // Isso evita que a caixa fique vermelha enquanto o usuário ainda está na metade do CPF.
     if (cpf.length < 14) {
         input.classList.remove('campo-valido', 'campo-invalido');
         return;
     }
     
-    // Assim que bater os 14 caracteres, ele testa na mesma hora
     if (calcularValidadeCPF(cpf)) {
         input.classList.remove('campo-invalido');
         input.classList.add('campo-valido');
@@ -725,12 +852,11 @@ function verificarCampoCPF(evento) {
 }
 
 document.getElementById('cpfCliente').addEventListener('input', mascararCPF);
-// Trocamos o 'blur' por 'input' abaixo para checar em tempo real:
 document.getElementById('cpfCliente').addEventListener('input', verificarCampoCPF); 
 
 document.getElementById('cpfRepresentante').addEventListener('input', mascararCPF);
-// Trocamos o 'blur' por 'input' abaixo para checar em tempo real:
 document.getElementById('cpfRepresentante').addEventListener('input', verificarCampoCPF);
+
 function mascararCEP(evento) {
     let v = evento.target.value.replace(/\D/g, ""); 
     v = v.replace(/^(\d{5})(\d)/, "$1-$2"); 
@@ -785,63 +911,48 @@ async function buscarCEPApi(cepFormatado, sufixo = '') {
 document.getElementById('cep').addEventListener('input', mascararCEP);
 document.getElementById('cepInss').addEventListener('input', mascararCEP);
 
-document.addEventListener('input', function(evento) {
-    if (evento.target.tagName === 'INPUT' && evento.target.type === 'text') {
-        const cursorPosition = evento.target.selectionStart;
-        evento.target.value = evento.target.value.toUpperCase();
-        evento.target.setSelectionRange(cursorPosition, cursorPosition);
-    }
-});
-
 // =========================================================
 // 8. FUNÇÕES PARA LIMPAR TODOS OS DADOS DA TELA
 // =========================================================
-
-// Esta função agora apenas exibe o nosso modal HTML bonito
 function limparDados() {
     document.getElementById('modalConfirmacao').style.display = 'flex';
 }
 
-// Esta função esconde o modal se o usuário clicar em "Cancelar"
 function fecharModalLimpar() {
     document.getElementById('modalConfirmacao').style.display = 'none';
 }
 
-// Esta função realmente apaga tudo se o usuário clicar em "Sim, limpar tudo"
 function executarLimpeza() {
-    // 1. Esconde o modal primeiro
     fecharModalLimpar();
 
-    // 2. Limpa todos os inputs de texto e textareas
     document.querySelectorAll('input[type="text"], textarea').forEach(campo => {
         campo.value = '';
         campo.classList.remove('campo-invalido', 'campo-valido', 'campo-buscando');
     });
 
-    // 3. Desmarca todos os checkboxes e radio buttons
     document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(campo => {
         campo.checked = false;
     });
 
-    // 4. Reseta todos os selects (menus suspensos) para a primeira opção
     document.querySelectorAll('select').forEach(campo => {
         campo.selectedIndex = 0;
     });
 
-    // 5. Limpa as variáveis das imagens coladas
     imgRenda = [];
     imgPericial = [];
     imgLaudo = [];
     anexosMedicos = []; 
     fotosCasa = [];     
     imgCoisaJulgada = [];
+    imgBolsaFamilia = [];
+    imgCnis = [];
+    imgRelatorioInss = [];
+    imgCadunico = [];
     
-    // 6. Limpa a visualização das galerias na tela
     document.querySelectorAll('.gallery-container').forEach(galeria => {
         galeria.innerHTML = '';
     });
 
-    // 7. Limpa textos dinâmicos (Valor por extenso e nome do PDF)
     const textoValor = document.getElementById('textoValorExtenso');
     if (textoValor) textoValor.innerText = '';
     
@@ -849,145 +960,195 @@ function executarLimpeza() {
     if (labelPdf) labelPdf.innerText = 'Nenhum PDF selecionado';
     caminhoPdfAtual = "";
 
-    // 8. Força a atualização da tela para esconder os blocos dinâmicos
     atualizarTeses();
     alternarRepresentante();
     if (typeof alternarHipoteseJulgamento === "function") alternarHipoteseJulgamento();
 
-    // 9. Rola a página suavemente de volta para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // =========================================================
-// VALIDAÇÃO E MÁSCARA DINÂMICA PARA OS CPFS DOS FAMILIARES (1 a 9)
+// 9. NAVEGAÇÃO ENTRE TELAS E MODO DE FORMULÁRIO
 // =========================================================
-document.addEventListener('DOMContentLoaded', () => {
-    // Loop de 1 até 9 para aplicar máscara e validação em cada CPF de familiar
-    for (let i = 1; i <= 9; i++) {
-        const inputFamCpf = document.getElementById(`fam_${i}_cpf`);
-        if (inputFamCpf) {
-            // Aplica a máscara enquanto o usuário digita
-            inputFamCpf.addEventListener('input', (evento) => {
-                mascararCPF(evento);
-                verificarCampoCPF(evento); // Reutiliza a sua função de validação existente!
-            });
-        }
-    }
-});
-
-// =========================================================
-// 9. NAVEGAÇÃO ENTRE TELAS (MENU <-> SUBMENU <-> FORMULÁRIOS)
-// =========================================================
-
-// Variável global para saber qual BPC o usuário escolheu
 let tipoBpcSelecionado = ""; 
 
-// 1. Sai do Menu Principal e abre o Submenu de BPC
-function abrirSubMenuBpc() {
-    document.getElementById('telaMenu').classList.remove('active');
-    document.getElementById('telaSubMenuBpc').classList.add('active');
+function mostrarTela(idTela) {
+    document.querySelectorAll('.step-screen').forEach(tela => {
+        tela.classList.remove('active');
+        tela.style.display = 'none';
+    });
+    const telaAlvo = document.getElementById(idTela);
+    if (telaAlvo) {
+        telaAlvo.classList.add('active');
+        telaAlvo.style.display = 'block';
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 2. Volta do Submenu de BPC para o Menu Principal
+function alternarModoFormulario(modo) {
+    const tela = document.getElementById('telaFormulario');
+    tela.classList.remove('modo-bpc', 'modo-aux_doenca');
+    tela.classList.add('modo-' + modo);
+    atualizarTeses();
+}
+
 function voltarMenuPrincipal() {
-    document.getElementById('telaSubMenuBpc').classList.remove('active');
-    document.getElementById('telaMenu').classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    mostrarTela('telaMenu');
 }
 
-/// 3. Sai do Submenu e abre o Formulário (Guardando a escolha!)
-function abrirFormularioBpc(tipo) {
-    tipoBpcSelecionado = tipo; // Salva se é 'deficiencia' ou 'renda'
-    
-    // Atualiza o título da tela para o usuário saber em qual modelo está trabalhando
+function abrirFormularioBpcUnico() {
+    tipoBpcSelecionado = "unificado";
     const titulo = document.getElementById('tituloFormulario');
-    if (tipo === 'deficiencia') {
-        titulo.innerText = "Formulário: BPC por Deficiência";
-    } else if (tipo === 'renda') {
-        titulo.innerText = "Formulário: BPC (Renda)";
+    if (titulo) {
+        titulo.innerText = "Formulário: BPC / LOAS";
+    }
+    -
+    alternarModoFormulario('bpc');
+    mostrarTela('telaFormulario');
+}
+
+// --- NAVEGAÇÃO URBANA ---
+function abrirSubMenuUrbana() {
+    mostrarTela('telaSubMenuUrbana');
+}
+
+function abrirSubMenuUrbanaAuxDoenca() {
+    mostrarTela('telaSubMenuUrbanaAuxDoenca');
+}
+
+function voltarSubMenuUrbana() {
+    mostrarTela('telaSubMenuUrbana');
+}
+
+function abrirFormularioAuxDoenca(categoria) {
+    tipoBpcSelecionado = categoria; // 'contribuinte_individual', 'facultativo' ou 'segurado_empregado_domestico'
+    
+    const titulo = document.getElementById('tituloFormulario');
+    if (titulo) {
+        let nomeCat = categoria === 'segurado_empregado_domestico' ? 'Empregado Doméstico' : categoria.replace('_', ' ');
+        titulo.innerText = "Formulário: Auxílio-Doença (" + nomeCat.toUpperCase() + ")";
     }
 
-    document.getElementById('telaSubMenuBpc').classList.remove('active');
-    document.getElementById('telaFormulario').classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Exibe apenas as teses correspondentes à categoria selecionada
+    const cardsAux = document.querySelectorAll('.tese-aux');
+    cardsAux.forEach(card => {
+        if (card.classList.contains('cat-all-aux') || card.classList.contains(`cat-${categoria}`)) {
+            card.style.display = 'block'; 
+        } else {
+            card.style.display = 'none';
+            const chk = card.querySelector('input[type="checkbox"]');
+            if(chk) chk.checked = false; // Desmarca ao ocultar para limpar o payload
+        }
+    });
+    
+    const inputVinculo = document.getElementById('tipoVinculoCliente');
+    if (inputVinculo) {
+        if (categoria === 'facultativo') inputVinculo.value = 'SEGURADO FACULTATIVO';
+        else if (categoria === 'contribuinte_individual') inputVinculo.value = 'CONTRIBUINTE INDIVIDUAL';
+        else inputVinculo.value = 'EMPREGADO DOMÉSTICO';
+    }
+
+    alternarModoFormulario('aux_doenca');
+    mostrarTela('telaFormulario');
 }
 
-// 4. Volta do Formulário para o Submenu
-function voltarSubMenuBpc() {
-    document.getElementById('telaFormulario').classList.remove('active');
-    document.getElementById('telaSubMenuBpc').classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Aviso temporário para os botões que ainda não têm formulário
 function abrirEmBreve() {
     alert("Em breve! O formulário para este benefício será adicionado nas próximas atualizações.");
 }
 
 // =========================================================
-// 10. REAPROVEITAMENTO INTELIGENTE (AUTO-PREENCHIMENTO DE FAMÍLIA)
+// 10. REAPROVEITAMENTO INTELIGENTE (AUTO-PREENCHIMENTO)
 // =========================================================
-
-// Sincroniza Cliente -> Familiar 1
 function sincronizarFamiliar1() {
     const nome = document.getElementById('nomeCliente').value;
-    const cpf = document.getElementById('cpfCliente').value;
-    const estadoCivil = document.getElementById('estadoCivilCliente').value;
-
     const fam1Nome = document.getElementById('fam_1_nome');
-    const fam1Cpf = document.getElementById('fam_1_cpf');
     const fam1Parentesco = document.getElementById('fam_1_parentesco');
-    const fam1EstadoCivil = document.getElementById('fam_1_estadocivil');
 
     if (fam1Nome) fam1Nome.value = nome;
-    if (fam1Cpf) fam1Cpf.value = cpf;
-    if (fam1EstadoCivil) fam1EstadoCivil.value = estadoCivil;
-    
-    // Se o parentesco estiver vazio, auto-preenche com a palavra REQUERENTE
     if (fam1Parentesco && fam1Parentesco.value.trim() === "") {
         fam1Parentesco.value = "AUTOR";
     }
 }
 
-// Sincroniza Representante -> Familiar 2
 function sincronizarFamiliar2() {
     const temRep = document.getElementById('temRepresentante').checked;
+    const isAux = document.getElementById('telaFormulario').classList.contains('modo-aux_doenca');
     
     const fam2Nome = document.getElementById('fam_2_nome');
-    const fam2Cpf = document.getElementById('fam_2_cpf');
     const fam2Parentesco = document.getElementById('fam_2_parentesco');
-    const fam2EstadoCivil = document.getElementById('fam_2_estadocivil');
 
-    if (!fam2Nome) return;
+    if (!fam2Nome || isAux) return;
 
     if (temRep) {
         fam2Nome.value = document.getElementById('nomeRepresentante').value;
-        fam2Cpf.value = document.getElementById('cpfRepresentante').value;
         fam2Parentesco.value = document.getElementById('parentescoRepresentante').value;
-        fam2EstadoCivil.value = document.getElementById('estadoCivilRepresentante').value;
     } else {
-        // Se a chave do representante for desligada, limpa os campos do Familiar 2
         fam2Nome.value = "";
-        fam2Cpf.value = "";
         fam2Parentesco.value = "";
-        fam2EstadoCivil.value = "";
     }
 }
 
-// Ativa os rastreadores de digitação assim que a tela terminar de carregar
 document.addEventListener('DOMContentLoaded', () => {
-    // Escuta os campos do Cliente
-    const camposCliente = ['nomeCliente', 'cpfCliente', 'estadoCivilCliente'];
+    const camposCliente = ['nomeCliente'];
     camposCliente.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('input', sincronizarFamiliar1);
     });
 
-    // Escuta os campos do Representante
-    const camposRep = ['nomeRepresentante', 'cpfRepresentante', 'parentescoRepresentante', 'estadoCivilRepresentante'];
+    const camposRep = ['nomeRepresentante', 'parentescoRepresentante'];
     camposRep.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('input', sincronizarFamiliar2);
+    });
+});
+
+// =========================================================
+// 11. CÁLCULO AUTOMÁTICO DAS DESPESAS FAMILIARES
+// =========================================================
+function converterMoedaParaNumero(valorMoeda) {
+    if (!valorMoeda) return 0;
+    let numStr = valorMoeda.replace(/\D/g, ""); 
+    if (numStr === "") return 0;
+    return parseFloat(numStr) / 100;
+}
+
+function calcularDespesaTotal() {
+    const camposDespesas = [
+        'despesaMedicamentos', 'despesaExames', 'despesaAlimentacao',
+        'despesaTransporte', 'despesaContas', 'despesaAluguel'
+    ];
+
+    let somaTotal = 0;
+
+    camposDespesas.forEach(id => {
+        const input = document.getElementById(id);
+        if (input && input.value) {
+            somaTotal += converterMoedaParaNumero(input.value);
+        }
+    });
+
+    const inputTotal = document.getElementById('despesaTotal');
+    if (inputTotal) {
+        if (somaTotal === 0) {
+            inputTotal.value = "";
+        } else {
+            let valorFormatado = somaTotal.toFixed(2).replace(".", ",");
+            valorFormatado = valorFormatado.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            inputTotal.value = "R$ " + valorFormatado;
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const camposDespesas = [
+        'despesaMedicamentos', 'despesaExames', 'despesaAlimentacao',
+        'despesaTransporte', 'despesaContas', 'despesaAluguel'
+    ];
+
+    camposDespesas.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calcularDespesaTotal);
+        }
     });
 });
