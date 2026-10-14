@@ -6,147 +6,167 @@
     <title>Banco de Petições</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .modo-bpc .aux-only { display: none !important; }
-        .modo-aux_doenca .bpc-only { display: none !important; }
+        .modo-bpc .aux-only, .modo-bpc .rural-only { display: none !important; }
+        .modo-aux_doenca .bpc-only, .modo-aux_doenca .rural-only { display: none !important; }
+        .modo-rural .bpc-only, .modo-rural .aux-only, .modo-rural .not-rural { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- ======================================================= -->
-    <!-- TELA 1: MENU PRINCIPAL                                  -->
-    <!-- ======================================================= -->
     <div id="telaMenu" class="step-screen active">
-        
-        <div class="header-container" style="margin-bottom: 35px; padding-bottom: 15px; border-bottom: 1px solid var(--border); text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 2.2rem; font-weight: 700;">
-                Banco de Petições
-            </h1>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 5px;">Selecione o tipo de benefício para gerar a petição inicial</p>
+
+        <div class="header-container">
+            <h1>Banco de Petições</h1>
+            <p>Selecione o tipo de benefício para gerar a petição inicial</p>
         </div>
 
-        <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;">
-            <div class="menu-card" onclick="abrirFormularioBpcUnico()">
+        <div class="section-container modulo-universal menu-lista">
+            <div class="menu-card" onclick="abrirSubMenuBpc()">
                 <h3>BPC / LOAS</h3>
-                <p style="font-size: 0.85rem; margin-top: 5px;">Benefício Assistencial</p>
+                <p>Benefício Assistencial</p>
             </div>
-            
+
             <div class="menu-card" onclick="abrirSubMenuUrbana()">
                 <h3>Urbana</h3>
-                <p style="font-size: 0.85rem; margin-top: 5px;">Trabalhador Urbano</p>
+                <p>Trabalhador Urbano</p>
             </div>
 
-            <div class="menu-card" onclick="abrirEmBreve()">
+            <div class="menu-card" onclick="abrirSubMenuRural()">
                 <h3>Rural</h3>
-                <p style="font-size: 0.85rem; margin-top: 5px;">Segurado Especial, Trabalhador Rural, Pescador</p>
+                <p>Pensão por Morte, Aposentadoria, Salário-Maternidade</p>
             </div>
         </div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- TELA 1.6: SUBMENU URBANA                                -->
-    <!-- ======================================================= -->
-    <div id="telaSubMenuUrbana" class="step-screen">
-        <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); text-align: center;">
-            <button class="btn-cancelar" style="margin-bottom: 15px; padding: 6px 12px; font-size: 13px;" onclick="voltarMenuPrincipal()">
+    <div id="telaSubMenuBpc" class="step-screen" style="display: none;">
+        <div class="header-container">
+            <button class="btn-cancelar" onclick="voltarMenuPrincipal()">
                 ← Voltar ao Menu Principal
             </button>
-            <h1 style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700;">
+            <h1>BPC / LOAS</h1>
+            <p>Selecione a fundamentação do benefício assistencial</p>
+        </div>
+
+        <div class="section-container modulo-universal menu-lista"> 
+            <div class="menu-card" onclick="abrirFormularioBpc('bpc_deficiencia')">
+                <h3>Pessoa com Deficiência</h3>
+                <p>Foco em laudos, CIDs e limitações clínicas</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioBpc('bpc_impedimento')">
+                <h3>Impedimento de Longo Prazo</h3>
+                <p>Foco em barreiras sociais, miserabilidade e estigmas</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="telaSubMenuUrbana" class="step-screen">
+        <div class="header-container">
+            <button class="btn-cancelar" onclick="voltarMenuPrincipal()">
+                ← Voltar ao Menu Principal
+            </button>
+            <h1>
                 Benefícios Urbanos
             </h1>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 5px;">Selecione o benefício desejado</p>
+            <p>Selecione o benefício desejado</p>
         </div>
 
-        <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;"> 
+        <div class="section-container modulo-universal menu-lista"> 
             <div class="menu-card" onclick="abrirSubMenuUrbanaAuxDoenca()">
-                <h3 style="color: #ffffff;">Auxílio-Doença</h3>
-                <p style="font-size: 0.85rem; margin-top: 5px;">Benefício por Incapacidade Temporária</p>
+                <h3>Auxílio-Doença</h3>
+                <p>Benefício por Incapacidade Temporária</p>
             </div>
         </div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- TELA 1.7: SUBMENU AUXÍLIO-DOENÇA (URBANO)               -->
-    <!-- ======================================================= -->
     <div id="telaSubMenuUrbanaAuxDoenca" class="step-screen">
-        <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); text-align: center;">
-            <button class="btn-cancelar" style="margin-bottom: 15px; padding: 6px 12px; font-size: 13px;" onclick="voltarSubMenuUrbana()">
+        <div class="header-container">
+            <button class="btn-cancelar" onclick="voltarSubMenuUrbana()">
                 ← Voltar aos Benefícios Urbanos
             </button>
-            <h1 style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700;">
+            <h1>
                 Categoria do Segurado
             </h1>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 5px;">Selecione a qualidade do segurado para o Auxílio-Doença</p>
+            <p>Selecione a qualidade do segurado para o Auxílio-Doença</p>
         </div>
 
-        <div class="section-container modulo-universal" style="max-width: 600px; margin: 0 auto; background-color: transparent; border: none; box-shadow: none;"> 
+        <div class="section-container modulo-universal menu-lista"> 
             <div class="menu-card" onclick="abrirFormularioAuxDoenca('contribuinte_individual')">
-                <h3 style="color: #ffffff;">Contribuinte Individual</h3>
-                <p style="font-size: 0.85rem; margin-top: 5px;">Autônomos, empresários, profissionais liberais</p>
+                <h3>Contribuinte Individual</h3>
+                <p>Autônomos, empresários, profissionais liberais</p>
             </div>
             <div class="menu-card" onclick="abrirFormularioAuxDoenca('facultativo')">
-                <h3 style="color: #ffffff;">Facultativo</h3>
-                <p style="font-size: 0.85rem; margin-top: 5px;">Estudantes, donas de casa, desempregados (com contribuição)</p>
+                <h3>Facultativo</h3>
+                <p>Estudantes, donas de casa, desempregados (com contribuição)</p>
             </div>
             <div class="menu-card" onclick="abrirFormularioAuxDoenca('segurado_empregado_domestico')">
-                <h3 style="color: #ffffff;">Seg. Emp. Doméstico</h3>
-                <p style="font-size: 0.85rem; margin-top: 5px;">Trabalhadores com vínculo doméstico ativo ou recente</p>
+                <h3>Seg. Empregado Doméstico</h3>
+                <p>Trabalhadores com vínculo doméstico ativo ou recente</p>
             </div>
         </div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- TELA 2: FORMULÁRIO UNIVERSAL (BPC E AUX. DOENÇA)        -->
-    <!-- ======================================================= -->
-    <div id="telaFormulario" class="step-screen modo-bpc">
-
-        <!-- CABEÇALHO DO FORMULÁRIO -->
-        <div class="header-container" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
-            <button class="btn-cancelar" style="margin-bottom: 15px; padding: 6px 12px; font-size: 13px;" onclick="voltarMenuPrincipal()">
-                ← Voltar ao Menu
+    <div id="telaSubMenuRural" class="step-screen" style="display: none;">
+        <div class="header-container">
+            <button class="btn-cancelar" onclick="voltarMenuPrincipal()">
+                ← Voltar ao Menu Principal
             </button>
-            <h1 id="tituloFormulario" style="color: #ffffff; margin: 0; font-size: 2.0rem; font-weight: 700; text-align: left;">
-                Formulário de Petição
-            </h1>
-            <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px; text-align: left;">Selecione as teses e preencha os dados do processo para gerar o documento formatado.</p>
+            <h1>Benefícios Rurais</h1>
+            <p>Selecione a modalidade do benefício rural</p>
         </div>
 
-        <!-- ================= PAINEL DE TESES (BPC) ================= -->
-        <div id="painelTesesBpc" class="section-container modulo-universal bpc-only" style="background-color: transparent; padding: 0; border: none; box-shadow: none;">
-            <div style="margin-bottom: 20px;"><h3 style="margin-bottom: 5px;">Teses e Pedidos da Petição (BPC)</h3></div>
-            
-            <div style="background: var(--surface-1); border-left: 4px solid var(--accent); padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                <h4 style="font-size: 0.95rem; color: var(--accent); margin-top: 0; margin-bottom: 15px; text-transform: uppercase;">Teses de Deficiência</h4>
+        <div class="section-container modulo-universal menu-lista"> 
+            <div class="menu-card" onclick="abrirFormularioRural('pensao_morte_rural')">
+                <h3>Pensão por Morte Rural</h3>
+                <p>Foco em instituidor segurado especial, óbito e atividade rural</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="telaFormulario" class="step-screen modo-bpc">
+
+        <div class="header-container">
+            <button class="btn-cancelar" onclick="voltarMenuPrincipal()">
+                ← Voltar ao Menu
+            </button>
+            <h1 id="tituloFormulario">
+                Formulário de Petição
+            </h1>
+            <p>Selecione as teses e preencha os dados do processo para gerar o documento formatado.</p>
+        </div>
+
+        <div id="painelTesesBpc" class="section-container modulo-universal bpc-only section-plain">
+            <div><h3>Teses e Pedidos da Petição (BPC)</h3></div>
+
+            <div class="tese-grupo">
+                <h4>Teses de Deficiência</h4>
                 <div class="teses-grid">
                     <label class="tese-card"><input type="checkbox" id="chkPrioridade" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Prioridade de Tramitação</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkCoisaJulgada" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Ausência de Coisa Julgada</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkPericiaJudicial" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Necessidade de Perícia Judicial</span></div></label>
-                    <label class="tese-card"><input type="checkbox" id="chkJulgamentoAntecipado" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Julgamento Antecipado</span></div></label>
+                    <label class="tese-card" id="cardJulgamentoAntecipado"><input type="checkbox" id="chkJulgamentoAntecipado" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Julgamento Antecipado</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkProvaEmprestada" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Prova Emprestada</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkFixacaoDib" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Fixação da DIB na DER</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkReafirmacaoDer" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Reafirmação da DER</span></div></label>
+                    <label class="tese-card"><input type="checkbox" id="chkCuratela" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Ação de Curatela Ajuizada</span></div></label>
                 </div>
             </div>
 
-            <div style="background: var(--surface-1); border-left: 4px solid var(--info); padding: 20px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                <h4 style="font-size: 0.95rem; color: var(--info); margin-top: 0; margin-bottom: 15px; text-transform: uppercase;">Teses de Renda</h4>
-                <div style="margin-bottom: 15px;">
-                    <label class="tese-card"><input type="checkbox" id="chkBolsaFamilia" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Não Computação do Bolsa Família e Opção Mais Vantajosa</span></div></label>
-                </div>
+            <div class="tese-grupo tese-grupo--info">
+                <h4>Teses de Renda</h4>
                 <div class="teses-grid">
+                    <label class="tese-card"><input type="checkbox" id="chkBolsaFamilia" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Não Computação do Bolsa Família e Opção Mais Vantajosa</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkFlexibilizacaoRenda" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Flexibilização da Renda (½ Salário-Mínimo)</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkDespesasFamiliares" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Despesas do Núcleo Familiar (Tabela)</span></div></label>
-                    <label class="tese-card"><input type="checkbox" id="chkVinculoEncerrado" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Vínculo Encerrado no CNIS</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkEquivocoRenda" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Equívoco de Renda do INSS (Dispensa Perícia)</span></div></label>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAINEL DE TESES (AUXÍLIO-DOENÇA) ================= -->
-        <div id="painelTesesAux" class="section-container modulo-universal aux-only" style="background-color: transparent; padding: 0; border: none; box-shadow: none;">
-            <div style="margin-bottom: 20px;"><h3>Teses e Fatos (Auxílio-Doença)</h3></div>
-            
-            <div style="background: var(--surface-1); border-left: 4px solid var(--accent); padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                <h4 style="font-size: 0.95rem; color: var(--accent); margin-top: 0; margin-bottom: 15px; text-transform: uppercase;">Estrutura da Ação</h4>
+        <div id="painelTesesAux" class="section-container modulo-universal aux-only section-plain">
+            <div><h3>Teses e Fatos (Auxílio-Doença)</h3></div>
+
+            <div class="tese-grupo">
+                <h4>Estrutura da Ação</h4>
                 <div class="teses-grid">
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkRestabelecimento" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">É caso de Restabelecimento (Prorrogação)</span></div></label>
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkSegredoJustica" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Segredo de Justiça (Doenças Sensíveis)</span></div></label>
@@ -156,26 +176,22 @@
                 </div>
             </div>
 
-            <div style="background: var(--surface-1); border-left: 4px solid var(--info); padding: 20px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                <h4 style="font-size: 0.95rem; color: var(--info); margin-top: 0; margin-bottom: 15px; text-transform: uppercase;">Teses de Indeferimento & Carência</h4>
+            <div class="tese-grupo tese-grupo--info">
+                <h4>Teses de Indeferimento & Carência</h4>
                 <div class="teses-grid">
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkAtestmed" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Indeferimento pelo Atestmed (Fatos)</span></div></label>
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkAtestmedLaudo" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Requisitos e Detalhes do Atestmed (Fundamentos)</span></div></label>
-                    
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkCarencia120" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Carência: +120 meses ininterruptos</span></div></label>
                     <label class="tese-card tese-aux cat-contribuinte_individual cat-facultativo"><input type="checkbox" id="chkCarenciaAtraso" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Carência: Atraso sem perda de qualidade</span></div></label>
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkCarenciaPerda" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Carência: Perdeu e retornou (6m)</span></div></label>
                     <label class="tese-card tese-aux cat-facultativo cat-segurado_empregado_domestico"><input type="checkbox" id="chkCarenciaFacultativo" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Carência: Segurado Facultativo</span></div></label>
-                    
-                    <!-- NOVA TESE EXCLUSIVA DOMÉSTICO -->
                     <label class="tese-card tese-aux cat-segurado_empregado_domestico"><input type="checkbox" id="chkSeguroDesemprego" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Carência: Recebeu Seguro-Desemprego</span></div></label>
                 </div>
             </div>
         </div>
 
-        <!-- ================= QUALIFICAÇÃO COMPARTILHADA ================= -->
         <div class="section-container modulo-universal">
-            <h3 style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Qualificação e Dados Pessoais</h3>
+            <h3>Qualificação e Dados Pessoais</h3>
             
             <div class="form-grid">
                 <div class="form-group full-width">
@@ -187,14 +203,14 @@
                     <input type="text" id="cpfCliente" placeholder="Ex: 123.456.789-00" maxlength="14">
                 </div>
                 <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
-                        <label style="margin-bottom: 0;">RG do Requerente:</label>
-                        <label style="margin-bottom: 0; font-size: 0.65rem; color: var(--accent); display: flex; align-items: center; gap: 5px; cursor: pointer; text-transform: uppercase; font-weight: 700;">
-                            <input type="checkbox" id="rgNovoCliente" onchange="sincronizarRgCpf('Cliente')" style="width: 14px; height: 14px; margin: 0; accent-color: var(--accent);">
+                    <div class="rotulo-linha">
+                        <label>RG do Requerente:</label>
+                        <label class="rg-novo">
+                            <input type="checkbox" id="rgNovoCliente" onchange="sincronizarRgCpf('Cliente')">
                             RG Novo
                         </label>
                     </div>
-                    <input type="text" id="rgCliente" placeholder="Ex: 2008123456">
+                    <input type="text" id="rgCliente" placeholder="Ex: 2008123456-9">
                 </div>
                 <div class="form-group">
                     <label>Nacionalidade:</label>
@@ -206,25 +222,23 @@
                 </div>
             </div>
 
-            <!-- Toggle de Representante -->
-            <div class="full-width toggle-container" style="margin: 20px 0; background: var(--surface-2); padding: 15px; border-radius: 6px;">
-                <span style="font-weight: 600;">O Requerente possui Representante/Curador?</span>
+            <div class="full-width toggle-container">
+                <span>O Requerente possui Representante/Curador?</span>
                 <label class="switch">
                     <input type="checkbox" id="temRepresentante" onchange="alternarRepresentante()">
                     <span class="slider"></span>
                 </label>
             </div>
 
-            <div id="grupoRepresentante" class="form-grid full-width" style="display: none; border-left: 3px solid var(--accent); padding-left: 15px; margin-bottom: 20px;">
+            <div id="grupoRepresentante" class="form-grid full-width" style="display: none;">
                 <div class="form-group full-width"><label>Nome do Representante:</label><input type="text" id="nomeRepresentante" placeholder="Nome completo do(a) representante/curador(a)"></div>
                 
-                <!-- BPC Exige os dados abaixo -->
                 <div class="form-group"><label>CPF do Representante:</label><input type="text" id="cpfRepresentante" placeholder="Ex: 123.456.789-00" maxlength="14"></div>
                 <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
-                        <label style="margin-bottom: 0;">RG do Representante:</label>
-                        <label style="margin-bottom: 0; font-size: 0.65rem; color: var(--accent); display: flex; align-items: center; gap: 5px; cursor: pointer; text-transform: uppercase; font-weight: 700;">
-                            <input type="checkbox" id="rgNovoRep" onchange="sincronizarRgCpf('Representante')" style="width: 14px; height: 14px; margin: 0; accent-color: var(--accent);">RG Novo
+                    <div class="rotulo-linha">
+                        <label>RG do Representante:</label>
+                        <label class="rg-novo">
+                            <input type="checkbox" id="rgNovoRep" onchange="sincronizarRgCpf('Representante')">RG Novo
                         </label>
                     </div>
                     <input type="text" id="rgRepresentante" placeholder="Ex: 2008123456">
@@ -233,12 +247,11 @@
                 <div class="form-group"><label>Estado Civil do Rep.:</label><input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a), Solteiro(a)"></div>
                 <div class="form-group full-width"><label>Parentesco (Vínculo):</label><input type="text" id="parentescoRepresentante" placeholder="Ex: Genitora, Pai, Curador Definitivo"></div>
 
-                <!-- Representante Auxílio-Doença -->
                 <div class="form-group aux-only"><label>Nº Processo de Interdição:</label><input type="text" id="numeroProcessoInterdicaoAux" placeholder="Ex: 0123456-78.2024.8.06.0087"></div>
                 <div class="form-group aux-only"><label>Comarca de Interdição/UF:</label><input type="text" id="comarcaInterdicaoAux" placeholder="Ex: Guaraciaba do Norte/CE"></div>
             </div>
 
-            <h4 style="margin: 25px 0 15px 0; font-size: 0.95rem; color: var(--text);">Endereço do Requerente</h4>
+            <h4>Endereço do Requerente</h4>
             <div class="form-grid">
                 <div class="form-group"><label>CEP:</label><input type="text" id="cep" placeholder="Ex: 00000-000" maxlength="9"></div>
                 <div class="form-group" style="grid-column: span 2;"><label>Rua/Logradouro:</label><input type="text" id="rua" placeholder="Nome da rua, avenida, sítio, etc."></div>
@@ -250,40 +263,32 @@
             </div>
         </div>
 
-        <!-- ================= DADOS DO PROCESSO E INSS ================= -->
         <div class="section-container modulo-universal">
-            <h3 style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Dados do Processo e Agência INSS</h3>
+            <h3>Dados do Processo e Agência INSS</h3>
             <div class="form-grid">
                 <div class="form-group">
                     <label>Subseção Judiciária:</label>
                     <input type="text" id="subsecao" placeholder="Ex: CRATEÚS/CE">
-                    <span class="hint-text">Não digite "de" ou "da". Apenas o nome.</span>
                 </div>
                 <div class="form-group"><label>DER (Data do Requerimento):</label><input type="text" id="der" placeholder="Ex: 24/03/2026" maxlength="10"></div>
                 <div class="form-group"><label>Número do Benefício (NB):</label><input type="text" id="nb" placeholder="Ex: 123.456.789-0"></div>
                 <div class="form-group">
                     <label>Valor da Causa:</label>
                     <input type="text" id="valorCausa" placeholder="Ex: 15.470,00">
-                    <span id="textoValorExtenso" style="font-size: 0.75rem; color: var(--accent); display: block; margin-top: 5px; font-weight: 500;"></span>
+                    <span id="textoValorExtenso"></span>
                 </div>
-                <div class="form-group"><label>Número da OAB:</label><input type="text" id="oabAdvogado" placeholder="Ex: 32185"></div>
+                <div class="form-group"><label>Número da OAB:</label><input type="text" id="oabAdvogado" placeholder="Ex: 32.185"></div>
                 <div class="form-group"><label>UF da OAB:</label><input type="text" id="ufOab" placeholder="Ex: CE" maxlength="2"></div>
             </div>
-            
-            <h4 style="margin: 25px 0 15px 0; font-size: 0.95rem; color: var(--text);">Endereço da Agência do INSS (Réu)</h4>
-            <div class="form-grid">
-                <div class="form-group"><label>CEP do INSS:</label><input type="text" id="cepInss" placeholder="Ex: 00000-000" maxlength="9"></div>
-                <div class="form-group" style="grid-column: span 2;"><label>Rua do INSS:</label><input type="text" id="ruaInss" placeholder="Ex: R. Cel. Xavier de Toledo"></div>
-                <div class="form-group"><label>Número (Agência):</label><input type="text" id="numeroInss" placeholder="Ex: 280"></div>
-                <div class="form-group"><label>Bairro do INSS:</label><input type="text" id="bairroInss" placeholder="Ex: Centro"></div>
-                <div class="form-group"><label>Cidade do INSS:</label><input type="text" id="cidadeInss" placeholder="Ex: São Paulo"></div>
-                <div class="form-group"><label>UF do INSS:</label><input type="text" id="ufInss" placeholder="Ex: SP" maxlength="2"></div>
+            <h3>Endereço da Agência do INSS</h3>
+            <div class="form-group full-width">
+                <label>Endereço Completo:</label>
+                <input type="text" id="enderecoInss" placeholder="Ex: Rua Cel. Xavier de Toledo, nº 280, Consolação, São Paulo/SP - CEP: 01047-020">
             </div>
         </div>
 
-        <!-- ================= DADOS EXCLUSIVOS AUXÍLIO DOENÇA ================= -->
-        <div id="painelDadosAuxDoenca" class="section-container modulo-universal aux-only" style="border-left: 4px solid var(--accent);">
-            <h3 style="color: var(--accent); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Vínculo, Cargo e Impacto</h3>
+        <div id="painelDadosAuxDoenca" class="section-container modulo-universal aux-only section-destaque">
+            <h3>Vínculo, Cargo e Impacto</h3>
             <div class="form-grid">
                 <div class="form-group"><label>Tipo de Vínculo:</label><input type="text" id="tipoVinculoCliente" placeholder="Ex: Segurado Facultativo"></div>
                 <div class="form-group">
@@ -298,7 +303,7 @@
                 </div>
             </div>
 
-            <h4 style="margin: 25px 0 15px 0; font-size: 0.95rem; color: var(--text);">Datas Previdenciárias e Carência</h4>
+            <h4>Datas Previdenciárias e Carência</h4>
             <div class="form-grid">
                 <div class="form-group"><label>DII (Data Início Incapacidade):</label><input type="text" id="dataDii" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
                 <div class="form-group"><label>Data do Último Vínculo/Pgto:</label><input type="text" id="dataUltimoVinculo" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
@@ -314,13 +319,11 @@
             </div>
         </div>
 
-        <!-- ================= DADOS MÉDICOS ================= -->
-        <div class="section-container modulo-universal">
-            <h3 style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Dados Médicos e Fatores Periciais</h3>
+        <div class="section-container modulo-universal section-destaque not-rural">
+            <h3>Dados Médicos e Fatores Periciais</h3>
             <div class="form-grid">
                 <div class="form-group full-width"><label>Diagnóstico(s) e CID(s):</label><textarea id="diagnosticoCid" rows="2" placeholder="Ex: Nome da Doença ou Deficiência (CID F12.3)"></textarea></div>
                 <div class="form-group full-width bpc-only"><label>Sigla da(s) Doença(s)/Transtorno(s):</label><input type="text" id="siglaDoenca" placeholder="Ex: TEA, TDAH, Epilepsia"></div>
-                <div class="form-group full-width bpc-only"><label>Fatores da Avaliação Pericial:</label><input type="text" id="fatoresAvaliacao" placeholder="Ex: Impedimento de longo prazo..."></div>
                 <div class="form-group full-width aux-only">
                     <label>Motivo do Indeferimento do INSS:</label>
                     <input type="text" id="motivoIndeferimentoAux" placeholder="Ex: atestmed em não conformidade">
@@ -331,53 +334,54 @@
                     <input type="text" id="especialidadePerito" placeholder="Ex: Ortopedia ou Psiquiatria">
                     <span class="hint-text">A frase diz "especialista em...".</span>
                 </div>
+                <div class="form-group full-width bpc-only">
+                    <label>Qualificadores Finais:</label>
+                    <input type="text" id="fatoresAvaliacao" placeholder="Ex: impedimento de longo prazo e fatores ambientais graves">
+                </div>
 
                 <div class="form-group full-width"><label>Detalhes do Laudo Médico:</label><textarea id="detalhesLaudo" rows="4" placeholder="Descreva os sintomas conforme atestado médico..."></textarea></div>
             </div>
 
-            <!-- GRID DE IMAGENS MÉDICAS -->
-            <h4 style="margin: 25px 0 10px 0; font-size: 0.85rem; color: var(--accent); text-transform: uppercase;">Painel de Imagens Médicas</h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
+            <h4>Painel de Imagens Médicas</h4>
+            <div class="grade-anexos">
                 <div onclick="selecionarCaixa('img_laudo')" id="caixa_img_laudo" class="image-box">
                     <strong>Imagem do Laudo Principal</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_img_laudo" class="gallery-container"></div>
                 </div>
 
-                <!-- Estes dois não existem no template de auxílio doença, então serão ocultados com a classe bpc-only -->
                 <div onclick="selecionarCaixa('img_pericial')" id="caixa_img_pericial" class="image-box bpc-only">
                     <strong>Imagem da Avaliação Pericial</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_img_pericial" class="gallery-container"></div>
                 </div>
-                <div onclick="selecionarCaixa('anexos_medicos')" id="caixa_anexos_medicos" class="image-box bpc-only" style="border-color: var(--success);">
-                    <strong style="color: var(--success);">+ Anexos Médicos Extras</strong>
+                <div onclick="selecionarCaixa('anexos_medicos')" id="caixa_anexos_medicos" class="image-box bpc-only">
+                    <strong>+ Anexos Médicos Extras</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_anexos_medicos" class="gallery-container"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= SOCIOECONÔMICO E GRUPO FAMILIAR (APENAS BPC) ================= -->
-        <div id="painelSocioeconomicoBpc" class="section-container modulo-universal bpc-only">
-            <h3 style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Dados Socioeconômicos e Grupo Familiar</h3>
+        <div id="painelSocioeconomicoBpc" class="section-container modulo-universal bpc-only section-destaque">
+            <h3>Dados Socioeconômicos e Grupo Familiar</h3>
 
-            <div class="form-grid" style="margin-bottom: 20px;">
+            <div class="form-grid">
                 <div class="form-group">
                     <label>Quantidade de pessoas na casa (Grupo Familiar):</label>
                     <input type="text" id="descricaoGrupoFamiliar" placeholder="Contando com o autor, quantas moram juntas? Ex: 4" maxlength="2">
                 </div>
             </div>
             
-            <h4 style="margin: 0 0 15px 0; font-size: 0.95rem; color: var(--text);">Membros da Família (Declaração da Composição e Renda)</h4>
-            <div id="container-familia" style="margin-bottom: 30px;">
+            <h3>Membros da Família (Declaração da Composição e Renda)</h3>
+            <div id="container-familia">
                 <script>
                     let htmlFamilia = "";
                     for(let i=1; i<=9; i++) {
                         htmlFamilia += `
-                        <div style="background: var(--surface-2); padding: 15px 20px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--border);">
-                            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase;">Membro Familiar ${i}</div>
-                            <div class="form-grid" style="gap: 15px;">
+                        <div class="membro-familiar">
+                            <div class="membro-titulo">Membro Familiar ${i}</div>
+                            <div class="form-grid">
                                 <div class="form-group" style="grid-column: span 2;">
                                     <label>Nome Completo:</label>
                                     <input type="text" id="fam_${i}_nome" placeholder="Nome do familiar">
@@ -401,93 +405,82 @@
                 </script>
             </div>
 
-            <h4 style="margin: 30px 0 10px 0; font-size: 0.85rem; color: var(--info); text-transform: uppercase;">Painel de Anexos Socioeconômicos</h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
-                <div onclick="selecionarCaixa('fotos_casa')" id="caixa_fotos_casa" class="image-box" style="border-color: var(--info);">
-                    <strong style="color: var(--info);">Fotos da Residência</strong>
+            <h4>Painel de Anexos Socioeconômicos</h4>
+            <div class="grade-anexos">
+                <div onclick="selecionarCaixa('fotos_casa')" id="caixa_fotos_casa" class="image-box image-box--info">
+                    <strong>Fotos da Residência</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_fotos_casa" class="gallery-container"></div>
                 </div>
 
-                <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box" style="border-color: var(--info);">
-                    <strong style="color: var(--info);">Print da Renda Geral</strong>
+                <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box image-box--info">
+                    <strong>Print da Renda Geral</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_img_renda" class="gallery-container"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= TESES CONDICIONAIS (DINÂMICAS) ================= -->
         <div id="containerDinamicoTeses">
-            
-            <div id="blocoPrioridade" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados da Prioridade de Tramitação</h3>
+
+            <div id="blocoPrioridade" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+                <h3>Dados da Prioridade de Tramitação</h3>
                 <div class="form-grid">
                     <div class="form-group full-width"><label>Introdução à Lei:</label><input type="text" id="introLeiDeficiencia" placeholder="Ex: A Lei nº 12.764/12 (Lei Berenice Piana)..."></div>
                     <div class="form-group full-width"><label>Citação da Lei:</label><textarea id="citacaoLeiDeficiencia" rows="3" placeholder="Cole aqui o texto exato da lei..."></textarea></div>
                 </div>
             </div>
-            
-            <!-- BLOCO COISA JULGADA (COMPARTILHADO) -->
-            <div id="blocoCoisaJulgada" class="section-container modulo-universal" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados da Ação Anterior (Coisa Julgada)</h3>
+
+            <div id="blocoCoisaJulgada" class="section-container modulo-universal section-destaque" style="display: none;">
+                <h3>Dados da Ação Anterior (Coisa Julgada)</h3>
                 <div class="form-grid">
                     <div class="form-group bpc-only"><label>Ano da Ação Anterior:</label><input type="text" id="anoAcaoAnterior" placeholder="Ex: 2022 ou 2023" maxlength="4"></div>
                     <div class="form-group"><label>Nº do Processo Anterior:</label><input type="text" id="numeroProcessoAnterior" placeholder="Ex: 0001234-56.2023.4.05.8100"></div>
                     <div class="form-group"><label>Nome do Benefício Anterior:</label><input type="text" id="nomeBeneficioAnterior" placeholder="Ex: BPC/LOAS"></div>
                     <div class="form-group bpc-only"><label>Tempo Transcorrido (Anos):</label><input type="text" id="tempoTranscorridoAnos" placeholder="Ex: 3" maxlength="2"></div>
-                    
-                    <div class="form-group full-width">
-                        <label>Houve agravamento do quadro:</label>
-                        <select id="tipoAgravamento">
-                            <option value="de saúde">De saúde</option>
-                            <option value="socioeconômico">Socioeconômico</option>
-                            <option value="de saúde e socioeconômico">De saúde e socioeconômico</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group full-width bpc-only"><label>Relação de Documentos Novos:</label><textarea id="documentosNovosRelacao" rows="2" placeholder="Liste os documentos que provam a piora..."></textarea></div>
-                    
-                    <!-- Exclusivo Aux-Doença -->
+
                     <div class="form-group aux-only"><label>NB do Processo Anterior:</label><input type="text" id="nbAnterior" placeholder="Ex: 123.456.789-0"></div>
                     <div class="form-group full-width aux-only"><label>Resultado da Sentença Anterior:</label><input type="text" id="resultadoSentencaAnterior" placeholder="Ex: improcedente por ausência de incapacidade"></div>
-                </div>
-                <div style="margin-top: 15px; max-width: 300px;" class="bpc-only">
-                    <div onclick="selecionarCaixa('img_coisa_julgada')" id="caixa_img_coisa_julgada" class="image-box">
-                        <strong>Prints Documentos Novos</strong>
-                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
-                        <div id="galeria_img_coisa_julgada" class="gallery-container"></div>
+
+                    <div class="form-group full-width">
+                        <label>Diagnósticos do Processo Anterior:</label>
+                        <textarea id="diagnosticosAnterioresTexto" rows="2" placeholder="Ex: No processo anterior, foram analisados os diagnósticos CID: Transtorno do deficit de atenção..."></textarea>
+                        <span class="hint-text">Digite a frase completa. Ex: "No processo anterior, foram analisados..."</span>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Evolução dos Diagnósticos (Quadro Atual):</label>
+                        <textarea id="evolucaoDiagnosticosTexto" rows="3" placeholder="Ex: conforme laudos médicos recentes, houve evolução do quadro de saúde, passando a abranger..."></textarea>
+                        <span class="hint-text">A frase no documento vai terminar automaticamente com "...evidenciando modificação substancial do estado clínico e ampliação das limitações funcionais."</span>
                     </div>
                 </div>
             </div>
 
-            <!-- BLOCOS ESPECÍFICOS AUX DOENÇA -->
-            <div id="blocoRestabelecimento" class="section-container modulo-universal aux-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados do Restabelecimento</h3>
+            <div id="blocoRestabelecimento" class="section-container modulo-universal aux-only section-destaque" style="display: none;">
+                <h3>Dados do Restabelecimento</h3>
                 <div class="form-grid">
                     <div class="form-group full-width"><label>O benefício foi concedido somente até (DCB):</label><input type="text" id="dataCessacaoBeneficio" placeholder="Ex: 20/08/2026" oninput="mascararData(event)" maxlength="10"></div>
                 </div>
             </div>
 
-            <div id="blocoBeneficioAnterior" class="section-container modulo-universal aux-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Benefícios Anteriores (Citação)</h3>
+            <div id="blocoBeneficioAnterior" class="section-container modulo-universal aux-only section-destaque" style="display: none;">
+                <h3>Benefícios Anteriores (Citação)</h3>
                 <div class="form-grid">
                     <div class="form-group"><label>Nome do Benefício Anterior:</label><input type="text" id="nomeBeneficioAnteriorAux" placeholder="Ex: Auxílio-Doença"></div>
                     <div class="form-group"><label>Período Recebido Anteriormente:</label><input type="text" id="periodoBeneficioAnterior" placeholder="Ex: 01/2023 a 05/2023"></div>
                 </div>
             </div>
 
-            <div id="blocoAtestmed" class="section-container modulo-universal aux-only" style="display: none; border-left: 4px solid var(--info);">
-                <h3 style="color: var(--info);">Dados do Atestmed</h3>
+            <div id="blocoAtestmed" class="section-container modulo-universal aux-only section-destaque" style="display: none; --accent: var(--info);">
+                <h3>Dados do Atestmed</h3>
                 <div class="form-grid">
                     <div class="form-group"><label>Data de Emissão do Documento:</label><input type="text" id="dataDocumentoComprovacaoAux" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
                     <div class="form-group"><label>Prazo de Afastamento (Dias):</label><input type="text" id="prazoAfastamentoDias" placeholder="Ex: 60"></div>
                 </div>
             </div>
 
-            <!-- BLOCOS DINÂMICOS (APENAS BPC) -->
-            <div id="blocoPericiaJudicial" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados da Perícia Judicial</h3>
+            <div id="blocoPericiaJudicial" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+                <h3>Dados da Perícia Judicial</h3>
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Tipo de Acompanhamento:</label>
@@ -503,13 +496,13 @@
                 </div>
             </div>
 
-            <div id="blocoJulgamentoAntecipado" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados do Julgamento Antecipado (Sem Perícia)</h3>
-                <div class="form-group full-width" style="margin-bottom: 15px; background: var(--surface-2); padding: 15px; border-radius: 6px;">
-                    <label style="margin-bottom: 10px; display: block; font-weight: 700;">Escolha a Hipótese a ser utilizada na tese:</label>
-                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;"><input type="radio" name="hipoteseJulgamento" id="radHipReconhecida" onchange="alternarHipoteseJulgamento()" style="accent-color: var(--accent);">1. Deficiência já reconhecida no INSS</label>
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;"><input type="radio" name="hipoteseJulgamento" id="radHipNotoria" onchange="alternarHipoteseJulgamento()" style="accent-color: var(--accent);">2. Deficiência Notória e Incontroversa</label>
+            <div id="blocoJulgamentoAntecipado" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+                <h3>Dados do Julgamento Antecipado (Sem Perícia)</h3>
+                <div class="form-group full-width hipotese-box">
+                    <label>Escolha a Hipótese a ser utilizada na tese:</label>
+                    <div class="hipotese-opcoes">
+                        <label class="hipotese-opcao"><input type="radio" name="hipoteseJulgamento" id="radHipReconhecida" onchange="alternarHipoteseJulgamento()">1. Deficiência já reconhecida no INSS</label>
+                        <label class="hipotese-opcao"><input type="radio" name="hipoteseJulgamento" id="radHipNotoria" onchange="alternarHipoteseJulgamento()">2. Deficiência Notória e Incontroversa</label>
                     </div>
                 </div>
                 <div id="camposHipReconhecida" class="form-grid full-width" style="display: none;">
@@ -525,13 +518,13 @@
                 </div>
             </div>
 
-            <div id="blocoProvaEmprestada" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados da Prova Emprestada (Interdição/Curatela)</h3>
+            <div id="blocoProvaEmprestada" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+                <h3>Dados da Prova Emprestada (Interdição/Curatela)</h3>
                 <div class="form-grid">
                     <div class="form-group"><label>Nº do Processo de Interdição:</label><input type="text" id="numeroProcessoInterdicao" placeholder="Ex: 0123456-78.2024.8.06.0087"></div>
                     <div class="form-group">
                         <label>Vara e Comarca/UF:</label>
-                        <div style="display: flex; gap: 10px;">
+                        <div class="campos-lado-a-lado">
                             <input type="text" id="varaInterdicao" placeholder="Vara" style="flex: 1;">
                             <input type="text" id="comarcaInterdicao" placeholder="Comarca/UF" style="flex: 1;">
                         </div>
@@ -540,39 +533,49 @@
                         <label>Tipo de Curatela:</label>
                         <select id="tipoCuratela"><option value="definitiva">Definitiva</option><option value="provisória">Provisória</option><option value="em andamento">Em andamento</option></select>
                     </div>
+
+                    <div class="form-group">
+                        <label>Tipo de Laudo Emprestado:</label>
+                        <select id="tipoLaudoEmprestado">
+                            <option value="pericial">Pericial (Médico)</option>
+                            <option value="social">Social</option>
+                            <option value="pericial e social">Pericial e Social</option>
+                        </select>
+                    </div>
+                    
                     <div class="form-group full-width"><label>Complemento do Laudo (Opcional):</label><input type="text" id="complementoLaudoInterdicao" placeholder="Ex: e corroborado por relatório do CAPS"></div>
                     <div class="form-group full-width"><label>Sintomas e Manifestações Clínicas:</label><textarea id="sintomasManifestacoes" rows="2" placeholder="Ex: Déficit cognitivo grave..."></textarea></div>
                 </div>
             </div>
 
-            <div id="blocoFixacaoDib" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados da Fixação da DIB na DER</h3>
+            <div id="blocoFixacaoDib" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+                <h3>Dados da Fixação da DIB na DER</h3>
                 <div class="form-grid">
                     <div class="form-group"><label>Data do Documento (Anterior à DER):</label><input type="text" id="dataDocumentoComprovacao" placeholder="Ex: 10/02/2026"></div>
                     <div class="form-group full-width"><label>Fundamentação Legal (Padrão BPC):</label><input type="text" id="fundamentacaoLegalDib" value="art. 20 da Lei nº 8.742/93 c/c art. 174 do Decreto nº 3.048/99"></div>
                 </div>
             </div>
 
-            <div id="blocoReafirmacaoDer" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--accent);">
-                <h3 style="color: var(--accent);">Dados da Reafirmação da DER</h3>
+            <div id="blocoReafirmacaoDer" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+                <h3>Dados da Reafirmação da DER</h3>
                 <div class="form-grid">
                     <div class="form-group full-width"><label>Data em que o requisito foi preenchido:</label><input type="text" id="dataReafirmacaoDer" placeholder="Ex: 15/08/2026"></div>
                 </div>
             </div>
 
-            <div id="blocoBolsaFamilia" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--info); --accent: var(--info);">
-                <h3 style="color: var(--info);">Anexo da Tese do Bolsa Família</h3>
-                <div style="margin-top: 15px; max-width: 300px;">
-                    <div onclick="selecionarCaixa('img_bolsa_familia')" id="caixa_img_bolsa_familia" class="image-box" style="border-color: var(--info);">
-                        <strong style="color: var(--info);">Print do Bolsa Família</strong>
+            <div id="blocoBolsaFamilia" class="section-container modulo-universal bpc-only section-destaque" style="display: none; --accent: var(--info);">
+                <h3>Anexo da Tese do Bolsa Família</h3>
+                <div>
+                    <div onclick="selecionarCaixa('img_bolsa_familia')" id="caixa_img_bolsa_familia" class="image-box image-box--info">
+                        <strong>Print do Bolsa Família</strong>
                         <span class="hint-text">Clique e cole (Ctrl+V)</span>
                         <div id="galeria_img_bolsa_familia" class="gallery-container"></div>
                     </div>
                 </div>
             </div>
 
-            <div id="blocoFlexibilizacaoRenda" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--info); --accent: var(--info);">
-                <h3 style="color: var(--info);">Dados da Flexibilização da Renda</h3>
+            <div id="blocoFlexibilizacaoRenda" class="section-container modulo-universal bpc-only section-destaque" style="display: none; --accent: var(--info);">
+                <h3>Dados da Flexibilização da Renda</h3>
                 <div class="form-grid">
                     <div class="form-group"><label>Salário Mínimo Vigente:</label><input type="text" id="salarioMinimoVigente" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
                     <div class="form-group"><label>1/2 Salário-Mínimo correspondente:</label><input type="text" id="meioSalarioMinimo" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
@@ -583,8 +586,8 @@
                 </div>
             </div>
 
-            <div id="blocoDespesasFamiliares" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--info); --accent: var(--info);">
-                <h3 style="color: var(--info);">Demonstrativo de Despesas do Núcleo Familiar</h3>
+            <div id="blocoDespesasFamiliares" class="section-container modulo-universal bpc-only section-destaque" style="display: none; --accent: var(--info);">
+                <h3>Demonstrativo de Despesas do Núcleo Familiar</h3>
                 <div class="form-grid">
                     <div class="form-group"><label>Medicamentos:</label><input type="text" id="despesaMedicamentos" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
                     <div class="form-group"><label>Exames e Consultas:</label><input type="text" id="despesaExames" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
@@ -592,71 +595,90 @@
                     <div class="form-group"><label>Transporte:</label><input type="text" id="despesaTransporte" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
                     <div class="form-group"><label>Contas da Casa:</label><input type="text" id="despesaContas" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
                     <div class="form-group"><label>Aluguel / Outras:</label><input type="text" id="despesaAluguel" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
-                    <div class="form-group"><label>TOTAL GERAL:</label><input type="text" id="despesaTotal" placeholder="R$ 0,00" readonly style="background-color: var(--surface-3); color: var(--accent); font-weight: 700; cursor: not-allowed;"></div>
-                    <div class="form-group full-width" style="margin-top: 10px;"><label>Tratamentos Especiais Necessários:</label><input type="text" id="tratamentosNecessarios" placeholder="Ex: terapia ocupacional e fonoaudiologia"></div>
+                    <div class="form-group"><label>TOTAL GERAL:</label><input type="text" id="despesaTotal" placeholder="R$ 0,00" readonly></div>
+                    <div class="form-group full-width"><label>Tratamentos Especiais Necessários:</label><input type="text" id="tratamentosNecessarios" placeholder="Ex: terapia ocupacional e fonoaudiologia"></div>
                     <div class="form-group full-width"><label>Cuidador Principal (Impedido de trabalhar):</label><input type="text" id="cuidadorPrincipal" placeholder="Ex: sua genitora"></div>
                 </div>
             </div>
 
-            <div id="blocoVinculoEncerrado" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--info); --accent: var(--info);">
-                <h3 style="color: var(--info);">Dados do Vínculo Encerrado (CNIS)</h3>
-                <div class="form-grid">
-                    <div class="form-group"><label>Familiar (Nome/Grau):</label><input type="text" id="familiarVinculoEncerrado" placeholder="Ex: do genitor do autor"></div>
-                    <div class="form-group"><label>Empregador / Órgão:</label><input type="text" id="empregadorVinculoEncerrado" placeholder="Ex: Construtora X Ltda"></div>
-                    <div class="form-group"><label>Data de Encerramento:</label><input type="text" id="dataEncerramentoVinculo" placeholder="Ex: 10/01/2025" maxlength="10"></div>
-                    <div class="form-group full-width"><label>Situação da Renda Atual:</label><input type="text" id="situacaoRendaAtual" placeholder="Ex: não conta com renda fixa"></div>
-                    <div class="form-group full-width"><label>Meios de Subsistência Atual:</label><input type="text" id="meiosSubsidioAtual" placeholder="Ex: auxílio de familiares"></div>
-                </div>
-                <h4 style="margin: 20px 0 10px 0; font-size: 0.85rem; color: var(--info); text-transform: uppercase;">Prints do CNIS</h4>
-                <div style="max-width: 300px;">
-                    <div onclick="selecionarCaixa('img_cnis')" id="caixa_img_cnis" class="image-box" style="border-color: var(--info);">
-                        <strong style="color: var(--info);">Print do CNIS (Vínculos)</strong>
-                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
-                        <div id="galeria_img_cnis" class="gallery-container"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="blocoEquivocoRenda" class="section-container modulo-universal bpc-only" style="display: none; border-left: 4px solid var(--info); --accent: var(--info);">
-                <h3 style="color: var(--info);">Anexos da Tese de Equívoco na Renda</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-top: 15px;">
-                    <div onclick="selecionarCaixa('img_relatorio_inss')" id="caixa_img_relatorio_inss" class="image-box" style="border-color: var(--info);">
-                        <strong style="color: var(--info);">Resumo INSS (Equívoco)</strong>
+            <div id="blocoEquivocoRenda" class="section-container modulo-universal bpc-only section-destaque" style="display: none; --accent: var(--info);">
+                <h3>Anexos da Tese de Equívoco na Renda</h3>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_relatorio_inss')" id="caixa_img_relatorio_inss" class="image-box image-box--info">
+                        <strong>Resumo INSS (Equívoco)</strong>
                         <span class="hint-text">Clique e cole (Ctrl+V)</span>
                         <div id="galeria_img_relatorio_inss" class="gallery-container"></div>
                     </div>
-                    <div onclick="selecionarCaixa('img_cadunico')" id="caixa_img_cadunico" class="image-box" style="border-color: var(--info);">
-                        <strong style="color: var(--info);">Print do CadÚnico</strong>
+                    <div onclick="selecionarCaixa('img_cadunico')" id="caixa_img_cadunico" class="image-box image-box--info">
+                        <strong>Print do CadÚnico</strong>
                         <span class="hint-text">Clique e cole (Ctrl+V)</span>
                         <div id="galeria_img_cadunico" class="gallery-container"></div>
                     </div>
                 </div>
             </div>
-
-        </div> <!-- FIM CONTAINER DINAMICO TESES -->
-
-        <!-- ================= FINALIZAÇÃO ================= -->
-        <div class="section-container modulo-universal" style="background: var(--surface-1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-top: 2px solid var(--border);">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <button onclick="selecionarPdf()" style="margin: 0; background-color: var(--surface-3); color: var(--text); border: 1px solid var(--border);">Anexar PA (PDF)</button>
-                <span id="label_pdf" style="font-size: 13px; color: var(--text-muted); max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nenhum PDF selecionado</span>
-            </div>
             
-            <div style="display: flex; gap: 15px; flex: 1; justify-content: flex-end;">
-                <button class="btn-primary btn-danger" style="margin: 0; width: auto; padding: 12px 24px;" onclick="limparDados()">Limpar Formulário</button>
-                <button class="btn-primary" style="margin: 0; width: auto; padding: 12px 28px; font-weight: 700; box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);" onclick="enviarDados()">Gerar Petição</button>
+        </div>
+
+        <div class="section-container modulo-universal barra-acoes">
+            <div class="barra-acoes__arquivo">
+                <button onclick="selecionarPdf()" class="btn-secundario">Anexar PA (PDF)</button>
+                <span id="label_pdf">Nenhum PDF selecionado</span>
+            </div>
+
+            <div class="barra-acoes__botoes" style="flex: 1;">
+                <button class="btn-primary btn-danger" onclick="limparDados()">Limpar Formulário</button>
+                <button class="btn-primary" onclick="enviarDados()">Gerar Petição</button>
             </div>
         </div>
-    </div> <!-- FIM DO TELA FORMULARIO -->
 
-    <!-- ================= MODAL DE CONFIRMAÇÃO ================= -->
+        <!-- ================= PAINEL RURAL: PENSÃO POR MORTE ================= -->
+        <div id="painelDadosRural" class="section-container modulo-universal rural-only section-destaque" style="display: none;">
+            <h3>Qualidade de Dependente e Dados do Instituidor (Rural)</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Qualidade do Dependente:</label>
+                    <select id="tipoDependente">
+                        <option value="conjuge">Cônjuge (Casado/a)</option>
+                        <option value="companheiro">Companheiro(a) (União Estável)</option>
+                        <option value="filho_menor">Filho(a) Menor (Menor de 21 anos)</option>
+                        <option value="filho_invalido">Filho(a) Maior Inválido(a)</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Parentesco do Instituidor:</label><input type="text" id="parentescoInstituidor" placeholder="Ex: esposo, companheiro, genitor"></div>
+                <div class="form-group full-width"><label>Nome Completo do Instituidor (Falecido):</label><input type="text" id="nomeInstituidor" placeholder="Nome completo do(a) de cujus"></div>
+                <div class="form-group"><label>Data do Óbito:</label><input type="text" id="dataObito" placeholder="DD/MM/AAAA" maxlength="10"></div>
+                <div class="form-group"><label>Data do Casamento / Início da União:</label><input type="text" id="dataCasamento" placeholder="DD/MM/AAAA ou Ano" maxlength="10"></div>
+                <div class="form-group"><label>Tempo de União (Anos):</label><input type="text" id="tempoUniao" placeholder="Ex: 5" maxlength="3"></div>
+                <div class="form-group"><label>Idade do Requerente:</label><input type="text" id="idadeRequerente" placeholder="Ex: 45" maxlength="3"></div>
+                <div class="form-group full-width"><label>Motivo do Indeferimento pelo INSS:</label><input type="text" id="motivoIndeferimentoRural" placeholder="Ex: ausência de início de prova material contemporânea"></div>
+            </div>
+
+            <h4>Dados da Atividade Rural do Instituidor</h4>
+            <div class="form-grid">
+                <div class="form-group"><label>Nome da Propriedade Rural:</label><input type="text" id="propriedadeRural" placeholder="Ex: Sítio Boa Esperança"></div>
+                <div class="form-group"><label>Município da Terra / UF:</label><input type="text" id="municipioUfRural" placeholder="Ex: Guaraciaba do Norte/CE"></div>
+                <div class="form-group"><label>Condição na Terra:</label><input type="text" id="condicaoRural" placeholder="Ex: meeiro, parceiro, posseiro, proprietário"></div>
+                <div class="form-group"><label>Período de Atividade (Início a Fim):</label><div class="campos-lado-a-lado"><input type="text" id="dataInicioRural" placeholder="Início (Ex: 1990)"><input type="text" id="dataFimRural" placeholder="Fim (Ex: 2026)"></div></div>
+                <div class="form-group"><label>O que cultivava:</label><input type="text" id="cultivoRural" placeholder="Ex: milho, feijão, mandioca"></div>
+                <div class="form-group"><label>Criações de Subsistência:</label><input type="text" id="criacaoRural" placeholder="Ex: aves e suínos para consumo"></div>
+                <div class="form-group full-width"><label>Principal Documento de Destaque:</label><input type="text" id="principalDocumentoRural" placeholder="Ex: a Certidão de Casamento constando a profissão de lavrador"></div>
+            </div>
+
+            <h4>Lista de Documentos Rurais (Provas Materiais)</h4>
+            <div class="form-group full-width">
+                <label>Documentos e Datas (Insira um por linha ou utilize o formato Nome | Data):</label>
+                <textarea id="textoDocumentosRurais" rows="4" placeholder="Ex:&#10;Certidão de Casamento | 12/05/1995&#10;Autodeclaração de Segurado Especial | 10/01/2026&#10;Notas de Produtor Rural | 2015 a 2024"></textarea>
+            </div>
+        </div>
+    </div>
+
     <div id="modalConfirmacao" class="modal-overlay" style="display: none;">
         <div class="modal-content">
-            <h3 style="margin-top: 0; color: #ff4444;">Limpar Dados</h3>
-            <p style="color: var(--text);">Tem certeza que deseja apagar tudo o que foi preenchido?</p>
-            <div class="modal-buttons" style="margin-top: 20px;">
+            <h3>Limpar Dados</h3>
+            <p>Tem certeza que deseja apagar tudo o que foi preenchido?</p>
+            <div class="modal-buttons">
                 <button class="btn-cancelar" onclick="fecharModalLimpar()">Cancelar</button>
-                <button class="btn-primary btn-danger" style="margin: 0; width: auto; padding: 10px 20px;" onclick="executarLimpeza()">Sim, limpar tudo</button>
+                <button class="btn-primary btn-danger" onclick="executarLimpeza()">Sim, limpar tudo</button>
             </div>
         </div>
     </div>
