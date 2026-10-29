@@ -1,11 +1,11 @@
 import fitz
 import os
 
-def processar_pdf(pdf_entrada, pasta_destino, nome_cliente):
+def processar_pdf(pdf_entrada, pasta_destino):
     if not pdf_entrada:
         return False
         
-    caminho_saida = os.path.join(pasta_destino, f"INDEFERIMENTO - {nome_cliente}.pdf")
+    caminho_saida = os.path.join(pasta_destino, f"INDEFERIMENTO.pdf")
 
     doc_original = fitz.open(pdf_entrada)
     doc_novo = fitz.open()
@@ -14,7 +14,7 @@ def processar_pdf(pdf_entrada, pasta_destino, nome_cliente):
 
     for num_pagina in range(len(doc_original)):
         pagina = doc_original.load_page(num_pagina)
-    
+
         texto = pagina.get_text("text").lower()
 
         if "caso discorde" in texto:

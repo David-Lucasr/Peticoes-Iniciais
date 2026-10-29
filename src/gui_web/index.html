@@ -6,9 +6,33 @@
     <title>Banco de Petições</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .modo-bpc .aux-only, .modo-bpc .rural-only { display: none !important; }
-        .modo-aux_doenca .bpc-only, .modo-aux_doenca .rural-only { display: none !important; }
-        .modo-rural .bpc-only, .modo-rural .aux-only, .modo-rural .not-rural { display: none !important; }
+        .modo-aux_acidente .bpc-only { display: none !important; }
+        .modo-aux_acidente .aux-only { display: none !important; }
+        .modo-aux_acidente .no-aux-acidente { display: none !important; }
+        .modo-aux_doenca .aposentadoria-only,
+        .modo-auxilio_acidente_conversao .aposentadoria-only { display: none !important; }
+        .modo-bpc .aux-acidente-tese-only { display: none !important; }
+        .modo-bpc .aux-acidente-only, .modo-aux_doenca .aux-acidente-only, .modo-ms .aux-acidente-only,
+        .modo-bpc .aposentadoria-only, .modo-bpc .conversao-only,
+        .modo-aux_doenca .conversao-only,
+        .modo-ms .aposentadoria-only, .modo-ms .conversao-only { display: none !important; }
+        .modo-aux_doenca .aux-acidente-tese-only { display: none !important; }
+        .modo-ms .aux-acidente-tese-only { display: none !important; }
+        .modo-ms_apelacao .aux-acidente-tese-only { display: none !important; }
+        .modo-auxilio_acidente_conversao .aposentadoria-only { display: none !important; }
+        .modo-auxilio_acidente_aposentadoria .conversao-only { display: none !important; }
+        /* Campos de um benefício não aparecem nos outros (BPC x Auxílio-Doença); Mandado de Segurança não é afetado */
+        .modo-aux_acidente #blocoCoisaJulgada { display: none !important; }
+        .modo-bpc .aux-only { display: none !important; }
+        .modo-aux_doenca .bpc-only { display: none !important; }
+        /* Visibilidade por tipo de petição (conforme CHAVES.txt): vh-<tipo> = esconder neste tipo */
+        .modo-bpc_deficiencia .vh-bpc_deficiencia { display: none !important; }
+        .modo-bpc_impedimento .vh-bpc_impedimento { display: none !important; }
+        .modo-contribuinte_individual .vh-contribuinte_individual { display: none !important; }
+        .modo-facultativo .vh-facultativo { display: none !important; }
+        .modo-segurado_empregado_domestico .vh-segurado_empregado_domestico { display: none !important; }
+        .modo-auxilio_acidente_conversao .vh-auxilio_acidente_conversao { display: none !important; }
+        .modo-auxilio_acidente_aposentadoria .vh-auxilio_acidente_aposentadoria { display: none !important; }
     </style>
 </head>
 <body>
@@ -31,9 +55,9 @@
                 <p>Trabalhador Urbano</p>
             </div>
 
-            <div class="menu-card" onclick="abrirSubMenuRural()">
-                <h3>Rural</h3>
-                <p>Pensão por Morte, Aposentadoria, Salário-Maternidade</p>
+            <div class="menu-card" onclick="abrirEmBreve()">
+                <h3>Mandado de Segurança</h3>
+                <p>Ações mandamentais contra atos do INSS</p>
             </div>
         </div>
     </div>
@@ -67,10 +91,14 @@
             <h1>
                 Benefícios Urbanos
             </h1>
-            <p>Selecione o benefício desejado</p>
+            <p>Selecione o benefício ou ação desejada</p>
         </div>
 
         <div class="section-container modulo-universal menu-lista"> 
+            <div class="menu-card" onclick="abrirSubMenuAuxilioAcidente()">
+                <h3>Auxílio-Acidente</h3>
+                <p>Benefício indenizatório por sequela definitiva</p>
+            </div>
             <div class="menu-card" onclick="abrirSubMenuUrbanaAuxDoenca()">
                 <h3>Auxílio-Doença</h3>
                 <p>Benefício por Incapacidade Temporária</p>
@@ -105,19 +133,76 @@
         </div>
     </div>
 
-    <div id="telaSubMenuRural" class="step-screen" style="display: none;">
+    <div id="telaSubMenuAuxilioAcidente" class="step-screen" style="display: none;">
         <div class="header-container">
-            <button class="btn-cancelar" onclick="voltarMenuPrincipal()">
-                ← Voltar ao Menu Principal
+            <button class="btn-cancelar" onclick="abrirSubMenuUrbana()">
+                ← Voltar aos Benefícios Urbanos
             </button>
-            <h1>Benefícios Rurais</h1>
-            <p>Selecione a modalidade do benefício rural</p>
+            <h1>Auxílio-Acidente</h1>
+            <p>Selecione o modelo desejado</p>
         </div>
 
         <div class="section-container modulo-universal menu-lista"> 
-            <div class="menu-card" onclick="abrirFormularioRural('pensao_morte_rural')">
-                <h3>Pensão por Morte Rural</h3>
-                <p>Foco em instituidor segurado especial, óbito e atividade rural</p>
+            <div class="menu-card" onclick="abrirFormularioAuxAcidente('auxilio_acidente_conversao')">
+                <h3>Conversão de Auxílio-Doença em Auxílio-Acidente</h3>
+                <p>Petição para conversão de benefício por incapacidade em auxílio-acidente</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioAuxAcidente('auxilio_acidente_aposentadoria')">
+                <h3>Concessão de Auxílio-Acidente c/c Aposentadoria por Invalidez</h3>
+                <p>Ação com pedido cumulado e tutela de urgência</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="telaSubMenuMandadoSeguranca" class="step-screen" style="display: none;">
+        <div class="header-container">
+            <button class="btn-cancelar" onclick="voltarMenuPrincipal()">
+                ← Voltar aos Benefícios Urbanos
+            </button>
+            <h1>Mandado de Segurança</h1>
+            <p>Selecione a tese ou modelo desejado</p>
+        </div>
+
+        <div class="section-container modulo-universal menu-lista"> 
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_apelacao')">
+                <h3>Apelação</h3>
+                <p>Recurso de apelação em Mandado de Segurança</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_biometria')">
+                <h3>Pedido de Liminar - Biometria</h3>
+                <p>Exigência abusiva de recadastramento ou biometria</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_impossibilidade_prorrogacao')">
+                <h3>Impossibilidade de Prorrogação</h3>
+                <p>Obstáculos indevidos à prorrogação do benefício</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipacao_social_bpc')">
+                <h3>Antecipação de Avaliação Social (BPC)</h3>
+                <p>Demora excessiva na realização do estudo social</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipacao_pericia_bpc')">
+                <h3>Antecipação de Perícia Médica (BPC)</h3>
+                <p>Demora excessiva na realização da perícia médica</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipacao_pericia_social_bpc')">
+                <h3>Antecipação de Perícia e Avaliação Social (BPC)</h3>
+                <p>Cunho mandamental para ambas as avaliações</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_beneficio_cessado')">
+                <h3>Benefício Cessado Indevidamente</h3>
+                <p>Cessação abrupta sem devido processo legal</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_demora_analise')">
+                <h3>Demora na Análise do Benefício</h3>
+                <p>Estouro do prazo legal de conclusão pelo INSS</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipar_resultado_medica')">
+                <h3>Antecipar Resultado da Avaliação Médica</h3>
+                <p>Omissão na emissão do parecer médico pericial</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipar_resultado_beneficio')">
+                <h3>Antecipar Resultado do Benefício</h3>
+                <p>Cobrança de conclusão e concessão de pagamento</p>
             </div>
         </div>
     </div>
@@ -143,7 +228,7 @@
                     <label class="tese-card"><input type="checkbox" id="chkPrioridade" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Prioridade de Tramitação</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkCoisaJulgada" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Ausência de Coisa Julgada</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkPericiaJudicial" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Necessidade de Perícia Judicial</span></div></label>
-                    <label class="tese-card" id="cardJulgamentoAntecipado"><input type="checkbox" id="chkJulgamentoAntecipado" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Julgamento Antecipado</span></div></label>
+                    <label class="tese-card vh-bpc_impedimento" id="cardJulgamentoAntecipado"><input type="checkbox" id="chkJulgamentoAntecipado" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Julgamento Antecipado</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkProvaEmprestada" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Prova Emprestada</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkFixacaoDib" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Fixação da DIB na DER</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkReafirmacaoDer" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Reafirmação da DER</span></div></label>
@@ -158,6 +243,18 @@
                     <label class="tese-card"><input type="checkbox" id="chkFlexibilizacaoRenda" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Flexibilização da Renda (½ Salário-Mínimo)</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkDespesasFamiliares" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Despesas do Núcleo Familiar (Tabela)</span></div></label>
                     <label class="tese-card"><input type="checkbox" id="chkEquivocoRenda" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Equívoco de Renda do INSS (Dispensa Perícia)</span></div></label>
+                    <label class="tese-card vh-bpc_impedimento" id="cardMiserabilidadeReconhecida"><input type="checkbox" id="chkMiserabilidadeReconhecida" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Miserabilidade já reconhecida pelo INSS</span></div></label>
+                </div>
+            </div>
+        </div>
+
+        <div id="painelTesesAuxAcidente" class="section-container modulo-universal aux-acidente-tese-only section-plain">
+            <div><h3>Teses e Opções (Auxílio-Acidente)</h3></div>
+            <div class="tese-grupo">
+                <h4>Fundamentos Opcionais</h4>
+                <div class="teses-grid">
+                    <label class="tese-card"><input type="checkbox" id="chkAcidenteTrabalho" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Competência da Justiça Estadual (Acidente de Trabalho)</span></div></label>
+                    <label class="tese-card"><input type="checkbox" id="chkTermoInicial" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Termo Inicial (DIB no dia seguinte à DCB - Tema 862 STJ)</span></div></label>
                 </div>
             </div>
         </div>
@@ -173,6 +270,7 @@
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkPrioridadeAux" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Prioridade de Tramitação</span></div></label>
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkBeneficioAnterior" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Já recebeu benefícios anteriores</span></div></label>
                     <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkCoisaJulgadaAux" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Ausência de Coisa Julgada (Agravamento)</span></div></label>
+                    <label class="tese-card tese-aux cat-all-aux"><input type="checkbox" id="chkIncapacidadeAnterior" onchange="atualizarTeses()"><div class="tese-content"><span class="custom-checkbox"></span><span class="tese-text">Incapacidade desde o Período de Qualidade (Agravamento)</span></div></label>
                 </div>
             </div>
 
@@ -245,7 +343,7 @@
                 </div>
                 <div class="form-group"><label>Nacionalidade do Rep.:</label><input type="text" id="nacionalidadeRepresentante" placeholder="Ex: Brasileiro(a)"></div>
                 <div class="form-group"><label>Estado Civil do Rep.:</label><input type="text" id="estadoCivilRepresentante" placeholder="Ex: Casado(a), Solteiro(a)"></div>
-                <div class="form-group full-width"><label>Parentesco (Vínculo):</label><input type="text" id="parentescoRepresentante" placeholder="Ex: Genitora, Pai, Curador Definitivo"></div>
+                <div class="form-group full-width bpc-only"><label>Parentesco (Vínculo):</label><input type="text" id="parentescoRepresentante" placeholder="Ex: Genitora, Pai, Curador Definitivo"></div>
 
                 <div class="form-group aux-only"><label>Nº Processo de Interdição:</label><input type="text" id="numeroProcessoInterdicaoAux" placeholder="Ex: 0123456-78.2024.8.06.0087"></div>
                 <div class="form-group aux-only"><label>Comarca de Interdição/UF:</label><input type="text" id="comarcaInterdicaoAux" placeholder="Ex: Guaraciaba do Norte/CE"></div>
@@ -268,10 +366,13 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label>Subseção Judiciária:</label>
-                    <input type="text" id="subsecao" placeholder="Ex: CRATEÚS/CE">
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" id="subsecao" placeholder="Ex: CRATEÚS/CE" style="flex: 1;">
+                        <button type="button" class="btn-secundario" onclick="preencherJurisdicaoManual()" title="Autocompletar com base no município" style="padding: 10px 14px; white-space: nowrap; cursor: pointer;">Preencher</button>
+                    </div>
                 </div>
-                <div class="form-group"><label>DER (Data do Requerimento):</label><input type="text" id="der" placeholder="Ex: 24/03/2026" maxlength="10"></div>
-                <div class="form-group"><label>Número do Benefício (NB):</label><input type="text" id="nb" placeholder="Ex: 123.456.789-0"></div>
+                <div class="form-group vh-auxilio_acidente_aposentadoria vh-auxilio_acidente_conversao"><label>DER (Data do Requerimento):</label><input type="text" id="der" placeholder="Ex: 24/03/2026" maxlength="10"></div>
+                <div class="form-group vh-auxilio_acidente_conversao"><label>Número do Benefício (NB):</label><input type="text" id="nb" placeholder="Ex: 123.456.789-0"></div>
                 <div class="form-group">
                     <label>Valor da Causa:</label>
                     <input type="text" id="valorCausa" placeholder="Ex: 15.470,00">
@@ -319,38 +420,92 @@
             </div>
         </div>
 
-        <div class="section-container modulo-universal section-destaque not-rural">
+        <div id="bloco-medico" class="section-container modulo-universal section-destaque bloco-dinamico">
             <h3>Dados Médicos e Fatores Periciais</h3>
             <div class="form-grid">
-                <div class="form-group full-width"><label>Diagnóstico(s) e CID(s):</label><textarea id="diagnosticoCid" rows="2" placeholder="Ex: Nome da Doença ou Deficiência (CID F12.3)"></textarea></div>
+                <!-- Oculto no Auxílio-Acidente -->
+                <div class="form-group full-width no-aux-acidente"><label>Diagnóstico(s) e CID(s):</label><textarea id="diagnosticoCid" rows="2" placeholder="Ex: Nome da Doença ou Deficiência (CID F12.3)"></textarea></div>
+                
                 <div class="form-group full-width bpc-only"><label>Sigla da(s) Doença(s)/Transtorno(s):</label><input type="text" id="siglaDoenca" placeholder="Ex: TEA, TDAH, Epilepsia"></div>
                 <div class="form-group full-width aux-only">
                     <label>Motivo do Indeferimento do INSS:</label>
                     <input type="text" id="motivoIndeferimentoAux" placeholder="Ex: atestmed em não conformidade">
                     <span class="hint-text">A frase inicia com "sob a alegação de...". Digite apenas o motivo.</span>
                 </div>
-                <div class="form-group full-width aux-only">
+                <div class="form-group full-width vh-auxilio_acidente_aposentadoria vh-auxilio_acidente_conversao">
                     <label>Especialidade do Perito (Quesitos):</label>
                     <input type="text" id="especialidadePerito" placeholder="Ex: Ortopedia ou Psiquiatria">
                     <span class="hint-text">A frase diz "especialista em...".</span>
                 </div>
-                <div class="form-group full-width bpc-only">
+                <div class="form-group full-width bpc-only vh-bpc_impedimento">
                     <label>Qualificadores Finais:</label>
                     <input type="text" id="fatoresAvaliacao" placeholder="Ex: impedimento de longo prazo e fatores ambientais graves">
                 </div>
 
-                <div class="form-group full-width"><label>Detalhes do Laudo Médico:</label><textarea id="detalhesLaudo" rows="4" placeholder="Descreva os sintomas conforme atestado médico..."></textarea></div>
+                <div class="form-group conversao-only">
+                    <label>Data do Acidente / Consolidação da Lesão:</label>
+                    <input type="text" id="dataAcidenteLesao" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascararData(event)">
+                </div>
+                <div class="form-group aux-acidente-only aposentadoria-only">
+                    <label>Atividade / Função Habitual:</label>
+                    <input type="text" id="atividadeHabitual" placeholder="Ex: Operador de máquinas">
+                </div>
+                <div class="form-group full-width aux-acidente-only">
+                    <label>Descrição da Sequela Definitiva / Redução da Capacidade:</label>
+                    <textarea id="sequelaDescricao" rows="3" placeholder="Descreva a lesão consolidada e a redução da capacidade para o trabalho habitual..."></textarea>
+                </div>
+                <div class="form-group full-width conversao-only">
+                    <label>Histórico / Fatos (Descrição detalhada dos vínculos, acidentes e auxílios-doença anteriores):</label>
+                    <textarea id="fatosAuxilioAcidente" rows="6" placeholder="Descreva os fatos detalhadamente (vínculos, acidentes, tratamentos, concessões anteriores de auxílio-doença)..."></textarea>
+                </div>
+
+                <!-- Campos exclusivos da Concessão c/c Aposentadoria por Invalidez -->
+                <div class="form-group aux-acidente-only aposentadoria-only">
+                    <label>Data de Início dos Vínculos:</label>
+                    <input type="text" id="dataInicioVinculos" placeholder="Ex: 14/11/2012">
+                </div>
+                <div class="form-group aux-acidente-only aposentadoria-only">
+                    <label>Nome da Última Empresa:</label>
+                    <input type="text" id="nomeEmpresaUltima" placeholder="Ex: FRUTADADA FRUTAS LTDA">
+                </div>
+                <div class="form-group aux-acidente-only aposentadoria-only">
+                    <label>Início do Último Vínculo:</label>
+                    <input type="text" id="inicioUltimoVinculo" placeholder="Ex: 13/02/2021">
+                </div>
+                <div class="form-group aux-acidente-only aposentadoria-only">
+                    <label>Fim do Último Vínculo:</label>
+                    <input type="text" id="fimUltimoVinculo" placeholder="Ex: 21/12/2022">
+                </div>
+                <div class="form-group aux-acidente-only aposentadoria-only">
+                    <label>Cargo / Função do Cliente:</label>
+                    <input type="text" id="cargoCliente" placeholder="Ex: carregador">
+                </div>
+                <div class="form-group full-width aux-acidente-only aposentadoria-only">
+                    <label>Fatos Detalhados (Histórico do Acidente e Tratamentos):</label>
+                    <textarea id="fatosDetalhadosTexto" rows="5" placeholder="Descreva detalhadamente o acidente, auxílios anteriores, CIDs, etc..."></textarea>
+                </div>
+
+                <!-- Oculto no Auxílio-Acidente -->
+                <div class="form-group full-width no-aux-acidente"><label>Detalhes do Laudo Médico:</label><textarea id="detalhesLaudo" rows="4" placeholder="Descreva os sintomas conforme atestado médico..."></textarea></div>
             </div>
 
             <h4>Painel de Imagens Médicas</h4>
             <div class="grade-anexos">
-                <div onclick="selecionarCaixa('img_laudo')" id="caixa_img_laudo" class="image-box">
+                <!-- Oculto no Auxílio-Acidente -->
+                <div onclick="selecionarCaixa('img_laudo')" id="caixa_img_laudo" class="image-box no-aux-acidente">
                     <strong>Imagem do Laudo Principal</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_img_laudo" class="gallery-container"></div>
                 </div>
 
-                <div onclick="selecionarCaixa('img_pericial')" id="caixa_img_pericial" class="image-box bpc-only">
+                <!-- Exclusivo Auxílio-Acidente -->
+                <div onclick="selecionarCaixa('img_acidente')" id="caixa_img_acidente" class="image-box aux-acidente-only">
+                    <strong>Imagem do Laudo / CAT / Perícia (Aux. Acidente)</strong>
+                    <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                    <div id="galeria_img_acidente" class="gallery-container"></div>
+                </div>
+
+                <div onclick="selecionarCaixa('img_pericial')" id="caixa_img_pericial" class="image-box bpc-only vh-bpc_impedimento">
                     <strong>Imagem da Avaliação Pericial</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_img_pericial" class="gallery-container"></div>
@@ -413,7 +568,7 @@
                     <div id="galeria_fotos_casa" class="gallery-container"></div>
                 </div>
 
-                <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box image-box--info">
+                <div onclick="selecionarCaixa('img_renda')" id="caixa_img_renda" class="image-box image-box--info vh-bpc_impedimento">
                     <strong>Print da Renda Geral</strong>
                     <span class="hint-text">Clique e cole (Ctrl+V)</span>
                     <div id="galeria_img_renda" class="gallery-container"></div>
@@ -423,11 +578,20 @@
 
         <div id="containerDinamicoTeses">
 
-            <div id="blocoPrioridade" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+            <div id="blocoTermoInicial" class="section-container modulo-universal aux-acidente-tese-only section-destaque" style="display: none;">
+                <h3>Dados do Termo Inicial (Tema 862 STJ)</h3>
+                <div class="form-grid">
+                    <div class="form-group"><label>Data do Termo Inicial (DIB):</label><input type="text" id="dataTermoInicial" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascararData(event)"></div>
+                    <div class="form-group"><label>NB do Benefício Anterior:</label><input type="text" id="nbAnteriorAuxilio" placeholder="Ex: 648.393.564-5"></div>
+                    <div class="form-group"><label>Data de Cessação do Auxílio-Doença (DCB):</label><input type="text" id="dataCessacaoAuxilio" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascararData(event)"></div>
+                </div>
+            </div>
+
+            <div id="blocoPrioridade" class="section-container modulo-universal bpc-only vh-bpc_impedimento section-destaque" style="display: none;">
                 <h3>Dados da Prioridade de Tramitação</h3>
                 <div class="form-grid">
-                    <div class="form-group full-width"><label>Introdução à Lei:</label><input type="text" id="introLeiDeficiencia" placeholder="Ex: A Lei nº 12.764/12 (Lei Berenice Piana)..."></div>
-                    <div class="form-group full-width"><label>Citação da Lei:</label><textarea id="citacaoLeiDeficiencia" rows="3" placeholder="Cole aqui o texto exato da lei..."></textarea></div>
+                    <div class="form-group full-width vh-bpc_impedimento"><label>Introdução à Lei:</label><input type="text" id="introLeiDeficiencia" placeholder="Ex: A Lei nº 12.764/12 (Lei Berenice Piana)..."></div>
+                    <div class="form-group full-width vh-bpc_impedimento"><label>Citação da Lei:</label><textarea id="citacaoLeiDeficiencia" rows="3" placeholder="Cole aqui o texto exato da lei..."></textarea></div>
                 </div>
             </div>
 
@@ -435,20 +599,21 @@
                 <h3>Dados da Ação Anterior (Coisa Julgada)</h3>
                 <div class="form-grid">
                     <div class="form-group bpc-only"><label>Ano da Ação Anterior:</label><input type="text" id="anoAcaoAnterior" placeholder="Ex: 2022 ou 2023" maxlength="4"></div>
-                    <div class="form-group"><label>Nº do Processo Anterior:</label><input type="text" id="numeroProcessoAnterior" placeholder="Ex: 0001234-56.2023.4.05.8100"></div>
-                    <div class="form-group"><label>Nome do Benefício Anterior:</label><input type="text" id="nomeBeneficioAnterior" placeholder="Ex: BPC/LOAS"></div>
+                    <div class="form-group vh-auxilio_acidente_aposentadoria vh-auxilio_acidente_conversao"><label>Nº do Processo Anterior:</label><input type="text" id="numeroProcessoAnterior" placeholder="Ex: 0001234-56.2023.4.05.8100"></div>
+                    <div class="form-group vh-auxilio_acidente_aposentadoria vh-auxilio_acidente_conversao"><label>Nome do Benefício Anterior:</label><input type="text" id="nomeBeneficioAnterior" placeholder="Ex: BPC/LOAS"></div>
                     <div class="form-group bpc-only"><label>Tempo Transcorrido (Anos):</label><input type="text" id="tempoTranscorridoAnos" placeholder="Ex: 3" maxlength="2"></div>
 
                     <div class="form-group aux-only"><label>NB do Processo Anterior:</label><input type="text" id="nbAnterior" placeholder="Ex: 123.456.789-0"></div>
                     <div class="form-group full-width aux-only"><label>Resultado da Sentença Anterior:</label><input type="text" id="resultadoSentencaAnterior" placeholder="Ex: improcedente por ausência de incapacidade"></div>
+                    <div class="form-group full-width aux-only"><label>Tipo de Agravamento:</label><input type="text" id="tipoAgravamento" placeholder="Ex: desfavorável e progressiva"></div>
 
-                    <div class="form-group full-width">
+                    <div class="form-group full-width vh-auxilio_acidente_aposentadoria vh-auxilio_acidente_conversao vh-contribuinte_individual vh-facultativo vh-segurado_empregado_domestico">
                         <label>Diagnósticos do Processo Anterior:</label>
                         <textarea id="diagnosticosAnterioresTexto" rows="2" placeholder="Ex: No processo anterior, foram analisados os diagnósticos CID: Transtorno do deficit de atenção..."></textarea>
                         <span class="hint-text">Digite a frase completa. Ex: "No processo anterior, foram analisados..."</span>
                     </div>
 
-                    <div class="form-group full-width">
+                    <div class="form-group full-width vh-auxilio_acidente_aposentadoria vh-auxilio_acidente_conversao vh-contribuinte_individual vh-facultativo vh-segurado_empregado_domestico">
                         <label>Evolução dos Diagnósticos (Quadro Atual):</label>
                         <textarea id="evolucaoDiagnosticosTexto" rows="3" placeholder="Ex: conforme laudos médicos recentes, houve evolução do quadro de saúde, passando a abranger..."></textarea>
                         <span class="hint-text">A frase no documento vai terminar automaticamente com "...evidenciando modificação substancial do estado clínico e ampliação das limitações funcionais."</span>
@@ -479,6 +644,24 @@
                 </div>
             </div>
 
+            <div id="blocoIncapacidadeAnterior" class="section-container modulo-universal aux-only section-destaque" style="display: none;">
+                <h3>Dados da Tese de Incapacidade Anterior / Agravamento</h3>
+                <div class="form-grid">
+                    <div class="form-group"><label>Ano das Provas Médicas (Ex: 2025):</label><input type="text" id="anoProvasMedicas" placeholder="Ex: 2025"></div>
+                    <div class="form-group"><label>Ano de Início da Doença:</label><input type="text" id="anoInicioDoenca" placeholder="Ex: 2022"></div>
+                    <div class="form-group"><label>Tipo de Exame Anterior:</label><input type="text" id="tipoExameAnterior" placeholder="Ex: raio-x do calcanhar"></div>
+                    <div class="form-group"><label>Ano de Parada da Contribuição:</label><input type="text" id="anoParadaContribuicao" placeholder="Ex: 2024"></div>
+                </div>
+                <h4>Imagens do Agravamento</h4>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_laudo_agravamento')" id="caixa_img_laudo_agravamento" class="image-box">
+                        <strong>Imagem do Laudo (Agravamento)</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_laudo_agravamento" class="gallery-container"></div>
+                    </div>
+                </div>
+            </div>
+
             <div id="blocoPericiaJudicial" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
                 <h3>Dados da Perícia Judicial</h3>
                 <div class="form-grid">
@@ -496,9 +679,9 @@
                 </div>
             </div>
 
-            <div id="blocoJulgamentoAntecipado" class="section-container modulo-universal bpc-only section-destaque" style="display: none;">
+            <div id="blocoJulgamentoAntecipado" class="section-container modulo-universal bpc-only vh-bpc_impedimento section-destaque" style="display: none;">
                 <h3>Dados do Julgamento Antecipado (Sem Perícia)</h3>
-                <div class="form-group full-width hipotese-box">
+                <div class="form-group full-width hipotese-box vh-bpc_impedimento">
                     <label>Escolha a Hipótese a ser utilizada na tese:</label>
                     <div class="hipotese-opcoes">
                         <label class="hipotese-opcao"><input type="radio" name="hipoteseJulgamento" id="radHipReconhecida" onchange="alternarHipoteseJulgamento()">1. Deficiência já reconhecida no INSS</label>
@@ -506,15 +689,15 @@
                     </div>
                 </div>
                 <div id="camposHipReconhecida" class="form-grid full-width" style="display: none;">
-                    <div class="form-group full-width"><label>Motivo do Indeferimento no INSS:</label><input type="text" id="motivoIndeferimento" placeholder="Por que o INSS negou?"></div>
-                    <div class="form-group full-width"><label>Comprovantes da Miserabilidade:</label><textarea id="comprovantesMiserabilidade" rows="2" placeholder="Ex: Extrato atualizado do CadÚnico..."></textarea></div>
+                    <div class="form-group full-width vh-bpc_impedimento"><label>Motivo do Indeferimento no INSS:</label><input type="text" id="motivoIndeferimento" placeholder="Por que o INSS negou?"></div>
+                    <div class="form-group full-width vh-bpc_impedimento"><label>Comprovantes da Miserabilidade:</label><textarea id="comprovantesMiserabilidade" rows="2" placeholder="Ex: Extrato atualizado do CadÚnico..."></textarea></div>
                 </div>
                 <div id="camposHipNotoria" class="form-grid full-width" style="display: none;">
-                    <div class="form-group">
+                    <div class="form-group vh-bpc_impedimento">
                         <label>Caráter da Condição:</label>
                         <select id="caraterCondicao"><option value="permanente">Permanente</option><option value="irreversível">Irreversível</option><option value="degenerativa">Degenerativa</option></select>
                     </div>
-                    <div class="form-group full-width"><label>Comprovantes da Deficiência Notória:</label><textarea id="comprovantesDeficiencia" rows="2" placeholder="Ex: Laudos da APAE..."></textarea></div>
+                    <div class="form-group full-width vh-bpc_impedimento"><label>Comprovantes da Deficiência Notória:</label><textarea id="comprovantesDeficiencia" rows="2" placeholder="Ex: Laudos da APAE..."></textarea></div>
                 </div>
             </div>
 
@@ -563,10 +746,10 @@
                 </div>
             </div>
 
-            <div id="blocoBolsaFamilia" class="section-container modulo-universal bpc-only section-destaque" style="display: none; --accent: var(--info);">
+            <div id="blocoBolsaFamilia" class="section-container modulo-universal bpc-only vh-bpc_impedimento section-destaque" style="display: none; --accent: var(--info);">
                 <h3>Anexo da Tese do Bolsa Família</h3>
                 <div>
-                    <div onclick="selecionarCaixa('img_bolsa_familia')" id="caixa_img_bolsa_familia" class="image-box image-box--info">
+                    <div onclick="selecionarCaixa('img_bolsa_familia')" id="caixa_img_bolsa_familia" class="image-box image-box--info vh-bpc_impedimento">
                         <strong>Print do Bolsa Família</strong>
                         <span class="hint-text">Clique e cole (Ctrl+V)</span>
                         <div id="galeria_img_bolsa_familia" class="gallery-container"></div>
@@ -584,7 +767,7 @@
                     <div class="form-group"><label>Renda Per Capita Calculada:</label><input type="text" id="rendaPerCapita" placeholder="R$ 0,00" oninput="mascararMoeda(event)"></div>
                     <div class="form-group full-width"><label>Composição Familiar (Texto):</label><input type="text" id="composicaoFamiliarTexto" placeholder="Ex: o requerente, sua genitora e dois irmãos menores"></div>
                 </div>
-            </div>
+            </div> 
 
             <div id="blocoDespesasFamiliares" class="section-container modulo-universal bpc-only section-destaque" style="display: none; --accent: var(--info);">
                 <h3>Demonstrativo de Despesas do Núcleo Familiar</h3>
@@ -616,7 +799,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
 
         <div class="section-container modulo-universal barra-acoes">
@@ -628,46 +810,6 @@
             <div class="barra-acoes__botoes" style="flex: 1;">
                 <button class="btn-primary btn-danger" onclick="limparDados()">Limpar Formulário</button>
                 <button class="btn-primary" onclick="enviarDados()">Gerar Petição</button>
-            </div>
-        </div>
-
-        <!-- ================= PAINEL RURAL: PENSÃO POR MORTE ================= -->
-        <div id="painelDadosRural" class="section-container modulo-universal rural-only section-destaque" style="display: none;">
-            <h3>Qualidade de Dependente e Dados do Instituidor (Rural)</h3>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Qualidade do Dependente:</label>
-                    <select id="tipoDependente">
-                        <option value="conjuge">Cônjuge (Casado/a)</option>
-                        <option value="companheiro">Companheiro(a) (União Estável)</option>
-                        <option value="filho_menor">Filho(a) Menor (Menor de 21 anos)</option>
-                        <option value="filho_invalido">Filho(a) Maior Inválido(a)</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>Parentesco do Instituidor:</label><input type="text" id="parentescoInstituidor" placeholder="Ex: esposo, companheiro, genitor"></div>
-                <div class="form-group full-width"><label>Nome Completo do Instituidor (Falecido):</label><input type="text" id="nomeInstituidor" placeholder="Nome completo do(a) de cujus"></div>
-                <div class="form-group"><label>Data do Óbito:</label><input type="text" id="dataObito" placeholder="DD/MM/AAAA" maxlength="10"></div>
-                <div class="form-group"><label>Data do Casamento / Início da União:</label><input type="text" id="dataCasamento" placeholder="DD/MM/AAAA ou Ano" maxlength="10"></div>
-                <div class="form-group"><label>Tempo de União (Anos):</label><input type="text" id="tempoUniao" placeholder="Ex: 5" maxlength="3"></div>
-                <div class="form-group"><label>Idade do Requerente:</label><input type="text" id="idadeRequerente" placeholder="Ex: 45" maxlength="3"></div>
-                <div class="form-group full-width"><label>Motivo do Indeferimento pelo INSS:</label><input type="text" id="motivoIndeferimentoRural" placeholder="Ex: ausência de início de prova material contemporânea"></div>
-            </div>
-
-            <h4>Dados da Atividade Rural do Instituidor</h4>
-            <div class="form-grid">
-                <div class="form-group"><label>Nome da Propriedade Rural:</label><input type="text" id="propriedadeRural" placeholder="Ex: Sítio Boa Esperança"></div>
-                <div class="form-group"><label>Município da Terra / UF:</label><input type="text" id="municipioUfRural" placeholder="Ex: Guaraciaba do Norte/CE"></div>
-                <div class="form-group"><label>Condição na Terra:</label><input type="text" id="condicaoRural" placeholder="Ex: meeiro, parceiro, posseiro, proprietário"></div>
-                <div class="form-group"><label>Período de Atividade (Início a Fim):</label><div class="campos-lado-a-lado"><input type="text" id="dataInicioRural" placeholder="Início (Ex: 1990)"><input type="text" id="dataFimRural" placeholder="Fim (Ex: 2026)"></div></div>
-                <div class="form-group"><label>O que cultivava:</label><input type="text" id="cultivoRural" placeholder="Ex: milho, feijão, mandioca"></div>
-                <div class="form-group"><label>Criações de Subsistência:</label><input type="text" id="criacaoRural" placeholder="Ex: aves e suínos para consumo"></div>
-                <div class="form-group full-width"><label>Principal Documento de Destaque:</label><input type="text" id="principalDocumentoRural" placeholder="Ex: a Certidão de Casamento constando a profissão de lavrador"></div>
-            </div>
-
-            <h4>Lista de Documentos Rurais (Provas Materiais)</h4>
-            <div class="form-group full-width">
-                <label>Documentos e Datas (Insira um por linha ou utilize o formato Nome | Data):</label>
-                <textarea id="textoDocumentosRurais" rows="4" placeholder="Ex:&#10;Certidão de Casamento | 12/05/1995&#10;Autodeclaração de Segurado Especial | 10/01/2026&#10;Notas de Produtor Rural | 2015 a 2024"></textarea>
             </div>
         </div>
     </div>
@@ -683,6 +825,7 @@
         </div>
     </div>
 
+    <script src="municipios.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
