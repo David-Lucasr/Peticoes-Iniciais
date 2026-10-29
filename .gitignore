@@ -1,2 +1,10 @@
+# Pastas de compilação do PyInstaller
+build/
+dist/
+*.spec
+*.pkg
+
+# Outros ficheiros temporários do Python (opcional, mas recomendado)
 __pycache__/
-*.log
+*.pyc
+logs.log
