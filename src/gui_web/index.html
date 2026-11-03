@@ -21,10 +21,35 @@
         .modo-ms_apelacao .aux-acidente-tese-only { display: none !important; }
         .modo-auxilio_acidente_conversao .aposentadoria-only { display: none !important; }
         .modo-auxilio_acidente_aposentadoria .conversao-only { display: none !important; }
-        /* Campos de um benefício não aparecem nos outros (BPC x Auxílio-Doença); Mandado de Segurança não é afetado */
+
+        /* Campos de um benefício não aparecem nos outros */
         .modo-aux_acidente #blocoCoisaJulgada { display: none !important; }
         .modo-bpc .aux-only { display: none !important; }
         .modo-aux_doenca .bpc-only { display: none !important; }
+        /* MS: esconde campos dos outros tipos; ms-only some nos demais */
+        .modo-ms .bpc-only { display: none !important; }
+        .modo-ms .aux-only { display: none !important; }
+        .modo-bpc .ms-only { display: none !important; }
+        .modo-aux_doenca .ms-only { display: none !important; }
+        .modo-aux_acidente .ms-only { display: none !important; }
+        /* vh-<subtipo_ms>: ocultar campo em subtipos específicos de MS */
+        .modo-ms_apelacao .vh-ms_apelacao { display: none !important; }
+        .modo-ms_biometria .vh-ms_biometria { display: none !important; }
+        .modo-ms_impossibilidade_prorrogacao .vh-ms_impossibilidade_prorrogacao { display: none !important; }
+        .modo-ms_antecipacao_social_bpc .vh-ms_antecipacao_social_bpc { display: none !important; }
+        .modo-ms_antecipacao_pericia_bpc .vh-ms_antecipacao_pericia_bpc { display: none !important; }
+        .modo-ms_antecipacao_pericia_social_bpc .vh-ms_antecipacao_pericia_social_bpc { display: none !important; }
+        .modo-ms_beneficio_cessado .vh-ms_beneficio_cessado { display: none !important; }
+        .modo-ms_demora_analise .vh-ms_demora_analise { display: none !important; }
+        .modo-ms_antecipar_resultado_medica .vh-ms_antecipar_resultado_medica { display: none !important; }
+        .modo-ms_antecipar_resultado_beneficio .vh-ms_antecipar_resultado_beneficio { display: none !important; }
+        .modo-ms .no-ms { display: none !important; }
+        /* Subpaineis dinâmicos por subtipo de MS */
+        .ms-apelacao-only { display: none !important; }
+        .modo-ms_apelacao .ms-apelacao-only { display: block !important; }
+        .ms-beneficio-cessado-only { display: none !important; }
+        .modo-ms_beneficio_cessado .ms-beneficio-cessado-only { display: block !important; }
+
         /* Visibilidade por tipo de petição (conforme CHAVES.txt): vh-<tipo> = esconder neste tipo */
         .modo-bpc_deficiencia .vh-bpc_deficiencia { display: none !important; }
         .modo-bpc_impedimento .vh-bpc_impedimento { display: none !important; }
@@ -55,7 +80,7 @@
                 <p>Trabalhador Urbano</p>
             </div>
 
-            <div class="menu-card" onclick="abrirEmBreve()">
+            <div class="menu-card" onclick="abrirSubMenuMandadoSeguranca()">
                 <h3>Mandado de Segurança</h3>
                 <p>Ações mandamentais contra atos do INSS</p>
             </div>
@@ -388,6 +413,57 @@
             </div>
         </div>
 
+        <div id="painelDadosMs" class="section-container modulo-universal ms-only section-destaque">
+            <h3>Dados do Mandado de Segurança</h3>
+
+            <!-- Campos comuns a todos os subtipos de MS -->
+            <div class="form-grid">
+                <div class="form-group"><label>Vara Federal:</label><input type="text" id="varaFederal" placeholder="Ex: 1ª Vara Federal de Campina Grande"></div>
+                <div class="form-group"><label>Cidade da Agência INSS:</label><input type="text" id="cidadeInss" placeholder="Ex: Campina Grande"></div>
+                <div class="form-group"><label>UF da Agência INSS:</label><input type="text" id="ufInss" placeholder="Ex: PB" maxlength="2"></div>
+            </div>
+
+            <!-- Apelação -->
+            <div class="ms-apelacao-only">
+                <div class="form-grid">
+                    <div class="form-group"><label>Região do TRF:</label><input type="text" id="regiaoTrf" placeholder="Ex: TRF da 5ª Região"></div>
+                    <div class="form-group"><label>Número do Processo MS:</label><input type="text" id="numeroProcessoMs" placeholder="Ex: 0812345-67.2026.4.05.8200"></div>
+                    <div class="form-group"><label>Doença / CID Resumida:</label><input type="text" id="doencaCliente" placeholder="Ex: Diabetes Mellitus tipo 2 (CID E11)"></div>
+                    <div class="form-group"><label>Data da Perícia Agendada:</label><input type="text" id="dataPericiaMsAgendada" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Meses de Espera:</label><input type="text" id="mesesEspera" placeholder="Ex: 8" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+                    <div class="form-group full-width"><label>ID das Decisões de Gratuidade:</label><input type="text" id="idDecisoesGratuidade" placeholder="Ex: Processo nº 0001234-56.2026.4.05.8200, fl. 42"></div>
+                </div>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_laudo_ms')" id="caixa_img_laudo_ms" class="image-box">
+                        <strong>Imagem do Laudo Principal</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_laudo_ms" class="gallery-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefício Cessado -->
+            <div class="ms-beneficio-cessado-only">
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficio" placeholder="Ex: auxílio-doença previdenciário"></div>
+                    <div class="form-group"><label>Data de Início do Benefício:</label><input type="text" id="dataInicioBeneficio" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data de Cessação do Benefício:</label><input type="text" id="dataCessacaoBeneficio" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data do Protocolo de Prorrogação:</label><input type="text" id="dataProtocoloProrrogacao" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data da Perícia Agendada:</label><input type="text" id="dataPericiaMsAgendada2" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Número do Protocolo:</label><input type="text" id="numeroProtocolo" placeholder="Ex: 1234567890"></div>
+                    <div class="form-group"><label>Doença / CID Resumida:</label><input type="text" id="doencaCliente2" placeholder="Ex: Diabetes Mellitus tipo 2 (CID E11)"></div>
+                </div>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_laudo_ms_cessado')" id="caixa_img_laudo_ms_cessado" class="image-box">
+                        <strong>Imagem do Laudo Principal</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_laudo_ms_cessado" class="gallery-container"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div id="painelDadosAuxDoenca" class="section-container modulo-universal aux-only section-destaque">
             <h3>Vínculo, Cargo e Impacto</h3>
             <div class="form-grid">
@@ -420,7 +496,7 @@
             </div>
         </div>
 
-        <div id="bloco-medico" class="section-container modulo-universal section-destaque bloco-dinamico">
+        <div id="bloco-medico" class="section-container modulo-universal no-ms section-destaque bloco-dinamico">
             <h3>Dados Médicos e Fatores Periciais</h3>
             <div class="form-grid">
                 <!-- Oculto no Auxílio-Acidente -->
@@ -462,7 +538,7 @@
                 <!-- Campos exclusivos da Concessão c/c Aposentadoria por Invalidez -->
                 <div class="form-group aux-acidente-only aposentadoria-only">
                     <label>Data de Início dos Vínculos:</label>
-                    <input type="text" id="dataInicioVinculos" placeholder="Ex: 14/11/2012">
+                    <input type="text" id="dataInicioVinculos" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10">
                 </div>
                 <div class="form-group aux-acidente-only aposentadoria-only">
                     <label>Nome da Última Empresa:</label>
@@ -470,11 +546,11 @@
                 </div>
                 <div class="form-group aux-acidente-only aposentadoria-only">
                     <label>Início do Último Vínculo:</label>
-                    <input type="text" id="inicioUltimoVinculo" placeholder="Ex: 13/02/2021">
+                    <input type="text" id="inicioUltimoVinculo" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10">
                 </div>
                 <div class="form-group aux-acidente-only aposentadoria-only">
                     <label>Fim do Último Vínculo:</label>
-                    <input type="text" id="fimUltimoVinculo" placeholder="Ex: 21/12/2022">
+                    <input type="text" id="fimUltimoVinculo" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10">
                 </div>
                 <div class="form-group aux-acidente-only aposentadoria-only">
                     <label>Cargo / Função do Cliente:</label>
@@ -595,7 +671,7 @@
                 </div>
             </div>
 
-            <div id="blocoCoisaJulgada" class="section-container modulo-universal section-destaque" style="display: none;">
+            <div id="blocoCoisaJulgada" class="section-container modulo-universal no-ms section-destaque" style="display: none;">
                 <h3>Dados da Ação Anterior (Coisa Julgada)</h3>
                 <div class="form-grid">
                     <div class="form-group bpc-only"><label>Ano da Ação Anterior:</label><input type="text" id="anoAcaoAnterior" placeholder="Ex: 2022 ou 2023" maxlength="4"></div>

@@ -137,10 +137,8 @@ class Api:
             }
         elif tipo_beneficio.startswith('ms_'):
             documentos_para_gerar = {
-                f"MANDADO_DE_SEGURANCA.docx": f"assets/templates/{tipo_beneficio}_template.docx",
-                f"PROCURAÇÃO.docx": f"assets/templates/procuracao{sufixo_rep}.docx",
-                f"DECLARAÇÃO DE HIP.docx": f"assets/templates/declaracao_hipossuficiencia{sufixo_rep}.docx",
-                f"DECLARAÇÃO DE RENUNCIA.docx": f"assets/templates/declaracao_renuncia{sufixo_rep}.docx"
+                f"MANDADO DE SEGURANÇA.docx": f"assets/templates/{tipo_beneficio}_template.docx",
+                f"PROCURAÇÃO.docx": f"assets/templates/procuracao{sufixo_rep}.docx"
             }
         elif tipo_beneficio == 'auxilio_acidente_conversao':
             documentos_para_gerar = {

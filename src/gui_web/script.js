@@ -202,11 +202,12 @@ let imgAcidente = [];
 let imgLaudoAgravamento = [];
 let contadorId = 0;
 let caixaAtivaParaColar = null;
+let imgLaudoMs = [];
 
 function selecionarCaixa(chave){
     caixaAtivaParaColar = chave;
     
-    ['img_renda', 'img_pericial', 'img_laudo', 'img_acidente', 'img_laudo_agravamento', 'anexos_medicos', 'fotos_casa', 'img_bolsa_familia', 'img_cnis', 'img_relatorio_inss', 'img_cadunico'].forEach(c => {
+    ['img_renda', 'img_pericial', 'img_laudo', 'img_acidente', 'img_laudo_agravamento', 'anexos_medicos', 'fotos_casa', 'img_bolsa_familia', 'img_cnis', 'img_relatorio_inss', 'img_cadunico', 'img_laudo_ms', 'img_laudo_ms_cessado'].forEach(c => {
         const divCaixa = document.getElementById('caixa_' + c);
         if (divCaixa) divCaixa.style.border = "1px dashed var(--border)";
     });
@@ -269,6 +270,12 @@ document.addEventListener('paste', function(evento) {
                 } else if (caixaAtivaParaColar === 'img_laudo_agravamento') {
                     imgLaudoAgravamento.push({ id: contadorId++, base64: base64 });
                     renderizarGaleria('galeria_img_laudo_agravamento', imgLaudoAgravamento, 'img_laudo_agravamento');
+                } else if (caixaAtivaParaColar === 'img_laudo_ms') {
+                    imgLaudoMs.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo_ms', imgLaudoMs, 'img_laudo_ms');
+                } else if (caixaAtivaParaColar === 'img_laudo_ms_cessado') {
+                    imgLaudoMs.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo_ms_cessado', imgLaudoMs, 'img_laudo_ms_cessado');
                 }
             };
             leitor.readAsDataURL(arquivoBlob);
@@ -338,6 +345,12 @@ function removerItem(id, tipo) {
     } else if (tipo === 'img_laudo_agravamento') {
         imgLaudoAgravamento = imgLaudoAgravamento.filter(i => i.id !== id);
         renderizarGaleria('galeria_img_laudo_agravamento', imgLaudoAgravamento, tipo);
+    } else if (tipo === 'img_laudo_ms') {
+        imgLaudoMs = imgLaudoMs.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo_ms', imgLaudoMs, tipo);
+    } else if (tipo === 'img_laudo_ms_cessado') {
+        imgLaudoMs = imgLaudoMs.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo_ms_cessado', imgLaudoMs, tipo);
     }
 }
 
@@ -448,6 +461,17 @@ async function enviarDadosInterno() {
 
     const payloadBruto = {
 
+        // Mandado de Segurança
+        vara_federal: document.getElementById('varaFederal') ? document.getElementById('varaFederal').value : "",
+        regiao_trf: document.getElementById('regiaoTrf') ? document.getElementById('regiaoTrf').value : "",
+        numero_processo_ms: document.getElementById('numeroProcessoMs') ? document.getElementById('numeroProcessoMs').value : "",
+        doenca_cliente: (document.getElementById('doencaCliente2') && document.getElementById('doencaCliente2').value) ? document.getElementById('doencaCliente2').value : (document.getElementById('doencaCliente') ? document.getElementById('doencaCliente').value : ""),
+        cidade_inss: document.getElementById('cidadeInss') ? document.getElementById('cidadeInss').value : "",
+        uf_inss: document.getElementById('ufInss') ? document.getElementById('ufInss').value : "",
+        data_pericia_agendada: (document.getElementById('dataPericiaMsAgendada2') && document.getElementById('dataPericiaMsAgendada2').value) ? document.getElementById('dataPericiaMsAgendada2').value : (document.getElementById('dataPericiaMsAgendada') ? document.getElementById('dataPericiaMsAgendada').value : ""),
+        meses_espera: document.getElementById('mesesEspera') ? document.getElementById('mesesEspera').value : "",
+        id_decisoes_gratuidade: document.getElementById('idDecisoesGratuidade') ? document.getElementById('idDecisoesGratuidade').value : "",
+
         data_inicio_vinculos: document.getElementById('dataInicioVinculos') ? document.getElementById('dataInicioVinculos').value : "",
         nome_empresa_ultima: document.getElementById('nomeEmpresaUltima') ? document.getElementById('nomeEmpresaUltima').value : "",
         inicio_ultimo_vinculo: document.getElementById('inicioUltimoVinculo') ? document.getElementById('inicioUltimoVinculo').value : "",
@@ -533,6 +557,7 @@ async function enviarDadosInterno() {
         fotos_casa: fotosCasa.map(foto => foto.base64),
         lista_img_acidente: imgAcidente.map(img => img.base64),
         lista_img_laudo_agravamento: imgLaudoAgravamento.map(img => img.base64),
+        lista_img_laudo_ms: imgLaudoMs.map(img => img.base64),
 
         ano_acao_anterior: document.getElementById('anoAcaoAnterior') ? document.getElementById('anoAcaoAnterior').value : "",
         nome_beneficio_anterior: nome_beneficio_anterior,
@@ -620,6 +645,13 @@ async function enviarDadosInterno() {
         tese_carencia_perda_qualidade: document.getElementById('chkCarenciaPerda') ? document.getElementById('chkCarenciaPerda').checked : false,
         tese_carencia_facultativo: document.getElementById('chkCarenciaFacultativo') ? document.getElementById('chkCarenciaFacultativo').checked : false,
         tese_seguro_desemprego: document.getElementById('chkSeguroDesemprego') ? document.getElementById('chkSeguroDesemprego').checked : false,
+
+        // Mandado de Segurança - Beneficio Cessado
+        nome_beneficio: document.getElementById('nomeBeneficio') ? document.getElementById('nomeBeneficio').value : "",
+        data_inicio_beneficio: document.getElementById('dataInicioBeneficio') ? document.getElementById('dataInicioBeneficio').value : "",
+        data_cessacao_beneficio: document.getElementById('dataCessacaoBeneficio') ? document.getElementById('dataCessacaoBeneficio').value : "",
+        data_protocolo_prorrogacao: document.getElementById('dataProtocoloProrrogacao') ? document.getElementById('dataProtocoloProrrogacao').value : "",
+        numero_protocolo: document.getElementById('numeroProtocolo') ? document.getElementById('numeroProtocolo').value : "",
 
         pasta_destino: pastaSelecionada,
         caminho_pdf: caminhoPdfAtual
