@@ -1483,8 +1483,27 @@ function preencherJurisdicaoManual() {
     }
 
     if (info) {
+        // 1. Identifica em qual tela o utilizador está
+        const tela = document.getElementById('telaFormulario');
+        const isBpc = tela && tela.classList.contains('modo-bpc');
+        const isUrbano = tela && (
+            tela.classList.contains('modo-aux_doenca') || 
+            tela.classList.contains('modo-aux_acidente') || 
+            tela.classList.contains('modo-ms')
+        );
+
+        // 2. Define o endereço correto com base no setor
+        let enderecoInssFinal = info.endereco_inss; // Fallback
+        
+        if (isBpc && info.endereco_inss_bpc) {
+            enderecoInssFinal = info.endereco_inss_bpc;
+        } else if (isUrbano && info.endereco_inss_aux) {
+            enderecoInssFinal = info.endereco_inss_aux;
+        }
+
+        // 3. Preenche os campos
         document.getElementById('subsecao').value = info.subsecao;
-        document.getElementById('enderecoInss').value = info.endereco_inss;
+        document.getElementById('enderecoInss').value = enderecoInssFinal;
         document.getElementById('oabAdvogado').value = info.oab_advogado;
         
         const inputUfOab = document.getElementById('ufOab');

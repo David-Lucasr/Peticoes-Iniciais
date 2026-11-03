@@ -7565,66 +7565,88 @@ const baseMunicipios = {
     },
     "crateús/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "ararendá/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "catunda/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "independência/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "ipaporanga/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "ipueiras/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "monsenhor tabosa/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "nova russas/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "novo oriente/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "poranga/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
     },
     "tamboril/ce": {
         "subsecao": "Crateús/CE",
+        "endereco_inss_bpc": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
+        "endereco_inss_aux": "Rua Dom Pedro II, n° 504, Centro, Crateús/CE - CEP: 63700-079",
         "endereco_inss": "Rua Antônio Flávio Lima, n° 50, Centro, Crateús/CE - CEP: 63700-000",
         "oab_advogado": "32185",
         "uf_oab": "CE"
