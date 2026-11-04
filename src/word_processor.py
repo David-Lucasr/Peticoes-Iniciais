@@ -63,6 +63,7 @@ def gerar_documento(caminho_template, caminho_saida, dados_formulario):
     dados_formulario['lista_img_acidente'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_acidente', []), arquivos_temp)
     dados_formulario['lista_img_laudo_agravamento'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_laudo_agravamento', []), arquivos_temp)
     dados_formulario['lista_img_laudo_ms'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_laudo_ms', []), arquivos_temp)
+    dados_formulario['lista_img_meu_inss'] = processar_lista_imagens(doc, dados_formulario.get('lista_img_meu_inss', []), arquivos_temp)
 
     lista_anexos_medicos = []
     if 'anexos_medicos_dinamicos' in dados_formulario and isinstance(dados_formulario['anexos_medicos_dinamicos'], list):

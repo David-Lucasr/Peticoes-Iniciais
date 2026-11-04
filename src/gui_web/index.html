@@ -58,6 +58,13 @@
         .modo-segurado_empregado_domestico .vh-segurado_empregado_domestico { display: none !important; }
         .modo-auxilio_acidente_conversao .vh-auxilio_acidente_conversao { display: none !important; }
         .modo-auxilio_acidente_aposentadoria .vh-auxilio_acidente_aposentadoria { display: none !important; }
+
+        .ms-biometria-only { display: none !important; }
+        .modo-ms_biometria .ms-biometria-only { display: block !important; }
+        .ms-impossibilidade-prorrogacao-only { display: none !important; }
+        .modo-ms_impossibilidade_prorrogacao .ms-impossibilidade-prorrogacao-only { display: block !important; }
+        .ms-demora-analise-only { display: none !important; }
+        .modo-ms_demora_analise .ms-demora-analise-only { display: block !important; }
     </style>
 </head>
 <body>
@@ -418,7 +425,7 @@
 
             <!-- Campos comuns a todos os subtipos de MS -->
             <div class="form-grid">
-                <div class="form-group"><label>Vara Federal:</label><input type="text" id="varaFederal" placeholder="Ex: 1ª Vara Federal de Campina Grande"></div>
+                <div class="form-group"><label>Vara Federal:</label><input type="text" id="varaFederal" placeholder="Ex: 1"></div>
                 <div class="form-group"><label>Cidade da Agência INSS:</label><input type="text" id="cidadeInss" placeholder="Ex: Campina Grande"></div>
                 <div class="form-group"><label>UF da Agência INSS:</label><input type="text" id="ufInss" placeholder="Ex: PB" maxlength="2"></div>
             </div>
@@ -442,6 +449,25 @@
                 </div>
             </div>
 
+            <!-- Impossibilidade de Prorrogação -->
+            <div class="ms-impossibilidade-prorrogacao-only">
+                <div class="form-grid">
+                    <div class="form-group"><label>Data do Requerimento:</label><input type="text" id="dataRequerimento" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data da Perícia Agendada:</label><input type="text" id="dataPericiaMsImp" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data de Cessação (DCB):</label><input type="text" id="dataCessacaoBeneficioImp" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data da Comunicação da Decisão:</label><input type="text" id="dataComunicacaoDecisao" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Mês Início Pagamento:</label><input type="text" id="mesInicioPagamento" placeholder="Ex: janeiro/2025"></div>
+                    <div class="form-group"><label>Mês Fim Pagamento:</label><input type="text" id="mesFimPagamento" placeholder="Ex: março/2025"></div>
+                </div>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_meu_inss')" id="caixa_img_meu_inss" class="image-box">
+                        <strong>Print da Página do Meu INSS</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_meu_inss" class="gallery-container"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Benefício Cessado -->
             <div class="ms-beneficio-cessado-only">
                 <div class="form-grid">
@@ -459,6 +485,29 @@
                         <span class="hint-text">Clique e cole (Ctrl+V)</span>
                         <div id="galeria_img_laudo_ms_cessado" class="gallery-container"></div>
                     </div>
+                </div>
+            </div>
+
+            <div class="ms-biometria-only">
+                <div class="form-grid">
+                    <div class="form-group"><label>Data de Regularização da Biometria:</label><input type="text" id="dataRegularizacaoBiometria" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioBio" placeholder="Ex: aposentadoria por invalidez"></div>
+                    <div class="form-group"><label>Data de Início do Benefício:</label><input type="text" id="dataInicioBeneficioBio" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data de Suspensão do Benefício:</label><input type="text" id="dataSuspensaoBeneficio" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group full-width"><label>Documento de Biometria:</label>
+                        <select id="documentoBiometria">
+                            <option value="">Selecione...</option>
+                            <option value="Carteira de Identidade Nacional (CIN)">Carteira de Identidade Nacional (CIN)</option>
+                            <option value="Título Eleitoral (TSE)">Título Eleitoral (TSE)</option>
+                            <option value="Carteira Nacional de Habilitação (CNH)">Carteira Nacional de Habilitação (CNH)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ms-demora-analise-only">
+                <div class="form-grid">
+                    <div class="form-group"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioDemora" placeholder="Ex: auxílio-doença previdenciário"></div>
                 </div>
             </div>
 

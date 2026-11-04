@@ -203,11 +203,12 @@ let imgLaudoAgravamento = [];
 let contadorId = 0;
 let caixaAtivaParaColar = null;
 let imgLaudoMs = [];
+let imgMeuInss = [];
 
 function selecionarCaixa(chave){
     caixaAtivaParaColar = chave;
     
-    ['img_renda', 'img_pericial', 'img_laudo', 'img_acidente', 'img_laudo_agravamento', 'anexos_medicos', 'fotos_casa', 'img_bolsa_familia', 'img_cnis', 'img_relatorio_inss', 'img_cadunico', 'img_laudo_ms', 'img_laudo_ms_cessado'].forEach(c => {
+    ['img_renda', 'img_pericial', 'img_laudo', 'img_acidente', 'img_laudo_agravamento', 'anexos_medicos', 'fotos_casa', 'img_bolsa_familia', 'img_cnis', 'img_relatorio_inss', 'img_cadunico', 'img_laudo_ms', 'img_laudo_ms_cessado', 'img_meu_inss'].forEach(c => {
         const divCaixa = document.getElementById('caixa_' + c);
         if (divCaixa) divCaixa.style.border = "1px dashed var(--border)";
     });
@@ -276,6 +277,9 @@ document.addEventListener('paste', function(evento) {
                 } else if (caixaAtivaParaColar === 'img_laudo_ms_cessado') {
                     imgLaudoMs.push({ id: contadorId++, base64: base64 });
                     renderizarGaleria('galeria_img_laudo_ms_cessado', imgLaudoMs, 'img_laudo_ms_cessado');
+                } else if (caixaAtivaParaColar === 'img_meu_inss') {
+                    imgMeuInss.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_meu_inss', imgMeuInss, 'img_meu_inss');
                 }
             };
             leitor.readAsDataURL(arquivoBlob);
@@ -351,6 +355,9 @@ function removerItem(id, tipo) {
     } else if (tipo === 'img_laudo_ms_cessado') {
         imgLaudoMs = imgLaudoMs.filter(i => i.id !== id);
         renderizarGaleria('galeria_img_laudo_ms_cessado', imgLaudoMs, tipo);
+        } else if (tipo === 'img_meu_inss') {
+        imgMeuInss = imgMeuInss.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_meu_inss', imgMeuInss, tipo);
     }
 }
 
@@ -468,7 +475,7 @@ async function enviarDadosInterno() {
         doenca_cliente: (document.getElementById('doencaCliente2') && document.getElementById('doencaCliente2').value) ? document.getElementById('doencaCliente2').value : (document.getElementById('doencaCliente') ? document.getElementById('doencaCliente').value : ""),
         cidade_inss: document.getElementById('cidadeInss') ? document.getElementById('cidadeInss').value : "",
         uf_inss: document.getElementById('ufInss') ? document.getElementById('ufInss').value : "",
-        data_pericia_agendada: (document.getElementById('dataPericiaMsAgendada2') && document.getElementById('dataPericiaMsAgendada2').value) ? document.getElementById('dataPericiaMsAgendada2').value : (document.getElementById('dataPericiaMsAgendada') ? document.getElementById('dataPericiaMsAgendada').value : ""),
+        data_pericia_agendada: (document.getElementById('dataPericiaMsImp') && document.getElementById('dataPericiaMsImp').value) ? document.getElementById('dataPericiaMsImp').value : (document.getElementById('dataPericiaMsAgendada2') && document.getElementById('dataPericiaMsAgendada2').value) ? document.getElementById('dataPericiaMsAgendada2').value : (document.getElementById('dataPericiaMsAgendada') ? document.getElementById('dataPericiaMsAgendada').value : ""),
         meses_espera: document.getElementById('mesesEspera') ? document.getElementById('mesesEspera').value : "",
         id_decisoes_gratuidade: document.getElementById('idDecisoesGratuidade') ? document.getElementById('idDecisoesGratuidade').value : "",
 
@@ -628,7 +635,7 @@ async function enviarDadosInterno() {
         data_fim_periodo_graca: document.getElementById('dataFimPeriodoGraca') ? document.getElementById('dataFimPeriodoGraca').value : "",
         carencia_meses: document.getElementById('carenciaMeses') ? document.getElementById('carenciaMeses').value : "",
         prazo_afastamento_dias: document.getElementById('prazoAfastamentoDias') ? document.getElementById('prazoAfastamentoDias').value : "",
-        data_cessacao_beneficio: document.getElementById('dataCessacaoBeneficio') ? document.getElementById('dataCessacaoBeneficio').value : "",
+        data_cessacao_beneficio: (document.getElementById('dataCessacaoBeneficioImp') && document.getElementById('dataCessacaoBeneficioImp').value) ? document.getElementById('dataCessacaoBeneficioImp').value : (document.getElementById('dataCessacaoBeneficio') ? document.getElementById('dataCessacaoBeneficio').value : ""),
         nb_anterior: document.getElementById('nbAnterior') ? document.getElementById('nbAnterior').value : "",
         resultado_sentenca_anterior: document.getElementById('resultadoSentencaAnterior') ? document.getElementById('resultadoSentencaAnterior').value : "",
         periodo_beneficio_anterior: document.getElementById('periodoBeneficioAnterior') ? document.getElementById('periodoBeneficioAnterior').value : "",
@@ -647,11 +654,20 @@ async function enviarDadosInterno() {
         tese_seguro_desemprego: document.getElementById('chkSeguroDesemprego') ? document.getElementById('chkSeguroDesemprego').checked : false,
 
         // Mandado de Segurança - Beneficio Cessado
-        nome_beneficio: document.getElementById('nomeBeneficio') ? document.getElementById('nomeBeneficio').value : "",
-        data_inicio_beneficio: document.getElementById('dataInicioBeneficio') ? document.getElementById('dataInicioBeneficio').value : "",
-        data_cessacao_beneficio: document.getElementById('dataCessacaoBeneficio') ? document.getElementById('dataCessacaoBeneficio').value : "",
+        nome_beneficio: (document.getElementById('nomeBeneficioBio') && document.getElementById('nomeBeneficioBio').value) ? document.getElementById('nomeBeneficioBio').value : (document.getElementById('nomeBeneficio') ? document.getElementById('nomeBeneficio').value : ""),
+        data_inicio_beneficio: (document.getElementById('dataInicioBeneficioBio') && document.getElementById('dataInicioBeneficioBio').value) ? document.getElementById('dataInicioBeneficioBio').value : (document.getElementById('dataInicioBeneficio') ? document.getElementById('dataInicioBeneficio').value : ""),
         data_protocolo_prorrogacao: document.getElementById('dataProtocoloProrrogacao') ? document.getElementById('dataProtocoloProrrogacao').value : "",
         numero_protocolo: document.getElementById('numeroProtocolo') ? document.getElementById('numeroProtocolo').value : "",
+        data_requerimento: document.getElementById('dataRequerimento') ? document.getElementById('dataRequerimento').value : "",
+        data_comunicacao_decisao: document.getElementById('dataComunicacaoDecisao') ? document.getElementById('dataComunicacaoDecisao').value : "",
+        mes_inicio_pagamento: document.getElementById('mesInicioPagamento') ? document.getElementById('mesInicioPagamento').value : "",
+        mes_fim_pagamento: document.getElementById('mesFimPagamento') ? document.getElementById('mesFimPagamento').value : "",
+        lista_img_meu_inss: imgMeuInss.map(img => img.base64),
+
+        // Mandado de Segurança - Biometria
+        documento_biometria: document.getElementById('documentoBiometria') ? document.getElementById('documentoBiometria').value : "",
+        data_suspensao_beneficio: document.getElementById('dataSuspensaoBeneficio') ? document.getElementById('dataSuspensaoBeneficio').value : "",
+        data_regularizacao_biometria: document.getElementById('dataRegularizacaoBiometria') ? document.getElementById('dataRegularizacaoBiometria').value : "",
 
         pasta_destino: pastaSelecionada,
         caminho_pdf: caminhoPdfAtual
