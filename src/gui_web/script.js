@@ -204,11 +204,16 @@ let contadorId = 0;
 let caixaAtivaParaColar = null;
 let imgLaudoMs = [];
 let imgMeuInss = [];
+let imgLaudoMsAntSocial = [];
+let imgLaudoMsAntPericia = [];
+let imgLaudoMsAntPericSocial = [];
+let imgLaudoMsAntRes = [];
+let imgLaudoMsAntResMed = [];
 
 function selecionarCaixa(chave){
     caixaAtivaParaColar = chave;
     
-    ['img_renda', 'img_pericial', 'img_laudo', 'img_acidente', 'img_laudo_agravamento', 'anexos_medicos', 'fotos_casa', 'img_bolsa_familia', 'img_cnis', 'img_relatorio_inss', 'img_cadunico', 'img_laudo_ms', 'img_laudo_ms_cessado', 'img_meu_inss'].forEach(c => {
+    ['img_renda', 'img_pericial', 'img_laudo', 'img_acidente', 'img_laudo_agravamento', 'anexos_medicos', 'fotos_casa', 'img_bolsa_familia', 'img_cnis', 'img_relatorio_inss', 'img_cadunico', 'img_laudo_ms', 'img_laudo_ms_cessado', 'img_meu_inss', 'img_laudo_ms_ant_social', 'img_laudo_ms_ant_pericia', 'img_laudo_ms_ant_peric_social', 'img_laudo_ms_ant_peric_social', 'img_laudo_ms_ant_res'].forEach(c => {
         const divCaixa = document.getElementById('caixa_' + c);
         if (divCaixa) divCaixa.style.border = "1px dashed var(--border)";
     });
@@ -280,6 +285,21 @@ document.addEventListener('paste', function(evento) {
                 } else if (caixaAtivaParaColar === 'img_meu_inss') {
                     imgMeuInss.push({ id: contadorId++, base64: base64 });
                     renderizarGaleria('galeria_img_meu_inss', imgMeuInss, 'img_meu_inss');
+                } else if (caixaAtivaParaColar === 'img_laudo_ms_ant_social') {
+                    imgLaudoMsAntSocial.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo_ms_ant_social', imgLaudoMsAntSocial, 'img_laudo_ms_ant_social');
+                } else if (caixaAtivaParaColar === 'img_laudo_ms_ant_pericia') {
+                    imgLaudoMsAntPericia.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo_ms_ant_pericia', imgLaudoMsAntPericia, 'img_laudo_ms_ant_pericia');
+                } else if (caixaAtivaParaColar === 'img_laudo_ms_ant_peric_social') {
+                    imgLaudoMsAntPericSocial.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo_ms_ant_peric_social', imgLaudoMsAntPericSocial, 'img_laudo_ms_ant_peric_social');
+                } else if (caixaAtivaParaColar === 'img_laudo_ms_ant_res') {
+                    imgLaudoMsAntRes.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo_ms_ant_res', imgLaudoMsAntRes, 'img_laudo_ms_ant_res');
+                } else if (caixaAtivaParaColar === 'img_laudo_ms_ant_res_med') {
+                    imgLaudoMsAntResMed.push({ id: contadorId++, base64: base64 });
+                    renderizarGaleria('galeria_img_laudo_ms_ant_res_med', imgLaudoMsAntResMed, 'img_laudo_ms_ant_res_med');
                 }
             };
             leitor.readAsDataURL(arquivoBlob);
@@ -355,9 +375,24 @@ function removerItem(id, tipo) {
     } else if (tipo === 'img_laudo_ms_cessado') {
         imgLaudoMs = imgLaudoMs.filter(i => i.id !== id);
         renderizarGaleria('galeria_img_laudo_ms_cessado', imgLaudoMs, tipo);
-        } else if (tipo === 'img_meu_inss') {
+    } else if (tipo === 'img_meu_inss') {
         imgMeuInss = imgMeuInss.filter(i => i.id !== id);
         renderizarGaleria('galeria_img_meu_inss', imgMeuInss, tipo);
+    } else if (tipo === 'img_laudo_ms_ant_social') {
+        imgLaudoMsAntSocial = imgLaudoMsAntSocial.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo_ms_ant_social', imgLaudoMsAntSocial, tipo);
+    } else if (tipo === 'img_laudo_ms_ant_pericia') {
+        imgLaudoMsAntPericia = imgLaudoMsAntPericia.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo_ms_ant_pericia', imgLaudoMsAntPericia, tipo);
+    } else if (tipo === 'img_laudo_ms_ant_peric_social') {
+        imgLaudoMsAntPericSocial = imgLaudoMsAntPericSocial.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo_ms_ant_peric_social', imgLaudoMsAntPericSocial, tipo);
+    } else if (tipo === 'img_laudo_ms_ant_res') {
+        imgLaudoMsAntRes = imgLaudoMsAntRes.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo_ms_ant_res', imgLaudoMsAntRes, tipo);
+    } else if (tipo === 'img_laudo_ms_ant_res_med') {
+        imgLaudoMsAntResMed = imgLaudoMsAntResMed.filter(i => i.id !== id);
+        renderizarGaleria('galeria_img_laudo_ms_ant_res_med', imgLaudoMsAntResMed, tipo);
     }
 }
 
@@ -402,7 +437,7 @@ async function enviarDadosInterno() {
 
     const elementoCpfCliente = document.getElementById('cpfCliente');
     if (elementoCpfCliente.classList.contains('campo-invalido')) {
-        alert("⚠️ O CPF do Requerente está inválido! Por favor, corrija antes de gerar a petição.");
+        alert("O CPF do Requerente está inválido!");
         elementoCpfCliente.focus(); 
         return; 
     }
@@ -410,7 +445,7 @@ async function enviarDadosInterno() {
     const possuiRep = document.getElementById('temRepresentante').checked;
     const elementoCpfRep = document.getElementById('cpfRepresentante');
     if (!isAux && possuiRep && elementoCpfRep.classList.contains('campo-invalido')) {
-        alert("⚠️ O CPF do Representante está inválido! Por favor, corrija antes de gerar a petição.");
+        alert("O CPF do Representante está inválido!");
         elementoCpfRep.focus();
         return; 
     }
@@ -472,11 +507,11 @@ async function enviarDadosInterno() {
         vara_federal: document.getElementById('varaFederal') ? document.getElementById('varaFederal').value : "",
         regiao_trf: document.getElementById('regiaoTrf') ? document.getElementById('regiaoTrf').value : "",
         numero_processo_ms: document.getElementById('numeroProcessoMs') ? document.getElementById('numeroProcessoMs').value : "",
-        doenca_cliente: (document.getElementById('doencaCliente2') && document.getElementById('doencaCliente2').value) ? document.getElementById('doencaCliente2').value : (document.getElementById('doencaCliente') ? document.getElementById('doencaCliente').value : ""),
+        doenca_cliente: (document.getElementById('doencaClienteAntResMed') && document.getElementById('doencaClienteAntResMed').value) ? document.getElementById('doencaClienteAntResMed').value : (document.getElementById('doencaClienteAntRes') && document.getElementById('doencaClienteAntRes').value) ? document.getElementById('doencaClienteAntRes').value : (document.getElementById('doencaClienteAntPericSocial') && document.getElementById('doencaClienteAntPericSocial').value) ? document.getElementById('doencaClienteAntPericSocial').value : (document.getElementById('doencaClienteAntPericia') && document.getElementById('doencaClienteAntPericia').value) ? document.getElementById('doencaClienteAntPericia').value : (document.getElementById('doencaClienteAntSocial') && document.getElementById('doencaClienteAntSocial').value) ? document.getElementById('doencaClienteAntSocial').value : (document.getElementById('doencaCliente2') && document.getElementById('doencaCliente2').value) ? document.getElementById('doencaCliente2').value : (document.getElementById('doencaCliente') ? document.getElementById('doencaCliente').value : ""),
         cidade_inss: document.getElementById('cidadeInss') ? document.getElementById('cidadeInss').value : "",
         uf_inss: document.getElementById('ufInss') ? document.getElementById('ufInss').value : "",
-        data_pericia_agendada: (document.getElementById('dataPericiaMsImp') && document.getElementById('dataPericiaMsImp').value) ? document.getElementById('dataPericiaMsImp').value : (document.getElementById('dataPericiaMsAgendada2') && document.getElementById('dataPericiaMsAgendada2').value) ? document.getElementById('dataPericiaMsAgendada2').value : (document.getElementById('dataPericiaMsAgendada') ? document.getElementById('dataPericiaMsAgendada').value : ""),
-        meses_espera: document.getElementById('mesesEspera') ? document.getElementById('mesesEspera').value : "",
+        data_pericia_agendada: (document.getElementById('dataPericiaAntResMed') && document.getElementById('dataPericiaAntResMed').value) ? document.getElementById('dataPericiaAntResMed').value : (document.getElementById('dataPericiaAntPericSocial') && document.getElementById('dataPericiaAntPericSocial').value) ? document.getElementById('dataPericiaAntPericSocial').value : (document.getElementById('dataPericiaAntPericia') && document.getElementById('dataPericiaAntPericia').value) ? document.getElementById('dataPericiaAntPericia').value : (document.getElementById('dataPericiaMsImp') && document.getElementById('dataPericiaMsImp').value) ? document.getElementById('dataPericiaMsImp').value : (document.getElementById('dataPericiaMsAgendada2') && document.getElementById('dataPericiaMsAgendada2').value) ? document.getElementById('dataPericiaMsAgendada2').value : (document.getElementById('dataPericiaMsAgendada') ? document.getElementById('dataPericiaMsAgendada').value : ""),
+        meses_espera: (document.getElementById('mesesEsperaAntResMed') && document.getElementById('mesesEsperaAntResMed').value) ? document.getElementById('mesesEsperaAntResMed').value : (document.getElementById('mesesEsperaAntRes') && document.getElementById('mesesEsperaAntRes').value) ? document.getElementById('mesesEsperaAntRes').value : (document.getElementById('mesesEsperaAntPericia') && document.getElementById('mesesEsperaAntPericia').value) ? document.getElementById('mesesEsperaAntPericia').value : (document.getElementById('mesesEsperaAntSocial') && document.getElementById('mesesEsperaAntSocial').value) ? document.getElementById('mesesEsperaAntSocial').value : (document.getElementById('mesesEspera') ? document.getElementById('mesesEspera').value : ""),
         id_decisoes_gratuidade: document.getElementById('idDecisoesGratuidade') ? document.getElementById('idDecisoesGratuidade').value : "",
 
         data_inicio_vinculos: document.getElementById('dataInicioVinculos') ? document.getElementById('dataInicioVinculos').value : "",
@@ -564,7 +599,7 @@ async function enviarDadosInterno() {
         fotos_casa: fotosCasa.map(foto => foto.base64),
         lista_img_acidente: imgAcidente.map(img => img.base64),
         lista_img_laudo_agravamento: imgLaudoAgravamento.map(img => img.base64),
-        lista_img_laudo_ms: imgLaudoMs.map(img => img.base64),
+        lista_img_laudo_ms: imgLaudoMs.map(img => img.base64).concat(imgLaudoMsAntSocial.map(img => img.base64)).concat(imgLaudoMsAntPericia.map(img => img.base64)).concat(imgLaudoMsAntPericSocial.map(img => img.base64)).concat(imgLaudoMsAntRes.map(img => img.base64)).concat(imgLaudoMsAntResMed.map(img => img.base64)),
 
         ano_acao_anterior: document.getElementById('anoAcaoAnterior') ? document.getElementById('anoAcaoAnterior').value : "",
         nome_beneficio_anterior: nome_beneficio_anterior,
@@ -654,11 +689,11 @@ async function enviarDadosInterno() {
         tese_seguro_desemprego: document.getElementById('chkSeguroDesemprego') ? document.getElementById('chkSeguroDesemprego').checked : false,
 
         // Mandado de Segurança - Beneficio Cessado
-        nome_beneficio: (document.getElementById('nomeBeneficioBio') && document.getElementById('nomeBeneficioBio').value) ? document.getElementById('nomeBeneficioBio').value : (document.getElementById('nomeBeneficio') ? document.getElementById('nomeBeneficio').value : ""),
+        nome_beneficio: (document.getElementById('nomeBeneficioDemora') && document.getElementById('nomeBeneficioDemora').value) ? document.getElementById('nomeBeneficioDemora').value : (document.getElementById('nomeBeneficioBio') && document.getElementById('nomeBeneficioBio').value) ? document.getElementById('nomeBeneficioBio').value : (document.getElementById('nomeBeneficio') ? document.getElementById('nomeBeneficio').value : ""),
         data_inicio_beneficio: (document.getElementById('dataInicioBeneficioBio') && document.getElementById('dataInicioBeneficioBio').value) ? document.getElementById('dataInicioBeneficioBio').value : (document.getElementById('dataInicioBeneficio') ? document.getElementById('dataInicioBeneficio').value : ""),
         data_protocolo_prorrogacao: document.getElementById('dataProtocoloProrrogacao') ? document.getElementById('dataProtocoloProrrogacao').value : "",
-        numero_protocolo: document.getElementById('numeroProtocolo') ? document.getElementById('numeroProtocolo').value : "",
-        data_requerimento: document.getElementById('dataRequerimento') ? document.getElementById('dataRequerimento').value : "",
+        numero_protocolo: (document.getElementById('numeroProtocoloAntResMed') && document.getElementById('numeroProtocoloAntResMed').value) ? document.getElementById('numeroProtocoloAntResMed').value : (document.getElementById('numeroProtocoloAntRes') && document.getElementById('numeroProtocoloAntRes').value) ? document.getElementById('numeroProtocoloAntRes').value : (document.getElementById('numeroProtocoloAntPericSocial') && document.getElementById('numeroProtocoloAntPericSocial').value) ? document.getElementById('numeroProtocoloAntPericSocial').value : (document.getElementById('numeroProtocoloAntPericia') && document.getElementById('numeroProtocoloAntPericia').value) ? document.getElementById('numeroProtocoloAntPericia').value : (document.getElementById('numeroProtocoloAntSocial') && document.getElementById('numeroProtocoloAntSocial').value) ? document.getElementById('numeroProtocoloAntSocial').value : (document.getElementById('numeroProtocolo') ? document.getElementById('numeroProtocolo').value : ""),
+        data_requerimento: (document.getElementById('dataRequerimentoAntRes') && document.getElementById('dataRequerimentoAntRes').value) ? document.getElementById('dataRequerimentoAntRes').value :(document.getElementById('dataRequerimentoAntPericSocial') && document.getElementById('dataRequerimentoAntPericSocial').value) ? document.getElementById('dataRequerimentoAntPericSocial').value : (document.getElementById('dataRequerimentoAntPericia') && document.getElementById('dataRequerimentoAntPericia').value) ? document.getElementById('dataRequerimentoAntPericia').value : (document.getElementById('dataRequerimentoAntSocial') && document.getElementById('dataRequerimentoAntSocial').value) ? document.getElementById('dataRequerimentoAntSocial').value : (document.getElementById('dataRequerimentoDemora') && document.getElementById('dataRequerimentoDemora').value) ? document.getElementById('dataRequerimentoDemora').value : (document.getElementById('dataRequerimento') ? document.getElementById('dataRequerimento').value : ""),
         data_comunicacao_decisao: document.getElementById('dataComunicacaoDecisao') ? document.getElementById('dataComunicacaoDecisao').value : "",
         mes_inicio_pagamento: document.getElementById('mesInicioPagamento') ? document.getElementById('mesInicioPagamento').value : "",
         mes_fim_pagamento: document.getElementById('mesFimPagamento') ? document.getElementById('mesFimPagamento').value : "",
@@ -668,6 +703,24 @@ async function enviarDadosInterno() {
         documento_biometria: document.getElementById('documentoBiometria') ? document.getElementById('documentoBiometria').value : "",
         data_suspensao_beneficio: document.getElementById('dataSuspensaoBeneficio') ? document.getElementById('dataSuspensaoBeneficio').value : "",
         data_regularizacao_biometria: document.getElementById('dataRegularizacaoBiometria') ? document.getElementById('dataRegularizacaoBiometria').value : "",
+
+        data_avaliacao_social: document.getElementById('dataAvaliacaoSocial') ? document.getElementById('dataAvaliacaoSocial').value : "",
+        nome_beneficio: (document.getElementById('nomeBeneficioAntResMed') && document.getElementById('nomeBeneficioAntResMed').value) ? document.getElementById('nomeBeneficioAntResMed').value : (document.getElementById('nomeBeneficioAntRes') && document.getElementById('nomeBeneficioAntRes').value) ? document.getElementById('nomeBeneficioAntRes').value : (document.getElementById('nomeBeneficioAntPericSocial') && document.getElementById('nomeBeneficioAntPericSocial').value) ? document.getElementById('nomeBeneficioAntPericSocial').value : (document.getElementById('nomeBeneficioAntPericia') && document.getElementById('nomeBeneficioAntPericia').value) ? document.getElementById('nomeBeneficioAntPericia').value : (document.getElementById('nomeBeneficioAntSocial') && document.getElementById('nomeBeneficioAntSocial').value) ? document.getElementById('nomeBeneficioAntSocial').value : (document.getElementById('nomeBeneficioBio') && document.getElementById('nomeBeneficioBio').value) ? document.getElementById('nomeBeneficioBio').value : (document.getElementById('nomeBeneficioDemora') && document.getElementById('nomeBeneficioDemora').value) ? document.getElementById('nomeBeneficioDemora').value : (document.getElementById('nomeBeneficio') ? document.getElementById('nomeBeneficio').value : ""),
+        numero_divisao_pericia: document.getElementById('numeroDivisaoPericia') ? document.getElementById('numeroDivisaoPericia').value : "",
+        cidade_divisao_pericia: document.getElementById('cidadeDivisaoPericia') ? document.getElementById('cidadeDivisaoPericia').value : "",
+        uf_divisao_pericia: document.getElementById('ufDivisaoPericia') ? document.getElementById('ufDivisaoPericia').value : "",
+        endereco_divisao_pericia: document.getElementById('enderecoDivisaoPericia') ? document.getElementById('enderecoDivisaoPericia').value : "",
+
+        meses_espera_avaliacao_social: document.getElementById('mesesEsperaAvalSocial') ? document.getElementById('mesesEsperaAvalSocial').value : "",
+        meses_espera_pericia: document.getElementById('mesesEsperaPericia') ? document.getElementById('mesesEsperaPericia').value : "",
+
+        numero_divisao_pericia: (document.getElementById('numeroDivisaoPericiaSocial') && document.getElementById('numeroDivisaoPericiaSocial').value) ? document.getElementById('numeroDivisaoPericiaSocial').value : (document.getElementById('numeroDivisaoPericia') ? document.getElementById('numeroDivisaoPericia').value : ""),
+        cidade_divisao_pericia: (document.getElementById('cidadeDivisaoPericiaSocial') && document.getElementById('cidadeDivisaoPericiaSocial').value) ? document.getElementById('cidadeDivisaoPericiaSocial').value : (document.getElementById('cidadeDivisaoPericia') ? document.getElementById('cidadeDivisaoPericia').value : ""),
+        uf_divisao_pericia: (document.getElementById('ufDivisaoPericiaSocial') && document.getElementById('ufDivisaoPericiaSocial').value) ? document.getElementById('ufDivisaoPericiaSocial').value : (document.getElementById('ufDivisaoPericia') ? document.getElementById('ufDivisaoPericia').value : ""),
+        endereco_divisao_pericia: (document.getElementById('enderecoDivisaoPericiaSocial') && document.getElementById('enderecoDivisaoPericiaSocial').value) ? document.getElementById('enderecoDivisaoPericiaSocial').value : (document.getElementById('enderecoDivisaoPericia') ? document.getElementById('enderecoDivisaoPericia').value : ""),
+        data_avaliacao_social: (document.getElementById('dataAvaliacaoSocialPS') && document.getElementById('dataAvaliacaoSocialPS').value) ? document.getElementById('dataAvaliacaoSocialPS').value : (document.getElementById('dataAvaliacaoSocial') ? document.getElementById('dataAvaliacaoSocial').value : ""),
+
+        hora_pericia: document.getElementById('horaPericia') ? document.getElementById('horaPericia').value : "",
 
         pasta_destino: pastaSelecionada,
         caminho_pdf: caminhoPdfAtual
@@ -1263,7 +1316,7 @@ function abrirFormularioBpc(categoria) {
     const titulo = document.getElementById('tituloFormulario');
     if (titulo) {
         let nomeCat = categoria === 'bpc_deficiencia' ? 'Pessoa com Deficiência' : 'Impedimento de Longo Prazo';
-        titulo.innerText = "Formulário: BPC / LOAS (" + nomeCat + ")";
+        titulo.innerText = "BPC - " + nomeCat + "";
     }
 
     // --- NOVA LÓGICA: ESCONDER TESES QUE NÃO EXISTEM NO IMPEDIMENTO ---
@@ -1293,9 +1346,9 @@ function abrirFormularioAuxAcidente(categoria) {
     const titulo = document.getElementById('tituloFormulario');
     if (titulo) {
         if (categoria === 'auxilio_acidente_aposentadoria') {
-            titulo.innerText = "Formulário: Auxílio-Acidente c/c Aposentadoria por Invalidez";
+            titulo.innerText = "Auxílio-Acidente c/c Aposentadoria por Invalidez";
         } else {
-            titulo.innerText = "Formulário: Auxílio-Acidente (Conversão)";
+            titulo.innerText = "Auxílio-Acidente - Conversão";
         }
     }
 
@@ -1314,9 +1367,9 @@ function abrirFormularioMandado(categoria) {
         'ms_apelacao': 'Apelação',
         'ms_biometria': 'Liminar - Biometria',
         'ms_impossibilidade_prorrogacao': 'Impossibilidade de Prorrogação',
-        'ms_antecipacao_social_bpc': 'Antecipação de Avaliação Social (BPC)',
-        'ms_antecipacao_pericia_bpc': 'Antecipação de Perícia Médica (BPC)',
-        'ms_antecipacao_pericia_social_bpc': 'Antecipação de Perícia e Avaliação Social (BPC)',
+        'ms_antecipacao_social_bpc': 'Antecipação de Avaliação Social',
+        'ms_antecipacao_pericia_bpc': 'Antecipação de Perícia Médica',
+        'ms_antecipacao_pericia_social_bpc': 'Antecipação de Perícia e Avaliação Social',
         'ms_beneficio_cessado': 'Benefício Cessado Indevidamente',
         'ms_demora_analise': 'Demora na Análise',
         'ms_antecipar_resultado_medica': 'Antecipar Resultado Médico',
@@ -1325,7 +1378,7 @@ function abrirFormularioMandado(categoria) {
 
     const titulo = document.getElementById('tituloFormulario');
     if (titulo) {
-        titulo.innerText = "Formulário: Mandado de Segurança (" + (nomesModelos[categoria] || 'Geral') + ")";
+        titulo.innerText = "Mandado de Segurança - " + (nomesModelos[categoria] || 'Geral') + "";
     }
 
     alternarModoFormulario('ms', categoria); // Usa o modo exclusivo para esconder teses indesejadas
@@ -1350,7 +1403,7 @@ function abrirFormularioAuxDoenca(categoria) {
     const titulo = document.getElementById('tituloFormulario');
     if (titulo) {
         let nomeCat = categoria === 'segurado_empregado_domestico' ? 'Empregado Doméstico' : categoria.replace('_', ' ');
-        titulo.innerText = "Formulário: Auxílio-Doença (" + nomeCat.toUpperCase() + ")";
+        titulo.innerText = "Auxílio-Doença - " + nomeCat.toUpperCase() + "";
     }
 
     // Exibe apenas as teses correspondentes à categoria selecionada (Desmarca o resto)

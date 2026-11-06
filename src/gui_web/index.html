@@ -65,6 +65,16 @@
         .modo-ms_impossibilidade_prorrogacao .ms-impossibilidade-prorrogacao-only { display: block !important; }
         .ms-demora-analise-only { display: none !important; }
         .modo-ms_demora_analise .ms-demora-analise-only { display: block !important; }
+        .ms-antecipacao-social-bpc-only { display: none !important; }
+        .modo-ms_antecipacao_social_bpc .ms-antecipacao-social-bpc-only { display: block !important; }
+        .ms-antecipacao-pericia-bpc-only { display: none !important; }
+        .modo-ms_antecipacao_pericia_bpc .ms-antecipacao-pericia-bpc-only { display: block !important; }
+        .ms-antecipacao-pericia-social-bpc-only { display: none !important; }
+        .modo-ms_antecipacao_pericia_social_bpc .ms-antecipacao-pericia-social-bpc-only { display: block !important; }
+        .ms-antecipar-resultado-beneficio-only { display: none !important; }
+        .modo-ms_antecipar_resultado_beneficio .ms-antecipar-resultado-beneficio-only { display: block !important; }
+        .ms-antecipar-resultado-medica-only { display: none !important; }
+        .modo-ms_antecipar_resultado_medica .ms-antecipar-resultado-medica-only { display: block !important; }
     </style>
 </head>
 <body>
@@ -195,30 +205,30 @@
             <p>Selecione a tese ou modelo desejado</p>
         </div>
 
-        <div class="section-container modulo-universal menu-lista"> 
-            <div class="menu-card" onclick="abrirFormularioMandado('ms_apelacao')">
-                <h3>Apelação</h3>
-                <p>Recurso de apelação em Mandado de Segurança</p>
+        <div class="section-container modulo-universal menu-lista">
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipar_resultado_medica')">
+                <h3>Antecipar Resultado da Avaliação Médica</h3>
+                <p>Omissão na emissão do parecer médico pericial</p>
             </div>
-            <div class="menu-card" onclick="abrirFormularioMandado('ms_biometria')">
-                <h3>Pedido de Liminar - Biometria</h3>
-                <p>Exigência abusiva de recadastramento ou biometria</p>
-            </div>
-            <div class="menu-card" onclick="abrirFormularioMandado('ms_impossibilidade_prorrogacao')">
-                <h3>Impossibilidade de Prorrogação</h3>
-                <p>Obstáculos indevidos à prorrogação do benefício</p>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipar_resultado_beneficio')">
+                <h3>Antecipar Resultado do Benefício</h3>
+                <p>Cobrança de conclusão e concessão de pagamento</p>
             </div>
             <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipacao_social_bpc')">
-                <h3>Antecipação de Avaliação Social (BPC)</h3>
+                <h3>Antecipação de Avaliação Social</h3>
                 <p>Demora excessiva na realização do estudo social</p>
             </div>
             <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipacao_pericia_bpc')">
-                <h3>Antecipação de Perícia Médica (BPC)</h3>
+                <h3>Antecipação de Perícia Médica</h3>
                 <p>Demora excessiva na realização da perícia médica</p>
             </div>
             <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipacao_pericia_social_bpc')">
-                <h3>Antecipação de Perícia e Avaliação Social (BPC)</h3>
+                <h3>Antecipação de Perícia e Avaliação Social</h3>
                 <p>Cunho mandamental para ambas as avaliações</p>
+            </div>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_apelacao')">
+                <h3>Apelação</h3>
+                <p>Recurso de apelação em Mandado de Segurança</p>
             </div>
             <div class="menu-card" onclick="abrirFormularioMandado('ms_beneficio_cessado')">
                 <h3>Benefício Cessado Indevidamente</h3>
@@ -228,13 +238,13 @@
                 <h3>Demora na Análise do Benefício</h3>
                 <p>Estouro do prazo legal de conclusão pelo INSS</p>
             </div>
-            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipar_resultado_medica')">
-                <h3>Antecipar Resultado da Avaliação Médica</h3>
-                <p>Omissão na emissão do parecer médico pericial</p>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_impossibilidade_prorrogacao')">
+                <h3>Impossibilidade de Prorrogação</h3>
+                <p>Obstáculos indevidos à prorrogação do benefício</p>
             </div>
-            <div class="menu-card" onclick="abrirFormularioMandado('ms_antecipar_resultado_beneficio')">
-                <h3>Antecipar Resultado do Benefício</h3>
-                <p>Cobrança de conclusão e concessão de pagamento</p>
+            <div class="menu-card" onclick="abrirFormularioMandado('ms_biometria')">
+                <h3>Pedido de Liminar - Biometria</h3>
+                <p>Exigência abusiva de recadastramento ou biometria</p>
             </div>
         </div>
     </div>
@@ -353,7 +363,7 @@
             </div>
 
             <div class="full-width toggle-container">
-                <span>O Requerente possui Representante/Curador?</span>
+                <span>Possui Representante?</span>
                 <label class="switch">
                     <input type="checkbox" id="temRepresentante" onchange="alternarRepresentante()">
                     <span class="slider"></span>
@@ -362,7 +372,6 @@
 
             <div id="grupoRepresentante" class="form-grid full-width" style="display: none;">
                 <div class="form-group full-width"><label>Nome do Representante:</label><input type="text" id="nomeRepresentante" placeholder="Nome completo do(a) representante/curador(a)"></div>
-                
                 <div class="form-group"><label>CPF do Representante:</label><input type="text" id="cpfRepresentante" placeholder="Ex: 123.456.789-00" maxlength="14"></div>
                 <div class="form-group">
                     <div class="rotulo-linha">
@@ -508,6 +517,111 @@
             <div class="ms-demora-analise-only">
                 <div class="form-grid">
                     <div class="form-group"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioDemora" placeholder="Ex: auxílio-doença previdenciário"></div>
+                    <div class="form-group"><label>Data do Requerimento:</label><input type="text" id="dataRequerimentoDemora" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                </div>
+            </div>
+
+            <!-- Antecipação de Perícia Médica -->
+            <div class="ms-antecipacao-pericia-bpc-only">
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Endereço da Divisão de Perícia:</label><input type="text" id="enderecoDivisaoPericia" placeholder="Ex: Rua Pedro Pereira, 383, 5º andar, Centro"></div>
+                    <div class="form-group"><label>Cidade da Divisão de Perícia:</label><input type="text" id="cidadeDivisaoPericia" placeholder="Ex: Fortaleza"></div>
+                    <div class="form-group"><label>UF da Divisão de Perícia:</label><input type="text" id="ufDivisaoPericia" placeholder="Ex: CE" maxlength="2"></div>
+                    <div class="form-group"><label>Nº da Divisão Regional da Perícia:</label><input type="text" id="numeroDivisaoPericia" placeholder="Ex: 24"></div>
+                    <div class="form-group"><label>Meses de Espera:</label><input type="text" id="mesesEsperaAntPericia" placeholder="Ex: 8" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+                    <div class="form-group"><label>Data do Requerimento:</label><input type="text" id="dataRequerimentoAntPericia" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data da Perícia Agendada:</label><input type="text" id="dataPericiaAntPericia" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Número do Protocolo:</label><input type="text" id="numeroProtocoloAntPericia" placeholder="Ex: 1234567890"></div>
+                    <div class="form-group"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioAntPericia" placeholder="Ex: BPC/LOAS Deficiente"></div>
+                    <div class="form-group full-width"><label>Doença / CID Resumida:</label><input type="text" id="doencaClienteAntPericia" placeholder="Ex: Diabetes Mellitus tipo 2 (CID E11)"></div>
+                </div>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_laudo_ms_ant_pericia')" id="caixa_img_laudo_ms_ant_pericia" class="image-box">
+                        <strong>Imagem do Laudo Principal</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_laudo_ms_ant_pericia" class="gallery-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Antecipação de Avaliação Social -->
+            <div class="ms-antecipacao-social-bpc-only">
+                <div class="form-grid">
+                    <div class="form-group"><label>Data do Requerimento:</label><input type="text" id="dataRequerimentoAntSocial" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data da Avaliação Social:</label><input type="text" id="dataAvaliacaoSocial" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Meses de Espera:</label><input type="text" id="mesesEsperaAntSocial" placeholder="Ex: 8" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+                    <div class="form-group"><label>Número do Protocolo:</label><input type="text" id="numeroProtocoloAntSocial" placeholder="Ex: 1234567890"></div>
+                    <div class="form-group"><label>Doença / CID Resumida:</label><input type="text" id="doencaClienteAntSocial" placeholder="Ex: Diabetes Mellitus tipo 2 (CID E11)"></div>
+                    <div class="form-group"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioAntSocial" placeholder="Ex: BPC/LOAS Deficiente"></div>
+                    <div class="grade-anexos full-width">
+                        <div onclick="selecionarCaixa('img_laudo_ms_ant_social')" id="caixa_img_laudo_ms_ant_social" class="image-box">
+                            <strong>Imagem do Laudo Principal</strong>
+                            <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                            <div id="galeria_img_laudo_ms_ant_social" class="gallery-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Antecipação de Perícia e Avaliação Social (BPC) -->
+            <div class="ms-antecipacao-pericia-social-bpc-only">
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Endereço da Divisão de Perícia:</label><input type="text" id="enderecoDivisaoPericiaSocial" placeholder="Ex: Rua Pedro Pereira, 383, 5º andar, Centro"></div>
+                    <div class="form-group"><label>Cidade da Divisão de Perícia:</label><input type="text" id="cidadeDivisaoPericiaSocial" placeholder="Ex: Fortaleza"></div>
+                    <div class="form-group"><label>UF da Divisão de Perícia:</label><input type="text" id="ufDivisaoPericiaSocial" placeholder="Ex: CE" maxlength="2"></div>
+                    <div class="form-group"><label>Nº da Divisão Regional da Perícia:</label><input type="text" id="numeroDivisaoPericiaSocial" placeholder="Ex: 24"></div>
+                    <div class="form-group"><label>Data do Requerimento:</label><input type="text" id="dataRequerimentoAntPericSocial" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data da Avaliação Social:</label><input type="text" id="dataAvaliacaoSocialPS" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Data da Perícia Agendada:</label><input type="text" id="dataPericiaAntPericSocial" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Meses de Espera (Avaliação Social):</label><input type="text" id="mesesEsperaAvalSocial" placeholder="Ex: 6" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+                    <div class="form-group"><label>Meses de Espera (Perícia Médica):</label><input type="text" id="mesesEsperaPericia" placeholder="Ex: 8" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+                    <div class="form-group"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioAntPericSocial" placeholder="Ex: BPC/LOAS Deficiente"></div>
+                    <div class="form-group"><label>Número do Protocolo:</label><input type="text" id="numeroProtocoloAntPericSocial" placeholder="Ex: 1234567890"></div>
+                    <div class="form-group full-width"><label>Doença / CID Resumida:</label><input type="text" id="doencaClienteAntPericSocial" placeholder="Ex: Diabetes Mellitus tipo 2 (CID E11)"></div>
+                </div>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_laudo_ms_ant_peric_social')" id="caixa_img_laudo_ms_ant_peric_social" class="image-box">
+                        <strong>Imagem do Laudo Principal</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_laudo_ms_ant_peric_social" class="gallery-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Antecipar Resultado do Benefício -->
+            <div class="ms-antecipar-resultado-beneficio-only">
+                <div class="form-grid">
+                    <div class="form-group"><label>Data do Requerimento:</label><input type="text" id="dataRequerimentoAntRes" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Meses de Espera:</label><input type="text" id="mesesEsperaAntRes" placeholder="Ex: 8" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+                    <div class="form-group"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioAntRes" placeholder="Ex: auxílio-doença previdenciário"></div>
+                    <div class="form-group"><label>Número do Protocolo:</label><input type="text" id="numeroProtocoloAntRes" placeholder="Ex: 1234567890"></div>
+                    <div class="form-group full-width"><label>Doença / CID Resumida:</label><input type="text" id="doencaClienteAntRes" placeholder="Ex: Diabetes Mellitus tipo 2 (CID E11)"></div>
+                </div>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_laudo_ms_ant_res')" id="caixa_img_laudo_ms_ant_res" class="image-box">
+                        <strong>Imagem do Laudo Principal</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_laudo_ms_ant_res" class="gallery-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Antecipar Resultado da Avaliação Médica -->
+            <div class="ms-antecipar-resultado-medica-only">
+                <div class="form-grid">
+                    <div class="form-group"><label>Data da Perícia:</label><input type="text" id="dataPericiaAntResMed" placeholder="DD/MM/AAAA" oninput="mascararData(event)" maxlength="10"></div>
+                    <div class="form-group"><label>Horário da Perícia:</label><input type="text" id="horaPericia" placeholder="Ex: 14h30min"></div>
+                    <div class="form-group"><label>Meses de Espera:</label><input type="text" id="mesesEsperaAntResMed" placeholder="Ex: 8" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+                    <div class="form-group"><label>Número do Protocolo:</label><input type="text" id="numeroProtocoloAntResMed" placeholder="Ex: 1234567890"></div>
+                    <div class="form-group full-width"><label>Nome do Benefício:</label><input type="text" id="nomeBeneficioAntResMed" placeholder="Ex: auxílio-doença previdenciário"></div>
+                    <div class="form-group full-width"><label>Doença / CID Resumida:</label><input type="text" id="doencaClienteAntResMed" placeholder="Ex: Diabetes Mellitus tipo 2 (CID E11)"></div>
+                </div>
+                <div class="grade-anexos">
+                    <div onclick="selecionarCaixa('img_laudo_ms_ant_res_med')" id="caixa_img_laudo_ms_ant_res_med" class="image-box">
+                        <strong>Imagem do Laudo Principal</strong>
+                        <span class="hint-text">Clique e cole (Ctrl+V)</span>
+                        <div id="galeria_img_laudo_ms_ant_res_med" class="gallery-container"></div>
+                    </div>
                 </div>
             </div>
 

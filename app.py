@@ -14,9 +14,6 @@ if sys.stdout and hasattr(sys.stdout, "reconfigure"):
 if sys.stderr and hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-# =========================================================
-# LOG DE ERROS (erro.log ao lado do executável)
-# =========================================================
 def _pasta_do_log():
     base = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.abspath(".")
     try:
@@ -26,7 +23,6 @@ def _pasta_do_log():
         os.remove(teste)
         return base
     except Exception:
-        # Pasta sem permissão de escrita (ex.: Program Files): usa a pasta do usuário
         alternativa = os.path.join(os.environ.get('LOCALAPPDATA', tempfile.gettempdir()), 'BancoDePeticoes')
         os.makedirs(alternativa, exist_ok=True)
         return alternativa
@@ -86,7 +82,6 @@ class Api:
 
         pasta_destino = dados['pasta_destino']
 
-        # Registro de diagnóstico (sem dados pessoais): tipo, quantidade e peso das imagens
         inicio = time.time()
         try:
             qtd_imagens = 0
@@ -106,7 +101,6 @@ class Api:
         nome_cliente_bruto = (dados.get('nome_cliente') or 'Cliente_Sem_Nome').upper()
         nome_cliente_seguro = re.sub(r'[^\w\s-]', '', nome_cliente_bruto).strip()
 
-        # === TRATAMENTO INTELIGENTE DOS DIAGNÓSTICOS ===
         lista_diag = dados.get('lista_diagnosticos', [])
         lista_diag_limpa = [d.replace('•', '').strip() for d in lista_diag if d.strip()]
 
@@ -117,7 +111,6 @@ class Api:
         else:
             dados['diagnosticos_texto_corrido'] = ""
 
-        # === SUFIXO PARA REPRESENTANTE ===
         sufixo_rep = "_rep" if dados.get('tem_representante') else ""
 
         tipo_beneficio = dados.get('tipo_beneficio_escolhido', 'unificado')
@@ -163,7 +156,6 @@ class Api:
             }
 
         try:
-            # Gera todos os documentos mapeados em lote
             templates_ausentes = []
             for nome_saida, caminho_template_relativo in documentos_para_gerar.items():
                 caminho_template = obter_caminho_raiz(caminho_template_relativo)
@@ -181,7 +173,6 @@ class Api:
 
             logging.info("Geração concluída em %.1f s", time.time() - inicio)
 
-            # Processa o PDF se houver
             if 'caminho_pdf' in dados and dados['caminho_pdf']:
                 processar_pdf(dados['caminho_pdf'], pasta_destino)
                 mensagem += "\n\nO Indeferimento foi anexado!"
